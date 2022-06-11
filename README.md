@@ -1,4 +1,29 @@
-# dsup-front-end
-The front-end for the DSUp Voting Portal using React
+# Getting Started with DSUP
 
-Zaman!  Please fill in this readme with as much usable information as you can think of.  Keep in mind that many other programmers will be working on this project for years and years to come and they will treat every word you write as if it were the wisdom of an ancient elder. So...that's nice.
+## How to run the project in your local machine
+
+clone or down the project.
+In the project directory, you can run:
+
+### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
+
+### `npm test`
+
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `npm run build`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
