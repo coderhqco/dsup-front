@@ -2,13 +2,13 @@
 
 ## How to run the project in your local machine
 
-clone or download the project.
+Clone or download the project.
 In the project directory, you can run:
 
-### to install dependencies 
+### To install dependencies 
 `npm install`
 
-### to start the project
+### To start the project
 `npm start` 
 
 Runs the app in the development mode.\

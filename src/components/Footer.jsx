@@ -10,7 +10,7 @@ class Footer extends React.Component{
             <footer className='container'>
                 <div className="row my-3">
                     <div className="col">
-                        <p>The Democracy Straight-Up Project </p>
+                        <p className='text-secondary'>The Democracy Straight-Up Project </p>
                     </div>
                     <div className="col text-end">
                         <a className='mx-3 text-secondary' href="#">About</a>

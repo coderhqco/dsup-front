@@ -9,7 +9,7 @@ class Header extends React.Component{
         return (   
         <nav className="navbar navbar-expand-lg bg-light">
             <div className="container">
-                <a className="navbar-brand fs-4" href="#">DSUP</a>
+                <a className="navbar-brand fw-bold fs-4" href="/">DSUP</a>
                 <button 
                     className="navbar-toggler" 
                     type="button" 
@@ -23,13 +23,13 @@ class Header extends React.Component{
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav flex-row flex-wrap ms-md-auto">
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="#">Home</a>
+                            <a className="nav-link active" aria-current="page" href="/">Home</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Help</a>
+                            <a className="nav-link" href="/help">Help</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Login</a>
+                            <a className="nav-link" href="/enter-the-floor">Login</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="#">Logout</a>

@@ -2,7 +2,7 @@
 import React from "react";
 import monkey from './monkey.jpg';
 
-class App extends React.Component {
+class Home extends React.Component {
   constructor(props){
     super(props);
   }
@@ -27,7 +27,7 @@ class App extends React.Component {
               </div>
             </div>
           </div>
-          <div className="col col-sm-12 col-md-4 col-lg-4 mt-5">
+          <div className="col col-sm-12 col-md-4 col-lg-4 mt-4">
             <div className="container text-center ">
               <a href="https://rubyonrails.org/" className="mx-auto">
                 <img src={monkey} 
@@ -42,4 +42,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default Home;
