@@ -1,15 +1,11 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
-class Header extends React.Component{
-    constructor(props){
-        super(props);
-    }
-
-    render(){
-        return (   
+function Header(){
+    return (   
         <nav className="navbar navbar-expand-lg bg-light">
             <div className="container">
-                <a className="navbar-brand fw-bold fs-4" href="/">DSUP</a>
+                <Link to='/' className="navbar-brand fw-bold fs-4" >DSUP</Link>
                 <button 
                     className="navbar-toggler" 
                     type="button" 
@@ -21,25 +17,28 @@ class Header extends React.Component{
                         <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav flex-row flex-wrap ms-md-auto">
+                    <ul className="navbar-nav ms-auto">
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="/">Home</a>
+                            <Link to='/' className="nav-link active" aria-current="page">Home</Link>
+                            {/* <a  aria-current="page" href="/">Home</a> */}
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="/help">Help</a>
+                            <Link to='/help' className="nav-link" >Help</Link>
+                            {/* <a className="nav-link" href="/help">Help</a> */}
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="/enter-the-floor">Login</a>
+                            <Link to='/enter-the-floor' className="nav-link">Login</Link>
+                            {/* <a className="nav-link" href="/enter-the-floor">Login</a> */}
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Logout</a>
+                            <Link to='/' className="nav-link">Logout</Link>
+                            {/* <a className="nav-link" href="#">Logout</a> */}
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-        );
-    }
+    );
 }
 
 export default Header;

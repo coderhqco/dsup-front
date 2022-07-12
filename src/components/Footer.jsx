@@ -1,26 +1,25 @@
 import React from  'react';
+import {Link} from 'react-router-dom';
 
-class Footer extends React.Component{
-    constructor(props){
-        super(props);
-    }
+function Footer(){
 
-    render(){
-        return (
-            <footer className='container'>
-                <div className="row my-3">
-                    <div className="col">
-                        <p className='text-secondary'>The Democracy Straight-Up Project </p>
-                    </div>
-                    <div className="col text-end">
-                        <a className='mx-3 text-secondary' href="#">About</a>
-                        <a className='mx-3 text-secondary' href="#">Contact</a>
-                        <a className='mx-3 text-secondary' href="#">News</a>
-                    </div>
+    return (
+        <footer className='container'>
+            <div className="row my-3">
+                <div className="col">
+                    <p className='text-secondary'>The Democracy Straight-Up Project </p>
                 </div>
-            </footer>
-        );
-    }
+                <div className="col text-end">
+                    <Link to='/' className='mx-3 text-secondary'>About</Link>
+                    <Link to='/' className='mx-3 text-secondary'>Contact</Link>
+                    <Link to='/' className='mx-3 text-secondary'>News</Link>
+                    {/* <a className='mx-3 text-secondary' href="#">About</a>
+                    <a className='mx-3 text-secondary' href="#">Contact</a>
+                    <a className='mx-3 text-secondary' href="#">News</a> */}
+                </div>
+            </div>
+        </footer>
+    );
 }
 
 export default Footer;
