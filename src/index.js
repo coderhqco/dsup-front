@@ -4,6 +4,10 @@ import ReactDOM from 'react-dom/client';
 // import { Provider } from 'react-redux'
 
 import App from './App';
+
+import { store } from './store/store'
+import { Provider } from 'react-redux'
+
 import {BrowserRouter} from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 
@@ -12,9 +16,9 @@ root.render(
   // StrictMode has been commented due to marker on map while on localhost
 <React.StrictMode>
   <BrowserRouter>
-    {/* <Provider store={store}> */}
+    <Provider store={store}>
       <App/>
-    {/* </Provider> */}
+    </Provider>
   </BrowserRouter>
 </React.StrictMode>
 );

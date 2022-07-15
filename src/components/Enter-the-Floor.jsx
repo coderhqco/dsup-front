@@ -1,7 +1,20 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
+import {useSelector, useDispatch} from 'react-redux';
+import {authenticate} from '../store/userSlice';
+
 function EnterTheFloor(){
+    const AuthUser = useSelector((state) => state.AuthUser.user)
+    const dispatch = useDispatch()
+
+    const handleSubmit = (e)=>{
+        console.log("handing submit.");
+        dispatch(authenticate("this is"));
+        console.log(AuthUser)
+        e.preventDefault();
+
+    }
     return (
         <div className="container">
             <h1 className="text-center mt-5">Enter The Floor</h1>
@@ -40,7 +53,7 @@ function EnterTheFloor(){
                                 </label>  
                             </div>
                             <br/><br/>
-                            <input type="submit" name="commit" value="Enter the Floor" className="btn-xl btn btn-primary" data-disable-with="Enter the Floor" />
+                            <input type="submit" onClick={handleSubmit} name="commit" value="Enter the Floor" className="btn-xl btn btn-primary" data-disable-with="Enter the Floor" />
                         </form>  
                     </div>
                 <div className="col-sm-12 col-md-3 col-lg-4"></div>
