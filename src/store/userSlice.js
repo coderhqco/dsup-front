@@ -14,9 +14,9 @@ export const UserSlice = createSlice({
   initialState,
   reducers: {
     authenticate: (state, action) => {
-        console.log("user authed...");
-        console.log("action.payload: ", action.payload);
-        console.log("state.user: ",state.user);
+        // console.log("user authed...");
+        // console.log("action.payload: ", action.payload);
+        // console.log("state.user: ",state.user);
         state.user = action.payload
         // add cart to localstorage
         toLocalStorage(state.user)
