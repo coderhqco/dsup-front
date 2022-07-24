@@ -1,5 +1,5 @@
 import {useSelector} from 'react-redux';
-
+import {Link} from 'react-router-dom';
 
 function VoterPage(){
     const AuthUser = useSelector((state) => state.AuthUser.user);
@@ -38,11 +38,11 @@ function VoterPage(){
             {/* the three columns on  */}
             <div className="row">
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
-                    <ul className="">
-                        <li><a href="#">List of Delegates</a></li>
-                        <li><a href="#">Back-and-Forth</a></li>
-                        <li><a href="#">Member Contact Page</a></li>
-                        <li><a href="#">Pod Housekeeping Page</a></li>
+                    <ul className="list-unstyled">
+                        <li><Link  to={'/voter-page'}>List of Delegates</Link></li>
+                        <li><Link  to={'/voter-page'}>Back-and-Forth</Link></li>
+                        <li><Link  to={'/voter-page'}> Member Contact Page </Link></li>
+                        <li><Link  to={'/voter-page'}>Pod Housekeeping Page</Link></li>
                     </ul>
                 </div>
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
@@ -57,11 +57,11 @@ function VoterPage(){
 
                 </div>
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
-                    <ul className="">
-                        <li><a href="#">First Link Meeting Schedule</a></li>
-                        <li><a href="#">Meeting Minutes Log</a></li>
-                        <li><a href="#">Bill Metrics</a></li>
-                        <li><a href="#">Voter Settings</a></li>
+                    <ul className="list-unstyled">
+                        <li><Link  to={'/voter-page'}>First Link Meeting Schedule</Link></li>
+                        <li><Link  to={'/voter-page'}>Meeting Minutes Log</Link></li>
+                        <li><Link  to={'/voter-page'}>Bill Metrics </Link></li>
+                        <li><Link  to={'/voter-page'}>Voter Settings</Link></li>
                     </ul>
                 </div>
             </div>

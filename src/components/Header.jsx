@@ -1,7 +1,17 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import {useSelector, useDispatch} from 'react-redux';
+import {logout} from '../store/userSlice';
 
 function Header(){
+    const AuthUser = useSelector((state) => state.AuthUser.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispatch(logout())
+        navigate('/enter-the-floor')
+    }
     return (   
         <nav className="navbar navbar-expand-lg bg-light">
             <div className="container">
@@ -20,19 +30,19 @@ function Header(){
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item">
                             <Link to='/' className="nav-link active" aria-current="page">Home</Link>
-                            {/* <a  aria-current="page" href="/">Home</a> */}
                         </li>
                         <li className="nav-item">
                             <Link to='/help' className="nav-link" >Help</Link>
-                            {/* <a className="nav-link" href="/help">Help</a> */}
                         </li>
                         <li className="nav-item">
+                            {!AuthUser ? 
                             <Link to='/enter-the-floor' className="nav-link">Login</Link>
-                            {/* <a className="nav-link" href="/enter-the-floor">Login</a> */}
+                            :""}
                         </li>
                         <li className="nav-item">
-                            <Link to='/' className="nav-link">Logout</Link>
-                            {/* <a className="nav-link" href="#">Logout</a> */}
+                            {AuthUser ? 
+                            <a className="nav-link" onClick={handleLogout}>Logout</a>
+                        :""}
                         </li>
                     </ul>
                 </div>

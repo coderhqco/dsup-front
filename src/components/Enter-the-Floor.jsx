@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import { Link , useNavigate} from 'react-router-dom';
-
 import {useSelector, useDispatch} from 'react-redux';
 import {authenticate} from '../store/userSlice';
 import axios from 'axios';
@@ -10,9 +9,9 @@ function EnterTheFloor(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [district,    setDistrict]        = useState('ny01');
-    const [entry_code,  setEntry_code]      = useState('a1b1c');
-    const [password,    setPassword]        = useState('Z123123z');
+    const [district,    setDistrict]        = useState('');
+    const [entry_code,  setEntry_code]      = useState('');
+    const [password,    setPassword]        = useState('');
     const [token,       setToken]           = useState(''); 
     const [err,         setErr]             = useState('');
     

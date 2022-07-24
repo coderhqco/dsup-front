@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 // init the initial State to local and check if the user already added to cart 
 const userLocal = JSON.parse(localStorage.getItem('AuthUser'))
 let userInit = null;
-userLocal ? userInit =userLocal: userInit = [];
+userLocal ? userInit = userLocal: userInit = null;
 
 const initialState = {
   user: userInit
@@ -14,13 +14,14 @@ export const UserSlice = createSlice({
   initialState,
   reducers: {
     authenticate: (state, action) => {
-        // console.log("user authed...");
-        // console.log("action.payload: ", action.payload);
-        // console.log("state.user: ",state.user);
         state.user = action.payload
         // add cart to localstorage
         toLocalStorage(state.user)
     },
+    logout: (state) =>{
+      state.user = null;
+      localStorage.removeItem('AuthUser');
+    }
   },
 })
 
@@ -30,7 +31,7 @@ function toLocalStorage(user){
 }
 
 // Action creators are generated for each case reducer function
-export const { authenticate } = UserSlice.actions
+export const { authenticate,logout } = UserSlice.actions
 
 export default UserSlice.reducer
 
