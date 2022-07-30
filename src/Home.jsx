@@ -2,8 +2,10 @@
 import React from "react";
 import monkey from './monkey.jpg';
 import {Link} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 function Home(){
+  const AuthUser = useSelector((state) => state.AuthUser.user);
   return (
     <div className="container">
       <div className="row"></div>
@@ -14,12 +16,16 @@ function Home(){
             <div className="text-center">
               <h2 className="text-secondary m-4">Vote directly on federal legislation.</h2>
                 <div className="row">
-                  <div className="col col-sm-12 col-md-6 col-lg-6">
-                    <Link to="/claim-your-seat" className="btn btn-lg btn-primary m-3 text-decoration-none"> Claim Your Seat</Link>
+                {!AuthUser ? 
+                  <div className="row">
+                    <div className="col col-sm-12 col-md-6 col-lg-6">
+                      <Link to="/claim-your-seat" className="btn btn-lg btn-primary m-3 text-decoration-none"> Claim Your Seat</Link>
+                    </div>
+                    <div className="col col-sm-12 col-md-6 col-lg-6">
+                      <Link to="/enter-the-floor" className="btn btn-lg btn-primary m-3 text-decoration-none"> Enter the Floor</Link>
+                    </div>
                   </div>
-                  <div className="col col-sm-12 col-md-6 col-lg-6">
-                    <Link to="/enter-the-floor" className="btn btn-lg btn-primary m-3 text-decoration-none"> Enter the Floor</Link>
-                  </div>
+                  :""}
                 </div>
             </div>
           </div>

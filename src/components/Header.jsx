@@ -28,20 +28,22 @@ function Header(){
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav ms-auto">
+                        {AuthUser ? 
                         <li className="nav-item">
-                            <Link to='/' className="nav-link active" aria-current="page">Home</Link>
+                            <Link to='/voter-page' className="nav-link fs-5 active" aria-current="page">Voter Page</Link>
                         </li>
+                        :""}
                         <li className="nav-item">
-                            <Link to='/help' className="nav-link" >Help</Link>
+                            <Link to='/help' className="nav-link fs-5" >Help</Link>
                         </li>
                         <li className="nav-item">
                             {!AuthUser ? 
-                            <Link to='/enter-the-floor' className="nav-link">Login</Link>
+                            <Link to='/enter-the-floor' className="nav-link fs-5">Login</Link>
                             :""}
                         </li>
                         <li className="nav-item">
                             {AuthUser ? 
-                            <a className="nav-link" onClick={handleLogout}>Logout</a>
+                            <a className="nav-link fs-5" onClick={handleLogout}>Logout</a>
                         :""}
                         </li>
                     </ul>
