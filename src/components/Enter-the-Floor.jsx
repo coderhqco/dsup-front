@@ -3,6 +3,7 @@ import { Link , useNavigate} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {authenticate} from '../store/userSlice';
 import axios from 'axios';
+import {baseURL} from '../store/conf'
 
 function EnterTheFloor(){
     const AuthUser = useSelector((state) => state.AuthUser.user);
@@ -17,12 +18,14 @@ function EnterTheFloor(){
     
     // loging for user after the token[local state is changed.that means the token is generated.]
     useEffect(()=>{
-        const loginURL ='http://127.0.01:8000/api/login/';
+        const loginURL = `${baseURL}/api/login/`;
+        console.log("lgoinurl: ", loginURL)
         const login_params = {
             username:entry_code.toUpperCase(), 
             district: district.toUpperCase(), 
             password: password
         }
+        console.log(login_params)
         let header = {'Authorization': `Bearer ${token.access}`}
         axios.post(loginURL, login_params, {headers:header})
         .then( response=>{
@@ -43,7 +46,8 @@ function EnterTheFloor(){
 
     const handleSubmit = (e)=>{
         // generate the token here.
-        const TokenUrl = "http://127.0.0.1:8000/api/token/";
+        const TokenUrl = `${baseURL}/api/token/`;
+        console.log("token url: ", TokenUrl)
         const token_params = {username:entry_code.toUpperCase(), password: password}
         axios.post(TokenUrl, token_params)
         .then(response =>{

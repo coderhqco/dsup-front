@@ -40,7 +40,15 @@ export const UserSlice = createSlice({
     addPodmMembers:(state, action)=>{
       state.podMembers = action.payload;
       toLocalStorage('podMembers', state.podMembers)
+    },
+    desolvePod:(state, action)=>{
+      state.pod = null
+      state.podMembers = null
+      localStorage.removeItem('pod');
+      localStorage.removeItem('podMembers');
+      console.log("removed all")
     }
+
   },
 })
 
@@ -49,6 +57,6 @@ function toLocalStorage(store,user){
 }
 
 // Action creators are generated for each case reducer function
-export const { authenticate,logout, pod, addPodmMembers } = UserSlice.actions
+export const { authenticate,logout, pod, addPodmMembers,desolvePod } = UserSlice.actions
 export default UserSlice.reducer
 

@@ -2,6 +2,7 @@ import React from "react";
 import {Link, useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 import axios from "axios";
+import {baseURL} from '../store/conf'
 
 function ClaimYourSeat(){
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ function ClaimYourSeat(){
 
     const handleCheck = (e)=>{
         //check weather the district is listed
-        axios.get('http://127.0.0.1:8000/api/districts/')
+        axios.get(`${baseURL}/api/districts/`)
         .then(function (response) {
             const is_listed_districts = response.data.find((i) => (i.code === district.toUpperCase()))
             if(is_listed_districts){
@@ -75,7 +76,7 @@ function ClaimYourSeat(){
             password: password,
             password2: password2 
         }
-        const url ='http://127.0.0.1:8000/api/register/';
+        const url =`${baseURL}/api/register`;
         axios.post(url,register_obj)
         .then(function (response) {
             console.log(response)

@@ -1,56 +1,58 @@
-import {useSelector,useDispatch} from 'react-redux';
-// import {Link} from 'react-router-dom';
+import {useSelector,useDispatch, } from 'react-redux';
+// import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
-import axios from 'axios';
-import {pod,authenticate, addPodmMembers} from '../store/userSlice';
+// import axios from 'axios';
+import {authenticate, addPodmMembers, desolvePod} from '../store/userSlice';
 
 function HouseKeeping(){
     const AuthUser = useSelector((state) => state.AuthUser.user);
     const pod = useSelector((state) => state.AuthUser.pod);
     const podMembers = useSelector((state) => state.AuthUser.podMembers);
-    const [token, setToken] = useState('');
+    // const [token, setToken] = useState('');
+    // const [action, setAction] = useState('');
     const [message, setMessage] = useState({})
+    const [condidate, setCondidate] = useState({})
+    const [members, setMembers] = useState({})
+
     const dispatch = useDispatch();
-    
-    // this hooks updates the pod memebers after the token is set.
-    useEffect(()=>{
-        if(token.length > 0){
-            const url = "http://127.0.0.1:8000/api/house-keeping/";
-            const params = {pod: pod.code}
-            let header = {'Authorization': `Bearer ${token}`}
-            axios.post(url, params, {headers: header})
-            .then(response => {
-                if(response.status === 200){
-                    dispatch(addPodmMembers(response.data.podMembers))
-                }else{
-                    setMessage({type:"alert alert-danger",msg:"could not get access token"})
-                }
-            })
-            .catch(error => {
-                setMessage({type:"alert alert-danger",msg:"something went wrong with your request"})
-                console.log(error)
-            });
-        }
-    },[token])
+    // const navigate = useNavigate();
 
-    // this hook gets the token
     useEffect(()=>{
-        // from is tell weather the join btn is clicked on create pod
-        const TokenUrl = "http://127.0.0.1:8000/api/token/refresh/";
-        const token_params = {refresh: AuthUser.token.refresh}
-        axios.post(TokenUrl, token_params)
-        .then(response =>{
-            if(response.status === 200){
-                setToken(response.data.access);
-            }else{
-                setMessage({type:"alert alert-danger",msg:"could not get access token"})
+        setMembers(podMembers?.filter((member)=> member.is_member))
+        setCondidate(podMembers?.filter((member)=> !member.is_member))
+    },[podMembers])
+
+    useEffect(()=>{
+        const url = `${process.env.REACT_APP_BASE_URL.replace('https:', 'wss:')}/ws/pod/${pod.code}/${AuthUser.username}/`
+        console.log("url: ", url)
+        const chatSocket = new WebSocket(url);
+        // get backt the messages...
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            if(data.data.podMembers){
+                dispatch(addPodmMembers(data.data.podMembers))
             }
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    },[])
+        };
 
+        // what happens on closing the connection
+        chatSocket.onclose = function(e) {
+            setMessage({type:"alert alert-danger",msg:'Chat socket closed unexpectedly'})
+        };
+
+        // send message 
+        // chatSocket.send(JSON.stringify({
+        //     'message': "i love you"
+        // }));
+
+    },[])
+    
+
+    const handleDesolve =()=>{
+        alert("this function is under construction")
+    }
+    const handleVoteIn = ()=>{
+        alert("under construction")
+    }
     return (
         <div className="container">
             <div className="row">
@@ -64,12 +66,12 @@ function HouseKeeping(){
                 <div className="col-sm-12 col-md-3"></div>
             </div>
             <div className="row">
-                <table className='table border'> 
+                <table className='table table-bordered '> 
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Member Name</th>
-                            <th></th>
+                            <th>Do you want this voter to be a member?</th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -77,32 +79,43 @@ function HouseKeeping(){
                         </tr>
                     </thead>
                     <tbody>
-                        {podMembers?.map((member, index)=>(
-                            <tr key={index}>
+                        {members?.length > 0 ? 
+                         members?.map((member, index)=>(
+                            <tr key={index} className="border">
                                 <td>{index+1}</td>
-                                <td>{member.user.users.legalName}</td>
+                                <td>{member.user.users.legalName}  
+                                    {member.is_delegate ? <span className='badge'>delegate</span>: ""}
+                                </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td>
                                     {podMembers.length === 1 ? 
-                                        <button className='btn btn-danger'>Desolve</button>
+                                        <button onClick={()=>handleDesolve()} className='btn btn-danger'>Desolve</button>
                                     :""}
                                 </td>
                             </tr>
-                        ))}
-                    <tr>
-                        <td>02</td>
-                        <td>condidate member</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                        <input className='form-check-input' type="checkbox" />
-                        </td>
-                    </tr>
+                        ))
+                        : ""}
+                        {condidate?.length > 0 ? 
+                            <tr>
+                                <td >01</td>
+                                <td>{condidate[0]?.user.users.legalName}</td>
+                                <td>
+                                    <label htmlFor="checkbox">YES</label>
+                                    <input type="checkbox" onClick={handleVoteIn} className ='mx-2 form-check-input' />
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                <input onClick={handleVoteIn} type="checkbox" className='form-check-input'  />
+                                </td>
+                                
+                            </tr>
+                        :""}
+                       
                     </tbody>
                 </table>
             </div>
