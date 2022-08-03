@@ -23,7 +23,7 @@ function HouseKeeping(){
     },[podMembers])
 
     useEffect(()=>{
-        const url = `${process.env.REACT_APP_BASE_URL.replace('https:', 'wss:')}/ws/pod/${pod.code}/${AuthUser.username}/`
+        const url = `${process.env.REACT_APP_BASE_URL.replace('https:', 'ws:')}/ws/pod/${pod.code}/${AuthUser.username}/`
         console.log("url: ", url)
         const chatSocket = new WebSocket(url);
         // get backt the messages...
