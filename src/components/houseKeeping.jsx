@@ -1,57 +1,115 @@
 import {useSelector,useDispatch, } from 'react-redux';
-// import {useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 // import axios from 'axios';
-import {authenticate, addPodmMembers, desolvePod} from '../store/userSlice';
+import {authenticate,pod, addPodmMembers, desolvePod} from '../store/userSlice';
 
 function HouseKeeping(){
     const AuthUser = useSelector((state) => state.AuthUser.user);
-    const pod = useSelector((state) => state.AuthUser.pod);
+    const podInfo = useSelector((state) => state.AuthUser.pod);
     const podMembers = useSelector((state) => state.AuthUser.podMembers);
     // const [token, setToken] = useState('');
     // const [action, setAction] = useState('');
     const [message, setMessage] = useState({})
+    const [voteIn, setVoteIn] = useState(false)
+    // const [voteOut, setVoteOut] = useState('')
     const [condidate, setCondidate] = useState({})
     const [members, setMembers] = useState({})
 
     const dispatch = useDispatch();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(()=>{
         setMembers(podMembers?.filter((member)=> member.is_member))
         setCondidate(podMembers?.filter((member)=> !member.is_member))
     },[podMembers])
 
+    const url = `ws://${process.env.REACT_APP_BASE_URL}/ws/pod/${podInfo?.code}/${AuthUser.username}/`
+    const chatSocket = new WebSocket(url);
+
     useEffect(()=>{
-        const url = `${process.env.REACT_APP_BASE_URL.replace('https:', 'ws:')}/ws/pod/${pod.code}/${AuthUser.username}/`
-        console.log("url: ", url)
-        const chatSocket = new WebSocket(url);
         // get backt the messages...
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            if(data.data.podMembers){
-                dispatch(addPodmMembers(data.data.podMembers))
-            }
+            if(data.type){
+                switch(data.type){
+                    case 'podmember':
+                        dispatch(addPodmMembers(data.data.podMembers))
+                        dispatch(pod(data.data.pod))
+                        break
+                    case 'podInvitationKey':
+                        dispatch(pod(data.data.data))
+                        break
+                    case 'voteIn':
+                        if(data.data.done && data.data.is_member){
+                            // console.log("voted in and condidate is member: ",data.data.data)
+                            dispatch(addPodmMembers(data.data.data))
+                            setVoteIn(true)
+                        }else if(data.data.is_member){
+                            // console.log("the condidate is now a member of the pod: ", data.data)
+                            setVoteIn(true)
+                        }else{
+                            console.log("something went wrong : ", data.data.data)
+                        }
+                        break
+
+                    case 'voteOut':
+                        console.log(data)
+                        break
+                    case 'desolvePod':
+                        if(data.data.done){
+                            dispatch(desolvePod())
+                            // set the userType to 0 and reset AuthUser
+                            let u = {...AuthUser}
+                            u.userType = 0
+                            dispatch(authenticate(u))
+                            // navigate back to voter page
+                            navigate('/voter-page');
+                        }
+                        
+                        break
+                    case 'chat_message':
+                        console.log(data)
+                        break
+                }
+            } //end of if(data.type)
         };
 
         // what happens on closing the connection
         chatSocket.onclose = function(e) {
-            setMessage({type:"alert alert-danger",msg:'Chat socket closed unexpectedly'})
+            console.log("chat socket closed...")
+            // setMessage({type:"alert alert-danger",msg:'Chat socket closed unexpectedly'})
         };
-
-        // send message 
-        // chatSocket.send(JSON.stringify({
-        //     'message': "i love you"
-        // }));
 
     },[])
     
 
     const handleDesolve =()=>{
-        alert("this function is under construction")
+        console.log("desolving the pod...")
+        chatSocket.send(JSON.stringify({
+            type: "desolvePod",
+            pod: podInfo.code,
+            user: AuthUser.username,
+        }));
     }
-    const handleVoteIn = ()=>{
-        alert("under construction")
+    const handleChngInvtKey =()=>{
+        chatSocket.send(JSON.stringify({
+            type: "podInvitationKey",
+            pod: podInfo.code,
+        }));
+    }
+    const handleVoteIn = (e)=>{
+        if(voteIn){
+            alert("you have already voted for this condidate.")
+        }else{
+            console.log("voting in for ...",e.target.value)
+            chatSocket.send(JSON.stringify({
+                type: "voteIn",
+                pod: podInfo.code,
+                voter: AuthUser.username,
+                condidate: e.target.value
+            }));
+        }
     }
     return (
         <div className="container">
@@ -59,9 +117,9 @@ function HouseKeeping(){
                 <div className="col-sm-12 col-md-3"></div>
                 <div className="col-sm-12 col-md-6 mt-3">
                     <h1 className="text-center">House Keeping page</h1>
-                    <h3 className='text-center'>pod: {pod.district}-{pod.code}</h3>
-                    <h4 className='text-center'>Invitation Key: {pod.invitation_code}</h4>
-                    <button className='d-block mx-auto my-2 btn btn-success text-center'>Generate new key</button>
+                    <h3 className='text-center'>pod: {podInfo?.district.code}-{podInfo?.code}</h3>
+                    <h4 className='text-center'>Invitation Key: {podInfo?.invitation_code}</h4>
+                    <button className='d-block mx-auto my-2 btn btn-success text-center' onClick={handleChngInvtKey}>Generate new key</button>
                 </div>
                 <div className="col-sm-12 col-md-3"></div>
             </div>
@@ -83,15 +141,15 @@ function HouseKeeping(){
                          members?.map((member, index)=>(
                             <tr key={index} className="border">
                                 <td>{index+1}</td>
-                                <td>{member.user.users.legalName}  
-                                    {member.is_delegate ? <span className='badge'>delegate</span>: ""}
+                                <td>{member?.user.users.legalName}  
+                                    {member?.is_delegate ? <span className='badge'>delegate</span>: ""}
                                 </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td>
-                                    {podMembers.length === 1 ? 
+                                    {podMembers?.length === 1 ? 
                                         <button onClick={()=>handleDesolve()} className='btn btn-danger'>Desolve</button>
                                     :""}
                                 </td>
@@ -104,13 +162,13 @@ function HouseKeeping(){
                                 <td>{condidate[0]?.user.users.legalName}</td>
                                 <td>
                                     <label htmlFor="checkbox">YES</label>
-                                    <input type="checkbox" onClick={handleVoteIn} className ='mx-2 form-check-input' />
+                                    <input type="checkbox" value={condidate[0].id} onChange={handleVoteIn} checked={voteIn} className ='mx-2 form-check-input' />
                                 </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td>
-                                <input onClick={handleVoteIn} type="checkbox" className='form-check-input'  />
+                                <input onClick={(e)=>handleVoteIn(e)} type="checkbox" className='form-check-input'  />
                                 </td>
                                 
                             </tr>

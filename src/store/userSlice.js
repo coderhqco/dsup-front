@@ -46,7 +46,6 @@ export const UserSlice = createSlice({
       state.podMembers = null
       localStorage.removeItem('pod');
       localStorage.removeItem('podMembers');
-      console.log("removed all")
     }
 
   },

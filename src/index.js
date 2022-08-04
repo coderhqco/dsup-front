@@ -14,13 +14,11 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // StrictMode has been commented due to marker on map while on localhost
-<React.StrictMode>
   <BrowserRouter>
     <Provider store={store}>
       <App/>
     </Provider>
   </BrowserRouter>
-</React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -23,7 +23,7 @@ function ClaimYourSeat(){
 
     const handleCheck = (e)=>{
         //check weather the district is listed
-        axios.get(`${baseURL}/api/districts/`)
+        axios.get(`${window.location.protocol}//${baseURL}/api/districts/`)
         .then(function (response) {
             const is_listed_districts = response.data.find((i) => (i.code === district.toUpperCase()))
             if(is_listed_districts){
@@ -76,7 +76,7 @@ function ClaimYourSeat(){
             password: password,
             password2: password2 
         }
-        const url =`${baseURL}/api/register`;
+        const url =`${window.location.protocol}//${baseURL}/api/register`;
         axios.post(url,register_obj)
         .then(function (response) {
             console.log(response)

@@ -18,7 +18,8 @@ function EnterTheFloor(){
     
     // loging for user after the token[local state is changed.that means the token is generated.]
     useEffect(()=>{
-        const loginURL = `${baseURL}/api/login/`;
+        console.log("love: ",`${window.location.protocol}//${baseURL}/api/login/`)
+        const loginURL = `${window.location.protocol}//${baseURL}/api/login/`;
         console.log("lgoinurl: ", loginURL)
         const login_params = {
             username:entry_code.toUpperCase(), 
@@ -46,7 +47,7 @@ function EnterTheFloor(){
 
     const handleSubmit = (e)=>{
         // generate the token here.
-        const TokenUrl = `${baseURL}/api/token/`;
+        const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/`;
         console.log("token url: ", TokenUrl)
         const token_params = {username:entry_code.toUpperCase(), password: password}
         axios.post(TokenUrl, token_params)

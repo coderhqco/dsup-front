@@ -18,7 +18,7 @@ function VoterPage(){
     useEffect(()=>{
         if(AuthUser.userType ===1){
             if(AuthUser.token.access.length > 0){
-                const url = `${baseURL}/api/pod/`;
+                const url = `${window.location.protocol}//${baseURL}/api/pod/`;
                 const params = {user: AuthUser.username}
                 let header = {'Authorization': `Bearer ${AuthUser.token.access}`}
                 axios.post(url, params, {headers: header})
@@ -42,7 +42,7 @@ function VoterPage(){
         // after the joint, we have to redirect to the pod page
         if(token.length > 0){
             let header = {'Authorization': `Bearer ${token}`}
-            const url = `${baseURL}/api/create-pod/`
+            const url = `${window.location.protocol}//${baseURL}/api/create-pod/`
             const param = {"user": AuthUser.username, 'district':AuthUser.district}
             axios.post(url, param, {headers:header})
             .then( response => {
@@ -68,7 +68,7 @@ function VoterPage(){
 
     function GetToken(){
         // from is tell weather the join btn is clicked on create pod
-        const TokenUrl = `${baseURL}/api/token/refresh/`;
+        const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/refresh/`;
         const token_params = {refresh: AuthUser.token.refresh}
         axios.post(TokenUrl, token_params)
         .then(response =>{

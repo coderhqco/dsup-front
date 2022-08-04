@@ -20,7 +20,7 @@ function JoinPod(){
         if(clicked === 'pod'){
             if(token.length > 0){
                 let header = {'Authorization': `Bearer ${token}`}
-                const url = `${baseURL}/api/create-pod/`
+                const url = `${window.location.protocol}//${baseURL}/api/create-pod/`
                 const param = {"user": AuthUser.username, 'district':AuthUser.district}
                 axios.post(url, param, {headers:header})
                 .then( response => {
@@ -45,7 +45,7 @@ function JoinPod(){
         }else if(clicked === 'join'){
             if(token.length > 0){
                 let header = {'Authorization': `Bearer ${token}`}
-                const url = `${baseURL}/api/join-pod/`
+                const url = `${window.location.protocol}//${baseURL}/api/join-pod/`
                 const param = {"user": AuthUser.username, 'pod':inviteKey}
                 axios.post(url, param, {headers:header})
                 .then( response => {
@@ -76,7 +76,7 @@ function JoinPod(){
 
     function GetToken(from){
         // from is tell weather the join btn is clicked on create pod
-        const TokenUrl = `${baseURL}/api/token/refresh/`;
+        const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/refresh/`;
         const token_params = {refresh: AuthUser.token.refresh}
         axios.post(TokenUrl, token_params)
         .then(response =>{
