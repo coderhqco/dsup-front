@@ -10,65 +10,43 @@ function VoterPage(){
     const AuthUser = useSelector((state) => state.AuthUser.user);
     const [message, setMessage] = useState({type:'alert alert-',msg:''});
     const [token, setToken] = useState('');
+    const [action,setAction] = useState('');
+    const [pageLoaded, setPageLoaded] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
     let date = new Date(AuthUser.date_joined)
-    // fetch the pod data on login(load)
-    useEffect(()=>{
-        if(AuthUser.userType ===1){
-            if(AuthUser.token.access.length > 0){
-                const url = `${window.location.protocol}//${baseURL}/api/house-keeping/`;
-                const params = {user: AuthUser.username}
-                let header = {'Authorization': `Bearer ${AuthUser.token.access}`}
-                axios.post(url, params, {headers: header})
-                .then(response => {
-                    if(response.status === 200){
-                        console.log(response.data)
-                        // dispatch(pod(response.data))
-                    }else{
-                        setMessage({type:"alert alert-danger",msg:"could not get access token"})
-                    }
-                })
-                .catch(error => {
-                    // console.log(error)
-                });
-            }
-        }
-    },[])
+
+    // useEffect(()=>{
+    //     // from is tell weather the join btn is clicked on create pod
+    //     console.log("getting a new access token...")
+    //     const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/refresh/`;
+    //     const token_params = {refresh: AuthUser.token.refresh}
+    //     console.log("param: ", token_params)
+    //     axios.post(TokenUrl, token_params)
+    //     .then(response =>{
+    //         if(response.status === 200){
+    //             // set the new access token and which btn is clicked via clicked const.
+    //             console.log("new token is : ", response.data)
+    //             setToken(response.data.access);
+    //             // set the new token to user.token as well.
+    //             let u = {...AuthUser}
+    //             u.token = response.data
+    //             dispatch(authenticate(u))
+    //             console.log("a new access token is set now.")
+    //         }else{
+    //             setMessage({type:"alert alert-danger",msg:"could not get access token"})
+    //         }
+    //     })
+    //     .catch(error => {
+    //         setMessage({type:"alert alert-danger",msg:"something went wrong with your request"})
+    //         // setErr("Something went wrong. Check your inputs and try again.");
+    //         console.log(error)
+    //     }); 
+    // },[])
+
 
     useEffect(()=>{
-        // this is for joining of pod
-        // we need invitation key and username. token is required for request
-        // after the joint, we have to redirect to the pod page
-        if(token.length > 0){
-            let header = {'Authorization': `Bearer ${token}`}
-            const url = `${window.location.protocol}//${baseURL}/api/create-pod/`
-            const param = {"user": AuthUser.username, 'district':AuthUser.district}
-            axios.post(url, param, {headers:header})
-            .then( response => {
-                if(response.status === 400 ){
-                    setMessage({msg:response.data.message,type: "alert alert-danger" })
-                }else if(response.status === 200){
-                    dispatch(pod(response.data))
-                    let u = {...AuthUser}
-                    u.userType = 1
-                    dispatch(authenticate(u))
-                    setMessage({type:"alert alert-success", msg:"pod created."})
-                    // nagivate to voter page...
-                    navigate('/house-keeping-page');
-                }else{
-                    console.log("something went wrong:", response)
-                }
-            })
-            .catch(error => {
-                setMessage({msg:error.response?.data?.message, type:"alert alert-danger"})
-            });
-        }
-    },[token])
-
-    function GetToken(){
-        // from is tell weather the join btn is clicked on create pod
         const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/refresh/`;
         const token_params = {refresh: AuthUser.token.refresh}
         axios.post(TokenUrl, token_params)
@@ -76,6 +54,12 @@ function VoterPage(){
             if(response.status === 200){
                 // set the new access token and which btn is clicked via clicked const.
                 setToken(response.data.access);
+                let u = {...AuthUser}
+                u.token = {refresh: AuthUser.token.refresh, access: response.data.access}
+                dispatch(authenticate(u))
+                console.log("token is set on token and authuser.token")
+               
+                setAction('userinfo')
             }else{
                 setMessage({type:"alert alert-danger",msg:"could not get access token"})
             }
@@ -85,14 +69,98 @@ function VoterPage(){
             // setErr("Something went wrong. Check your inputs and try again.");
             console.log(error)
         }); 
-    }
+    },[])
 
-    const handleCreatePod =()=>{
-        GetToken()
+    useEffect(()=>{
+        switch(action){
+            // if no action is specified, fetch user info and pod
+            case 'userinfo':
+                console.log("getting user info")
+                if(AuthUser.token.access.length > 0){
+                    const url = `${window.location.protocol}//${baseURL}/api/userinfo/`;
+                    const params = {user: AuthUser.username}
+                    let header = {'Authorization': `Bearer ${AuthUser.token.access}`}
+                    axios.post(url, params, {headers: header})
+                    .then(response => {
+                        if(response.status === 200){
+                            let token = AuthUser.token
+                            dispatch(authenticate({...response.data.user,token}))
+                            if(response.data.user.users.userType===1){
+                                dispatch(pod(response.data.pod))
+                            }
+                            console.log("user and pod is set.")
+                        }else{
+                            setMessage({type:"alert alert-danger",msg:"could not get user info and pod"})
+                        }
+                    })
+                    .catch(error => {
+                        console.log("error on fetching user and pod info:",error)
+                    });
+                }
+                
+                break
+            case 'joinPd':
+                console.log("joining a pod here")
+                break
+            case 'createPod':
+                console.log("creating a pod")
+                if(token.length > 0){
+                    let header = {'Authorization': `Bearer ${token}`}
+                    const url = `${window.location.protocol}//${baseURL}/api/create-pod/`
+                    const param = {"user": AuthUser.username, 'district':AuthUser.users.district.code}
+                    axios.post(url, param, {headers:header})
+                    .then( response => {
+                        if(response.status === 400 ){
+                            setMessage({msg:response.data.message,type: "alert alert-danger" })
+                        }else if(response.status === 200){
+                            dispatch(pod(response.data))
+                            let u = {...AuthUser}
+                            u.userType = 1
+                            dispatch(authenticate(u))
+                            setMessage({type:"alert alert-success", msg:"pod created."})
+                            // nagivate to voter page...
+                            navigate('/house-keeping-page');
+                        }else{
+                            console.log("something went wrong:", response)
+                        }
+                    })
+                    .catch(error => {
+                        console.log("err: ", error)
+                        setMessage({msg:error.response?.data?.message, type:"alert alert-danger"})
+                    });
+                }
+                break
+            default:
+                console.log("defualt is here")
+        }
+    },[action])
+
+    function GetToken(){
+        // // from is tell weather the join btn is clicked on create pod
+        // const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/refresh/`;
+        // const token_params = {refresh: AuthUser.token.refresh}
+        // axios.post(TokenUrl, token_params)
+        // .then(response =>{
+        //     if(response.status === 200){
+        //         // set the new access token and which btn is clicked via clicked const.
+        //         setToken(response.data.access);
+        //         let u = {...AuthUser}
+        //         u.token = response.data
+        //         dispatch(authenticate(u))
+        //         console.log("user token and token are set")
+        //     }else{
+        //         setMessage({type:"alert alert-danger",msg:"could not get access token"})
+        //     }
+        // })
+        // .catch(error => {
+        //     setMessage({type:"alert alert-danger",msg:"something went wrong with your request"})
+        //     // setErr("Something went wrong. Check your inputs and try again.");
+        //     console.log(error)
+        // }); 
     }
 
     const houseKeepingType = () => {
-        switch(AuthUser.userType){
+        switch(AuthUser?.users?.userType){
             case 0 :
                 return (
                     <div className="row text-center">
@@ -100,7 +168,7 @@ function VoterPage(){
                             <Link to={'/join-pod'} className="btn btn-primary m-2">Join a Pod</Link>
                         </div>
                         <div className="col-sm-12 ">
-                            <a onClick={handleCreatePod} className="btn btn-primary m-2">Create a Pod</a>
+                            <a onClick={()=>setAction('createPod')} className="btn btn-primary m-2">Create a Pod</a>
                         </div>
                     </div>
                 )
@@ -135,12 +203,11 @@ function VoterPage(){
         <div className="container">
              <div className="row">
                 <div className="col">
-
                     {message.msg ?
-                        <div  className={message.type} role="alert"> {message.msg}</div>
+                        <div  className={message?.type} role="alert"> {message?.msg}</div>
                     :""}
 
-                    {AuthUser.is_reg ? 
+                    {AuthUser?.users?.is_reg ? 
                     <div className="alert alert-warning mt-3">
                         <p>
                             You have to got until <span className='text-danger'>{date.toDateString()}</span> to
@@ -158,11 +225,11 @@ function VoterPage(){
 
             <div className="row mt-3">
                 <div className="col-sm-12 col-md-12 col-lg-12">
-                    <h1 className="text-center">Voter Page for {AuthUser.legalName}</h1>
-                    <h3 className="text-center">Your Verification Score: {AuthUser.verificationScore}/7</h3>
+                    <h1 className="text-center">Voter Page for {AuthUser?.users?.legalName}</h1>
+                    <h3 className="text-center">Your Verification Score: {AuthUser?.users?.verificationScore}/7</h3>
                 </div>
                 <div className="col-sm-12 col-md-12 col-lg-12">
-                    <h1 className="text-center"> District: {AuthUser.district} </h1>
+                    <h1 className="text-center"> District: {AuthUser.users?.district?.code} </h1>
                 </div>
             </div>
 
