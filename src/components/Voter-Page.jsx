@@ -17,35 +17,7 @@ function VoterPage(){
     
     let date = new Date(AuthUser.date_joined)
 
-    // useEffect(()=>{
-    //     // from is tell weather the join btn is clicked on create pod
-    //     console.log("getting a new access token...")
-    //     const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/refresh/`;
-    //     const token_params = {refresh: AuthUser.token.refresh}
-    //     console.log("param: ", token_params)
-    //     axios.post(TokenUrl, token_params)
-    //     .then(response =>{
-    //         if(response.status === 200){
-    //             // set the new access token and which btn is clicked via clicked const.
-    //             console.log("new token is : ", response.data)
-    //             setToken(response.data.access);
-    //             // set the new token to user.token as well.
-    //             let u = {...AuthUser}
-    //             u.token = response.data
-    //             dispatch(authenticate(u))
-    //             console.log("a new access token is set now.")
-    //         }else{
-    //             setMessage({type:"alert alert-danger",msg:"could not get access token"})
-    //         }
-    //     })
-    //     .catch(error => {
-    //         setMessage({type:"alert alert-danger",msg:"something went wrong with your request"})
-    //         // setErr("Something went wrong. Check your inputs and try again.");
-    //         console.log(error)
-    //     }); 
-    // },[])
-
-
+    // get the new access token on each page load or redirect
     useEffect(()=>{
         const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/refresh/`;
         const token_params = {refresh: AuthUser.token.refresh}
@@ -97,7 +69,6 @@ function VoterPage(){
                         console.log("error on fetching user and pod info:",error)
                     });
                 }
-                
                 break
             case 'joinPd':
                 console.log("joining a pod here")
@@ -134,30 +105,6 @@ function VoterPage(){
                 console.log("defualt is here")
         }
     },[action])
-
-    function GetToken(){
-        // // from is tell weather the join btn is clicked on create pod
-        // const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/refresh/`;
-        // const token_params = {refresh: AuthUser.token.refresh}
-        // axios.post(TokenUrl, token_params)
-        // .then(response =>{
-        //     if(response.status === 200){
-        //         // set the new access token and which btn is clicked via clicked const.
-        //         setToken(response.data.access);
-        //         let u = {...AuthUser}
-        //         u.token = response.data
-        //         dispatch(authenticate(u))
-        //         console.log("user token and token are set")
-        //     }else{
-        //         setMessage({type:"alert alert-danger",msg:"could not get access token"})
-        //     }
-        // })
-        // .catch(error => {
-        //     setMessage({type:"alert alert-danger",msg:"something went wrong with your request"})
-        //     // setErr("Something went wrong. Check your inputs and try again.");
-        //     console.log(error)
-        // }); 
-    }
 
     const houseKeepingType = () => {
         switch(AuthUser?.users?.userType){

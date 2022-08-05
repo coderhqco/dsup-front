@@ -37,6 +37,9 @@ function HouseKeeping(){
                     case 'podInvitationKey':
                         dispatch(pod(data.data.data))
                         break
+                    case 'joined':
+                        dispatch(addPodmMembers(data.data.data))
+                        break
                     case 'voteIn':
                         if(data.data.done && data.data.is_member){
                             // alert("voted in and condidate is member")

@@ -10,6 +10,8 @@ function JoinPod(){
     const [inviteKey, setInviteKey] = useState('');
     const [message, setMessage] = useState({type:'alert alert-',msg:''});
     const [token, setToken] = useState('');
+    const [POD, setPOD] = useState('');
+    const [WS, setWS] = useState({});
     const [clicked, setClicked] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -19,20 +21,22 @@ function JoinPod(){
         // after the joint, we have to redirect to the pod page
         if(clicked === 'pod'){
             if(token.length > 0){
+                // console.log("ceating a pod...")
                 let header = {'Authorization': `Bearer ${token}`}
                 const url = `${window.location.protocol}//${baseURL}/api/create-pod/`
-                const param = {"user": AuthUser.username, 'district':AuthUser.district}
+                const param = {"user": AuthUser.username, 'district':AuthUser.users.district.code}
+                console.log(header, param)
                 axios.post(url, param, {headers:header})
                 .then( response => {
                     if(response.status === 400 ){
                         setMessage({msg:response.data.message,type: "alert alert-danger" })
                     }else if(response.status === 200){
                         dispatch(pod(response.data))
-                        let u = {...AuthUser}
-                        u.userType = 1
-                        dispatch(authenticate(u))
+                        let u = {...AuthUser.users}
+                        let userType = 1
+                        let users = {...u,userType}
+                        dispatch(authenticate({...AuthUser,users}))
                         setMessage({type:"alert alert-success", msg:"pod created."})
-                        // nagivate to voter page...
                         navigate('/house-keeping-page');
                     }else{
                         console.log("something went wrong:", response)
@@ -43,10 +47,12 @@ function JoinPod(){
                 });
             }
         }else if(clicked === 'join'){
-            if(token.length > 0){
+            // console.log("joining a pod ...")
+            if(token.length > 0 && inviteKey.length === 10){
                 let header = {'Authorization': `Bearer ${token}`}
                 const url = `${window.location.protocol}//${baseURL}/api/join-pod/`
                 const param = {"user": AuthUser.username, 'pod':inviteKey}
+            
                 axios.post(url, param, {headers:header})
                 .then( response => {
                     if(response.status === 400 ){
@@ -54,26 +60,59 @@ function JoinPod(){
                     }else if(response.status === 200){
                         // set the user and create a store for pod
                         dispatch(pod(response.data))
-                        // set userType to 1
-                        let u = {...AuthUser}
-                        u.userType = 1
-                        dispatch(authenticate(u))
-
+                        let u = {...AuthUser.users}
+                        let userType = 1
+                        let users = {...u,userType}
+                        dispatch(authenticate({...AuthUser,users}))
                         setMessage({type:"alert alert-success", msg:"Joint the pod. wait for the members to aprove you. Redirecting to Pod..."})
-                        // nagivate to voter page...
-                        navigate('/house-keeping-page');
+                        
+                        setPOD(response.data.code)
+                        
                     }else{
                         console.log("something went wrong:", response)
                     }
                 })
                 .catch(error => {
+                    console.log("err: ", error)
                     setMessage({msg:error.response.data.message, type:"alert alert-danger"})
                 });
+            }{
+                setMessage({type:'alert alert-danger', msg:"invalid invitation key"})
             }
         }
 
-    },[token,])
+    },[token])
 
+    useEffect(()=>{
+        if(POD.length > 1){
+            const url = `ws://${process.env.REACT_APP_BASE_URL}/ws/pod/${POD}/${AuthUser.username}/`
+            const chatSocket = new WebSocket(url);
+            // get back the messages...
+            chatSocket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                if(data.type === 'podmember'){
+                    console.log(data.data)
+                }else if(data.type ==='joined'){
+                    console.log("joined: ",data.data)
+                }
+                setWS(chatSocket);
+            };
+        }
+
+    },[POD])
+
+    useEffect(()=>{
+        if(WS.url){
+            WS.send(JSON.stringify({
+                type: "joined",
+                pod: POD
+            }));
+            WS.close()
+            navigate('/house-keeping-page')
+        }
+    },[WS])
+
+    
     function GetToken(from){
         // from is tell weather the join btn is clicked on create pod
         const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/refresh/`;
@@ -84,6 +123,7 @@ function JoinPod(){
                 // set the new access token and which btn is clicked via clicked const.
                 setToken(response.data.access);
                 setClicked(from)
+                // console.log("token is set to a new token",from)
             }else{
                 setMessage({type:"alert alert-danger",msg:"could not get access token"})
             }
