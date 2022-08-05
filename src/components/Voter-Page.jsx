@@ -18,13 +18,14 @@ function VoterPage(){
     useEffect(()=>{
         if(AuthUser.userType ===1){
             if(AuthUser.token.access.length > 0){
-                const url = `${window.location.protocol}//${baseURL}/api/pod/`;
+                const url = `${window.location.protocol}//${baseURL}/api/house-keeping/`;
                 const params = {user: AuthUser.username}
                 let header = {'Authorization': `Bearer ${AuthUser.token.access}`}
                 axios.post(url, params, {headers: header})
                 .then(response => {
                     if(response.status === 200){
-                        dispatch(pod(response.data))
+                        console.log(response.data)
+                        // dispatch(pod(response.data))
                     }else{
                         setMessage({type:"alert alert-danger",msg:"could not get access token"})
                     }

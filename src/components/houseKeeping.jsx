@@ -8,11 +8,8 @@ function HouseKeeping(){
     const AuthUser = useSelector((state) => state.AuthUser.user);
     const podInfo = useSelector((state) => state.AuthUser.pod);
     const podMembers = useSelector((state) => state.AuthUser.podMembers);
-    // const [token, setToken] = useState('');
-    // const [action, setAction] = useState('');
     const [message, setMessage] = useState({})
-    const [voteIn, setVoteIn] = useState(false)
-    // const [voteOut, setVoteOut] = useState('')
+    const [voteIn, setVoteIn] = useState('')
     const [condidate, setCondidate] = useState({})
     const [members, setMembers] = useState({})
 
@@ -42,14 +39,15 @@ function HouseKeeping(){
                         break
                     case 'voteIn':
                         if(data.data.done && data.data.is_member){
-                            // console.log("voted in and condidate is member: ",data.data.data)
+                            // alert("voted in and condidate is member")
                             dispatch(addPodmMembers(data.data.data))
-                            setVoteIn(true)
-                        }else if(data.data.is_member){
-                            // console.log("the condidate is now a member of the pod: ", data.data)
-                            setVoteIn(true)
-                        }else{
-                            console.log("something went wrong : ", data.data.data)
+                            setVoteIn(data.data.voter)
+                        }else if(!data.data.is_member && data.data.done){
+                            // alert("you have voted for this condidate:  ")
+                            setVoteIn(data.data.voter)
+                        }else if(!data.data.done){
+                            // alert(data.data.data)
+                            setVoteIn(data.data.voter)
                         }
                         break
 
@@ -102,7 +100,6 @@ function HouseKeeping(){
         if(voteIn){
             alert("you have already voted for this condidate.")
         }else{
-            console.log("voting in for ...",e.target.value)
             chatSocket.send(JSON.stringify({
                 type: "voteIn",
                 pod: podInfo.code,
@@ -161,8 +158,14 @@ function HouseKeeping(){
                                 <td >01</td>
                                 <td>{condidate[0]?.user.users.legalName}</td>
                                 <td>
+                                    {voteIn === AuthUser.username ? 
+                                    <p>voted</p>
+                                    :
+                                    <>
                                     <label htmlFor="checkbox">YES</label>
-                                    <input type="checkbox" value={condidate[0].id} onChange={handleVoteIn} checked={voteIn} className ='mx-2 form-check-input' />
+                                    <input type="checkbox" value={condidate[0].id} onChange={handleVoteIn} className ='mx-2 form-check-input' />
+                                    </>
+                                    }
                                 </td>
                                 <td></td>
                                 <td></td>

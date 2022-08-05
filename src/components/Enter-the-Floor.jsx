@@ -14,54 +14,66 @@ function EnterTheFloor(){
     const [entry_code,  setEntry_code]      = useState('');
     const [password,    setPassword]        = useState('');
     const [token,       setToken]           = useState(''); 
+    const [login,       setLogin]           = useState(false); 
     const [err,         setErr]             = useState('');
     
     // loging for user after the token[local state is changed.that means the token is generated.]
     useEffect(()=>{
-        console.log("love: ",`${window.location.protocol}//${baseURL}/api/login/`)
-        const loginURL = `${window.location.protocol}//${baseURL}/api/login/`;
-        console.log("lgoinurl: ", loginURL)
-        const login_params = {
-            username:entry_code.toUpperCase(), 
-            district: district.toUpperCase(), 
-            password: password
-        }
-        console.log(login_params)
-        let header = {'Authorization': `Bearer ${token.access}`}
-        axios.post(loginURL, login_params, {headers:header})
-        .then( response=>{
-            if(response.status === 200){
-                // set the user
-                dispatch(authenticate({...response.data,token: token}));
-                // nagivate to voter page...
-                navigate('/voter-page');
-            }else{
-                setErr("Something went wrong. Check your inputs and try again.");
+        if(login){
+            const loginURL = `${window.location.protocol}//${baseURL}/api/login/`;
+            const login_params = {
+                username:entry_code.toUpperCase(), 
+                district: district.toUpperCase(), 
+                password: password
             }
-        })
-        .catch(error => {
-            setErr("Something went wrong. Check your inputs and try again.");
-            console.log(error)
-        });
+            let header = {'Authorization': `Bearer ${token.access}`}
+            axios.post(loginURL, login_params, {headers:header})
+            .then( response=>{
+                if(response.status === 200){
+                    // set the user
+                    dispatch(authenticate({...response.data,token: token}));
+                    // nagivate to voter page...
+                    navigate('/voter-page');
+                }else{
+                    setErr("Something went wrong. Check your inputs and try again.");
+                }
+            })
+            .catch(error => {
+                setErr("Something went wrong. Check your inputs and try again.");
+                console.log(error)
+            });
+
+        }
     }, [token])
 
+    // this function check if the token should be request. this is used to get new token to login
+    function checkInputs(){
+        if(district.length === 4 && entry_code.length === 5 && password.length > 0){
+            return true
+        }else{
+            return false
+        }
+    }
     const handleSubmit = (e)=>{
-        // generate the token here.
-        const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/`;
-        console.log("token url: ", TokenUrl)
-        const token_params = {username:entry_code.toUpperCase(), password: password}
-        axios.post(TokenUrl, token_params)
-        .then(response =>{
-            if(response.status === 200){
-                setToken(response.data);
-            }else{
-                setErr("User not Found.");
-            }
-        })
-        .catch(error => {
-            setErr("Something went wrong. Check your inputs and try again.");
-            console.log(error)
-        });  
+        if(checkInputs){
+            // generate the token here.
+            const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/`;
+            console.log("token url: ", TokenUrl)
+            const token_params = {username:entry_code.toUpperCase(), password: password}
+            axios.post(TokenUrl, token_params)
+            .then(response =>{
+                if(response.status === 200){
+                    setToken(response.data);
+                    setLogin(true)
+                }else{
+                    setErr("User not Found.");
+                }
+            })
+            .catch(error => {
+                setErr("Something went wrong. Check your inputs and try again.");
+                console.log(error)
+            });  
+        }
     
         e.preventDefault();
     }
