@@ -1,21 +1,21 @@
 import {useSelector,useDispatch, } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
-// import axios from 'axios';
-import {authenticate,pod, addPodmMembers, desolvePod} from '../store/userSlice';
+import {authenticate,pod, addPodmMembers, desolvePod, podVoteIn} from '../store/userSlice';
 
 function HouseKeeping(){
     const AuthUser = useSelector((state) => state.AuthUser.user);
     const podInfo = useSelector((state) => state.AuthUser.pod);
     const podMembers = useSelector((state) => state.AuthUser.podMembers);
-    const [message, setMessage] = useState({})
-    const [voteIn, setVoteIn] = useState('')
+    const VoteIn = useSelector((state) => state.AuthUser.podVoteIn);
     const [condidate, setCondidate] = useState({})
     const [members, setMembers] = useState({})
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    let voted = {}
+    
+    // saperate condidates on each page load or podmembers changes
     useEffect(()=>{
         setMembers(podMembers?.filter((member)=> member.is_member))
         setCondidate(podMembers?.filter((member)=> !member.is_member))
@@ -25,7 +25,7 @@ function HouseKeeping(){
     const chatSocket = new WebSocket(url);
 
     useEffect(()=>{
-        // get backt the messages...
+        // get back the messages...
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             if(data.type){
@@ -42,15 +42,19 @@ function HouseKeeping(){
                         break
                     case 'voteIn':
                         if(data.data.done && data.data.is_member){
-                            // alert("voted in and condidate is member")
                             dispatch(addPodmMembers(data.data.data))
-                            setVoteIn(data.data.voter)
+                            dispatch(podVoteIn({
+                                voter:data.data.voter,
+                                condidate: data.data.condidate,
+                                done: data.data.done,
+                                data:'voted in',
+                                type: 'voteIn'
+                            }))
+
                         }else if(!data.data.is_member && data.data.done){
-                            // alert("you have voted for this condidate:  ")
-                            setVoteIn(data.data.voter)
+                            dispatch(podVoteIn(data.data)) 
                         }else if(!data.data.done){
-                            // alert(data.data.data)
-                            setVoteIn(data.data.voter)
+                            dispatch(podVoteIn(data.data)) 
                         }
                         break
 
@@ -79,12 +83,13 @@ function HouseKeeping(){
         // what happens on closing the connection
         chatSocket.onclose = function(e) {
             console.log("chat socket closed...")
-            // setMessage({type:"alert alert-danger",msg:'Chat socket closed unexpectedly'})
         };
 
     },[])
     
 
+
+    // removing the pod permemently.
     const handleDesolve =()=>{
         console.log("desolving the pod...")
         chatSocket.send(JSON.stringify({
@@ -93,24 +98,31 @@ function HouseKeeping(){
             user: AuthUser.username,
         }));
     }
+
+    // handing the changing of the pod key invitation
     const handleChngInvtKey =()=>{
         chatSocket.send(JSON.stringify({
             type: "podInvitationKey",
             pod: podInfo.code,
         }));
     }
+
+    // this handles the voting process for a condidate.
     const handleVoteIn = (e)=>{
-        if(voteIn){
-            alert("you have already voted for this condidate.")
-        }else{
-            chatSocket.send(JSON.stringify({
-                type: "voteIn",
-                pod: podInfo.code,
-                voter: AuthUser.username,
-                condidate: e.target.value
-            }));
-        }
+        chatSocket.send(JSON.stringify({
+            type: "voteIn",
+            pod: podInfo.code,
+            voter: AuthUser.username,
+            condidate: e.target.value
+        }));
     }
+
+    // check if the the user has already voted for the condidate. 
+    VoteIn.map((e)=>{
+        if(e.voter === AuthUser.username && condidate[0]?.user.username === e.condidate){
+           voted = e
+        }
+    })
     return (
         <div className="container">
             <div className="row">
@@ -161,22 +173,23 @@ function HouseKeeping(){
                                 <td >01</td>
                                 <td>{condidate[0]?.user.users.legalName}</td>
                                 <td>
-                                    {voteIn === AuthUser.username ? 
-                                    <p>voted</p>
-                                    :
+                                {voted?.condidate === condidate[0].user.username? 
+                                    voted?.voter === AuthUser.username? "voted":
                                     <>
                                     <label htmlFor="checkbox">YES</label>
                                     <input type="checkbox" value={condidate[0].id} onChange={handleVoteIn} className ='mx-2 form-check-input' />
                                     </>
-                                    }
+                                :
+                                    <>
+                                    <label htmlFor="checkbox">YES</label>
+                                    <input type="checkbox" value={condidate[0].id} onChange={handleVoteIn} className ='mx-2 form-check-input' />
+                                    </>
+                                }
                                 </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td>
-                                <input onClick={(e)=>handleVoteIn(e)} type="checkbox" className='form-check-input'  />
-                                </td>
-                                
+                                <td></td>
                             </tr>
                         :""}
                        
