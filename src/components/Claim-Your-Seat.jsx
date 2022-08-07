@@ -76,7 +76,8 @@ function ClaimYourSeat(){
             password: password,
             password2: password2 
         }
-        const url =`${window.location.protocol}//${baseURL}/api/register`;
+        const url =`${window.location.protocol}//${baseURL}/api/register/`;
+        console.log("reg url: ", url)
         axios.post(url,register_obj)
         .then(function (response) {
             console.log(response)
@@ -129,7 +130,7 @@ function ClaimYourSeat(){
                         onChange={(e)=> setLegalName(e.target.value)}
                         className="form-control" 
                         id="legalName" placeholder="enter your full name"/>
-                        {is_formErr ? <p className="m-0 text-danger"> {formErr.legalName? formErr.legalName[0]:''}</p> : ''}
+                        {is_formErr ? <p className="m-0 text-danger"> {formErr?.legalName? formErr?.legalName[0]:''}</p> : ''}
                         <br/>
 
                         <div className="form-check">
@@ -160,7 +161,7 @@ function ClaimYourSeat(){
                         onChange={(e)=>setEmail(e.target.value)}
                         className="form-control"  id="email" 
                         placeholder="enter your email"/>
-                        {is_formErr ? <p className="m-0 text-danger"> {formErr.email ? 'Email already taken':''}</p> : ''}
+                        {is_formErr ? <p className="m-0 text-danger"> {formErr?.email ? 'Email already taken':''}</p> : ''}
                         <br/>
 
                         <label htmlFor="address" className="text-right">Address:</label>
