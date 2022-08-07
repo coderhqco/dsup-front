@@ -20,8 +20,8 @@ function HouseKeeping(){
         setMembers(podMembers?.filter((member)=> member.is_member))
         setCondidate(podMembers?.filter((member)=> !member.is_member))
     },[podMembers])
-
-    const url = `ws://${process.env.REACT_APP_BASE_URL}/ws/pod/${podInfo?.code}/${AuthUser.username}/`
+    let ws_schame = window.location.protocol == "https:" ? "wss" : "ws";
+    const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/ws/pod/${podInfo?.code}/${AuthUser.username}/`
     const chatSocket = new WebSocket(url);
 
     useEffect(()=>{

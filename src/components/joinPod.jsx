@@ -85,7 +85,8 @@ function JoinPod(){
 
     useEffect(()=>{
         if(POD.length > 1){
-            const url = `ws://${process.env.REACT_APP_BASE_URL}/ws/pod/${POD}/${AuthUser.username}/`
+            let ws_schame = window.location.protocol == "https:" ? "wss" : "ws";
+            const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/ws/pod/${POD}/${AuthUser.username}/`
             const chatSocket = new WebSocket(url);
             // get back the messages...
             chatSocket.onmessage = function(e) {
