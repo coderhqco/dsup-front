@@ -4,8 +4,8 @@ import path, { dirname } from 'path';
 
 var app = express();
 
-console.log("nod dev:",process.env.NODE_ENV)
 console.log("url: ",process.env.REACT_APP_BASE_URL)
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 

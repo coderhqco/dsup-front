@@ -17,8 +17,6 @@ function EnterTheFloor(){
     const [login,       setLogin]           = useState(false); 
     const [err,         setErr]             = useState('');
     
-    console.log("baseURL: ", baseURL)
-    console.log("hostname: ", process.env.REACT_APP_BASE_URL)
     // loging for user after the token[local state is changed.that means the token is generated.]
     useEffect(()=>{
         if(login){
