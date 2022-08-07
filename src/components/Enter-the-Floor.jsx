@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { Link , useNavigate} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
-import {authenticate} from '../store/userSlice';
+import {authenticate} from '../store/userSlice.js';
 import axios from 'axios';
-import {baseURL} from '../store/conf'
+import {baseURL} from '../store/conf.js'
 
 function EnterTheFloor(){
     const AuthUser = useSelector((state) => state.AuthUser.user);

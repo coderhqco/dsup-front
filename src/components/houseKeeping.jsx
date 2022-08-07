@@ -1,7 +1,7 @@
 import {useSelector,useDispatch, } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
-import {authenticate,pod, addPodmMembers, desolvePod, podVoteIn} from '../store/userSlice';
+import {authenticate,pod, addPodmMembers, desolvePod, podVoteIn} from '../store/userSlice.js';
 
 function HouseKeeping(){
     const AuthUser = useSelector((state) => state.AuthUser.user);

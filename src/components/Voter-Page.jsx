@@ -3,8 +3,8 @@ import {useSelector,useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
-import {pod,authenticate} from '../store/userSlice';
-import {baseURL} from '../store/conf'
+import {pod,authenticate} from '../store/userSlice.js';
+import {baseURL} from '../store/conf.js'
 
 function VoterPage(){
     const AuthUser = useSelector((state) => state.AuthUser.user);

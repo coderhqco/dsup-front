@@ -1,15 +1,15 @@
 import { Routes, Route} from 'react-router-dom';
-import SignUpConfirm from './components/signUpConform';
-import ClaimYourSeat from './components/Claim-Your-Seat';
-import Home from './Home';
-import EnterTheFloor from './components/Enter-the-Floor';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Error from './components/Error';
-import VoterPage from './components/Voter-Page';
-import ProtectedRoute from './protectedRoutes';
-import JoinPod from './components/joinPod';
-import HouseKeeping from './components/houseKeeping';
+import SignUpConfirm from './components/signUpConform.jsx';
+import ClaimYourSeat from './components/Claim-Your-Seat.jsx';
+import Home from './Home.jsx';
+import EnterTheFloor from './components/Enter-the-Floor.jsx';
+import Header from './components/Header.jsx';
+import Footer from './components/Footer.jsx';
+import Error from './components/Error.jsx';
+import VoterPage from './components/Voter-Page.jsx';
+import ProtectedRoute from './protectedRoutes.js';
+import JoinPod from './components/joinPod.jsx';
+import HouseKeeping from './components/houseKeeping.jsx';
 
 function App(){
   return (

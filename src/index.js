@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom/client';
 // import { store } from './components/store/store'
 // import { Provider } from 'react-redux'
 
-import App from './App';
+import App from './App.jsx';
 
-import { store } from './store/store'
+import { store } from './store/store.js'
 import { Provider } from 'react-redux'
 
 import {BrowserRouter} from "react-router-dom";
-import reportWebVitals from './reportWebVitals';
+import reportWebVitals from './reportWebVitals.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
