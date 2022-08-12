@@ -77,10 +77,8 @@ function ClaimYourSeat(){
             password2: password2 
         }
         const url =`${window.location.protocol}//${baseURL}/api/register/`;
-        console.log("reg url: ", url)
         axios.post(url,register_obj)
         .then(function (response) {
-            console.log(response)
             if(response.statusText === 'Created'){
                 navigate('/sign-up')
             }

@@ -165,7 +165,7 @@ function JoinPod(){
                         <div  className={message.type} role="alert"> {message.msg}</div>
                     :""}
                     
-                    <label className='text-left'>invitation Key : {inviteKey}</label>
+                    <label className='text-left'>invitation Key</label>
                     <input type="text" onChange={(e)=> setInviteKey(e.target.value)} className="form-control" placeholder='Enter the pod invitation key here' />
                     <div className='col text-center'>
                         <button className="btn btn-success mt-2" onClick={handleSubmit}> Join the Pod</button>

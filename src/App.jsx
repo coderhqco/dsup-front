@@ -10,6 +10,7 @@ import VoterPage from './components/Voter-Page.jsx';
 import ProtectedRoute from './protectedRoutes.js';
 import JoinPod from './components/joinPod.jsx';
 import HouseKeeping from './components/houseKeeping.jsx';
+import UserActivate from './components/UserActivate';
 
 function App(){
   return (
@@ -18,10 +19,13 @@ function App(){
         <Route index element={<><Header/><Home/><Footer/></>}/>
         <Route path='/claim-your-seat' element={<><Header/><ClaimYourSeat/><Footer/></>}/>
         <Route path="/enter-the-floor" element={<><Header/><EnterTheFloor/><Footer/></>}/>
+
         <Route path="/voter-page" element={<ProtectedRoute><Header/><VoterPage/><Footer/></ProtectedRoute>}/>
         <Route path="/house-keeping-page" element={<ProtectedRoute><Header/><HouseKeeping/><Footer/></ProtectedRoute>}/>
         <Route path="/join-pod" element={<ProtectedRoute><Header/><JoinPod/><Footer/></ProtectedRoute>}/>
+        
         <Route path="/sign-up" element={<><Header/><SignUpConfirm/><Footer/></>}/>
+        <Route path="/api/activate/:uid/:token" element={<><Header/><UserActivate/><Footer/></>}/>
         <Route path='/*' element={<><Header/><Error/> <Footer/> </>}></Route>
       </Route>
     </Routes>
