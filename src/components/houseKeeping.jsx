@@ -13,8 +13,8 @@ function HouseKeeping(){
     const dispatch      = useDispatch();
     const navigate      = useNavigate();
     // saparetes the condidates and members
-    const [condidate, setCondidate]   = useState({})
-    const [members, setMembers]       = useState({})
+    const [condidate, setCondidate]   = useState('')
+    const [members, setMembers]       = useState('')
 
     // for models to show and close
     const [showModel, setShowModel] = useState(false);
@@ -26,10 +26,10 @@ function HouseKeeping(){
     let voted = {}
     // let Is_delegate = false
     const [Is_delegate, setIs_delegate] = useState(false)
-    let desolve = false
-
+    
     // saperate condidates on each page load or podmembers changes
     useEffect(()=>{
+
         setMembers(podMembers?.filter((member)=> member.is_member))
         setCondidate(podMembers?.filter((member)=> !member.is_member))
     },[podMembers])
@@ -57,17 +57,22 @@ function HouseKeeping(){
                     case 'voteIn':
                         if(data.data.done && data.data.is_member){
                             dispatch(addPodmMembers(data.data.data))
-                            dispatch(podVoteIn({
-                                voter:data.data.voter,
-                                condidate: data.data.condidate,
-                                done: data.data.done,
-                                data:'voted in',
-                                type: 'voteIn'
-                            }))
+                            // remove the vote in
+                            console.log("here with member")
+                            localStorage.removeItem('podVoteIn')
+                            // dispatch(podVoteIn({
+                            //     voter:data.data.voter,
+                            //     condidate: data.data.condidate,
+                            //     done: data.data.done,
+                            //     data:'voted in',
+                            //     type: 'voteIn'
+                            // }))
 
                         }else if(!data.data.is_member && data.data.done){
+                            console.log("here no member")
                             dispatch(podVoteIn(data.data)) 
                         }else if(!data.data.done){
+                            console.log("here not done")
                             dispatch(podVoteIn(data.data)) 
                         }
                         break
@@ -89,6 +94,13 @@ function HouseKeeping(){
                     case 'removemember':
                         dispatch(addPodmMembers(data.data.data))
                         setShowModel(false)
+                        // check here to remove from votedin this member
+                        const Vins = VoteIn.filter((i)=> !i.condidate === data.data.done)
+                        console.log("Vins: ", Vins)
+                        localStorage.removeItem('podVoteIn')
+                        if(Vins.length>0){
+                            dispatch(podVoteIn(Vins))
+                        }
                         // check for the member being removed to be redirected too voter page 
                         // after setting the userType back to zero and remove the pod and podmember
                         // from localstorage...
@@ -142,6 +154,11 @@ function HouseKeeping(){
         }
     })
 
+    // this is for the condidates voted in counts
+    let voteCond = VoteIn.filter((i)=>{
+        return condidate[0]?.user.username === i.condidate
+    })
+
     // check if the user logged in is delegate.
     useEffect(()=>{
         if(members){
@@ -184,10 +201,14 @@ function HouseKeeping(){
                 setRemoveMember(member)
                 setShowModel(true)
                 break
+            case 'voteIn':
+                // this case is not implemented yet.
+                setModelContent (`Checking this box will make ${condidate[0]?.user.users.legalName} a member of this Pod.`)
+                setAct('voteIn')
+                setShowModel(true)
+                break
         }
-
     } 
-
 
     const actions = (member) => {
         // check if the pod is active or not
@@ -221,9 +242,21 @@ function HouseKeeping(){
                     }
                     return ""
                 } //end of podmemeber being one
-
+                
             }else{
-                return ""
+                // check if user is this member
+                if(member.user.username === AuthUser.username){
+                    return (<>
+                        Would you like to remain in this Pod?
+                        <input type="checkbox" 
+                        className='form-check-input mx-2' 
+                        checked={true}
+                        onChange={()=>handleModelShow('removemember', member.id)} />
+
+                    </>)
+                }else{
+                    return ""
+                }
             } //endof is_delegate
 
         }else{
@@ -274,7 +307,7 @@ function HouseKeeping(){
                             <th>#</th>
                             <th>Member Name</th>
                             <th>Do you want this voter to be a member?</th>
-                            <th></th>
+                            <th>Total</th>
                             <th></th>
                             <th></th>
                             <th>Remove Member</th>
@@ -288,7 +321,9 @@ function HouseKeeping(){
                                 <td>{member?.user.users.legalName} {member.is_delegate? 
                                     <span className='badge bg-primary'>del</span>
                                 : null} </td>
-                                <td></td>
+                                <td>
+                                    {null}
+                                </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -322,7 +357,11 @@ function HouseKeeping(){
                                     }
                                 
                                 </td>
-                                <td></td>
+                                <td>
+                                    {AuthUser.username === condidate[0]?.user.username? null: 
+                                    Object.keys(voteCond).length
+                                    }
+                                </td>
                                 <td></td>
                                 <td></td>
                                 <td>
@@ -343,17 +382,82 @@ function HouseKeeping(){
                 <p><strong>Status: </strong>{podInfo?.is_active? "This pod is active!"
                     :"This Pod will become active when it has six members."} 
                 </p>
-                {condidate?.length === 0 ? 
-                <p>There are no Member Candidates. Invite voters in your district to join by giving them a Pod Invitation Key.</p>
+                {Is_delegate? 
+                <>
+                    {condidate?.length === 0 ? 
+                    <p>There are no Member Candidates. Invite voters in your district to join by giving them a Pod Invitation Key.</p>
+                    :
+                    <p>There is a Member Candidate awaiting a majority vote of existing members.</p>
+                    }
+                    {members?.length >= 3 ? "":
+                        <>
+                        <p>Once you generate a new key, the old one will not work.</p>
+                        <p>The creator of this Pod has been automatically made First Delegate. To elect a different First
+                            Delegate, hold an election. Elections can be held when you have six or more members.
+                        </p>
+                        <p>Only the F-Del can dissolve a Pod, and may only do so when they are the only member left.</p>
+                        </>
+                    }
+                </>
                 :
-                <p>There is a Member Candidate awaiting a majority vote of existing members.</p>
+                // check if the user is member or condidate
+            // this check is for condidate throughing undefined exception
+                condidate != undefined?
+                    condidate[0]?.user.username === AuthUser.username ? 
+                    <>
+                        <p> You are a Member Candidate awaiting a majority vote of existing members.</p>
+                        <p> You can wait to see if you are voted in, or you can contact the F-Del of this Pod IRL to discuss
+                        being voted in.
+                        </p>
+                        <p> If you shouldn’t be trying to join this Pod for any reason, the F-Del can remove you as a
+                        member candidate. After that happens, you will not be able to attempt to join this Pod unless
+                        you are given a new Invitation Key. Ask your F-Del IRL.
+                        </p>
+                        <p> The creator of this Pod has been automatically made First Delegate. To elect a different First
+                        Delegate, your Pod can hold an election. Elections can be held when you have six or more
+                        members.
+                        </p>
+                        <p>Only the F-Del can dissolve a Pod, and may only do so when they are the only member left.</p>
+                    </>
+                    :
+                    <>
+                        <p>You are a member of the Pod.</p>
+                        {condidate[0]? 
+                        <p> There is a Member Candidate awaiting a majority vote of existing members. Check the Yes
+                            box next to their name to vote them in. A running total of member votes for this candidate will
+                            appear in the Total column. When a Candidate receives a majority of the votes of existing
+                            members, they will automatically become a Member, and the voting will be ‘forgotten’ by the
+                            database. </p>
+                        :""}
+                        
+                        <p>
+                        If you want someone to join this Pod, give them the PIK. Make sure it is the most recent
+                        (currently valid) PIK generated by the F-Del. If you encounter any problems, please contact
+                        the F-Del In Real Life, or ElseWhere On The Internet.
+                        </p>
+                        <p>Until this Pod becomes active, you can be removed by the F-Del at any time. </p>
+                        <span>
+                        After this Pod becomes active, you can only be removed by: 
+                            <ol>
+                                <li> Unchecking the Yes box next to ‘Would you like to remain in this Pod?’ </li>
+                                <li> Being voted out by a majority of existing members. </li>
+                            </ol>
+                        </span>
+                        <p>
+                        Once a member is removed from a specific Pod, they cannot attempt to rejoin it without a new
+                        Pod Invitation Key.
+                        </p>
+                        <p>
+                        The creator of this Pod has been automatically made First Delegate. To elect a different First
+                        Delegate, your Pod can hold an election. Elections can be held when you have six or more
+                        members.
+                        </p>
+                        <p>Only the F-Del can dissolve a Pod, and may only do so when they are the only member left.</p>
+                    </>
+               : "nulllll"
                 }
-                <p>Once you generate a new key, the old one will not work.</p>
-                <p>The creator of this Pod has been automatically made First Delegate. To elect a different First
-                    Delegate, hold an election. Elections can be held when you have six or more members.
-                </p>
-                <p>Only the F-Del can dissolve a Pod, and may only do so when they are the only member left.</p>
             </div>
+            {/* helper links for delegate */}
             {Is_delegate? 
                 <div className='row'>
                     <strong>Learn about:</strong>
@@ -362,7 +466,19 @@ function HouseKeeping(){
                     <Link className='mx-3 text-secondary' to="/house-keeping-page">How to hold a First Delegate Election?</Link>
                     <Link className='mx-3 text-secondary' to="/house-keeping-page">How to dissolve a Pod?</Link>
                 </div>
-            : null}
+            : 
+            // helping links for pod members
+            // this check is for condidate throughing undefined exception
+            condidate != undefined?
+                AuthUser.username === condidate[0]?.user.username ? null : 
+                <div className='row'>
+                    <strong>Learn about:</strong>
+                    <Link className='mx-3 text-secondary' to="/house-keeping-page">Invite someone to join this Pod.</Link>
+                    <Link className='mx-3 text-secondary' to="/house-keeping-page">Being removed from this Pod.</Link>
+                    <Link className='mx-3 text-secondary' to="/house-keeping-page">Elect a new first Delegate.</Link>
+                    <Link className='mx-3 text-secondary' to="/house-keeping-page">Pod Dessolution.</Link>
+                </div>:""
+            }
 
         </div>
     )

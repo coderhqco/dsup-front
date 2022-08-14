@@ -9,6 +9,7 @@ function UserActivate(){
     const [message, setMessage] = useState(false)
     const [entryCode, setEntryCode] = useState(false)
     // sent the request to backend url for activation
+    
     axios.get(`${window.location.protocol}//${baseURL}/api/activate/${uid}/${token}/`)
     .then( response=>{
         if(response.status === 200){
