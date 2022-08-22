@@ -45,6 +45,7 @@ function HouseKeeping(){
             if(data.type){
                 switch(data.type){
                     case 'podmember':
+                        console.log("m: ", data.data.podMembers)
                         dispatch(addPodmMembers(data.data.podMembers))
                         dispatch(pod(data.data.pod))
                         break
@@ -56,9 +57,9 @@ function HouseKeeping(){
                         break
                     case 'voteIn':
                         if(data.data.done && data.data.is_member){
-                            dispatch(addPodmMembers(data.data.data))
+                            dispatch(addPodmMembers(data.data.data.podmembers))
+                            dispatch(pod(data.data.data.pod))
                             // remove the vote in
-                            console.log("here with member")
                             localStorage.removeItem('podVoteIn')
                             // dispatch(podVoteIn({
                             //     voter:data.data.voter,
@@ -69,16 +70,28 @@ function HouseKeeping(){
                             // }))
 
                         }else if(!data.data.is_member && data.data.done){
-                            console.log("here no member")
                             dispatch(podVoteIn(data.data)) 
                         }else if(!data.data.done){
-                            console.log("here not done")
                             dispatch(podVoteIn(data.data)) 
+                            alert(data.data.data)
                         }
                         break
 
                     case 'voteOut':
-                        console.log(data)
+                        if(!data.data.done){
+                            alert(data.data.data)
+                        }else if(data.data.done){
+                            // add data to state
+                            dispatch(addPodmMembers(data.data.data))
+                        }
+                        break
+                    case 'delegate':
+                        if(!data.data.done){
+                            alert(data.data.data)
+                        }else if(data.data.done){
+                            dispatch(addPodmMembers(data.data.data))
+                        }
+
                         break
                     case 'desolvePod':
                         if(data.data.done){
@@ -92,11 +105,12 @@ function HouseKeeping(){
                         }
                         break
                     case 'removemember':
-                        dispatch(addPodmMembers(data.data.data))
+                        dispatch(addPodmMembers(data.data.data.podMembers))
+                        dispatch(pod(data.data.data.pod))
                         setShowModel(false)
                         // check here to remove from votedin this member
                         const Vins = VoteIn.filter((i)=> !i.condidate === data.data.done)
-                        console.log("Vins: ", Vins)
+                        
                         localStorage.removeItem('podVoteIn')
                         if(Vins.length>0){
                             dispatch(podVoteIn(Vins))
@@ -207,6 +221,9 @@ function HouseKeeping(){
                 setAct('voteIn')
                 setShowModel(true)
                 break
+            case 'voteOut':
+                console.log("heresdsd")
+                break
         }
     } 
 
@@ -260,10 +277,56 @@ function HouseKeeping(){
             } //endof is_delegate
 
         }else{
-            return "pod is active"
+            if(member.voteOuts.length > (members.length/2) && Is_delegate ){
+               return (
+                    <> majarity has voted him/her out. Would you remove him/her?
+                        <input type="checkbox" 
+                        className='form-check-input mx-2' 
+                        checked={showModel}
+                        onChange={()=>handleModelShow('removemember', member.id)} />
+                    </>
+                )
+            }else{
+                return ""
+            }
         } //endof pod active
     }
 
+    const handleVoteOut = (member)=>{
+        // params required : member, voter , pod
+        chatSocket.send(JSON.stringify({
+            type: "voteOut",
+            pod: podInfo.code,
+            member: member.id,
+            voter: AuthUser.username,
+        }));
+    }
+
+    const handleDelegate =(member)=>{
+        chatSocket.send(JSON.stringify({
+            type: "delegate",
+            pod: podInfo.code,
+            recipient: member.id,
+            voter: AuthUser.username,
+        }));
+        console.log('deleaged done/...')
+    }
+
+    const voteInsChck = (voteIns)=>{
+        const vtrs = []
+        voteIns.map(i => {
+            vtrs.push(i.substring(0,5))
+        })
+        return !vtrs.includes(AuthUser.username)
+    }
+
+    const delegated = (putF) =>{
+        const puts = []
+        putF.map(i=>{
+            puts.push(i.substring(0,5))
+        })
+        return puts.includes(AuthUser.username)
+    }
     return (
         <div className="container">
             <Modal
@@ -285,6 +348,7 @@ function HouseKeeping(){
                     <Button variant="secondary" onClick={()=>setShowModel(false)}> Cancel </Button>
                     </>
                     :""}
+                    
                 </Modal.Footer>
             </Modal>
             <div className="row">
@@ -297,6 +361,9 @@ function HouseKeeping(){
                     <button className='d-block mx-auto my-2 btn btn-success text-center' 
                         onClick={handleChngInvtKey}>Generate new key</button>
                     :null}
+                    {podInfo?.is_active?
+                        <p className='text-center'>Pod Status: ACTIVE!</p>
+                    : null}
                 </div>
                 <div className="col-sm-12 col-md-3"></div>
             </div>
@@ -307,9 +374,11 @@ function HouseKeeping(){
                             <th>#</th>
                             <th>Member Name</th>
                             <th>Do you want this voter to be a member?</th>
-                            <th>Total</th>
-                            <th></th>
-                            <th></th>
+                            <th>{podInfo?.is_active? "Total Vote Out" :"Total"} </th>
+                            <th>
+                                {podInfo?.is_active? "Put forward as First Delegate" : null}
+                            </th>
+                            <th>{podInfo?.is_active? "Total": null}</th>
                             <th>Remove Member</th>
                         </tr>
                     </thead>
@@ -322,11 +391,24 @@ function HouseKeeping(){
                                     <span className='badge bg-primary'>del</span>
                                 : null} </td>
                                 <td>
-                                    {null}
+                                   {podInfo?.is_active? <>
+                                    Yes
+                                    <input type="checkbox" 
+                                    className='form-check-input mx-2'
+                                    checked={voteInsChck(member?.voteOuts)}
+                                    onChange={()=> handleVoteOut(member)}/>
+                                   </>
+                                   : null}
                                 </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{Is_delegate? podInfo?.is_active? member.voteOuts.length==0? "":member.voteOuts.length :null :null}</td>
+                                <td> {podInfo?.is_active? <>
+                                    Yes 
+                                    <input type="checkbox" 
+                                    className='form-check-input mx-2'
+                                    checked={delegated(member?.putFarward)}
+                                    onChange={()=> handleDelegate(member)}/>
+                                </>:null}</td>
+                                <td>{ podInfo?.is_active? member.putFarward.length==0? "":member.putFarward.length :null}</td>
                                 <td>{actions(member)}</td>
                             </tr>
                         ))
@@ -479,7 +561,6 @@ function HouseKeeping(){
                     <Link className='mx-3 text-secondary' to="/house-keeping-page">Pod Dessolution.</Link>
                 </div>:""
             }
-
         </div>
     )
 }
