@@ -3,13 +3,12 @@ import {useNavigate,Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import {authenticate,pod, addPodmMembers, desolvePod, podVoteIn} from '../store/userSlice.js';
+import {authenticate,pod, addPodmMembers, desolvePod} from '../store/userSlice.js';
 
 function HouseKeeping(){
     const AuthUser      = useSelector((state) => state.AuthUser.user);
     const podInfo       = useSelector((state) => state.AuthUser.pod);
     const podMembers    = useSelector((state) => state.AuthUser.podMembers);
-    const VoteIn        = useSelector((state) => state.AuthUser.podVoteIn);
     const dispatch      = useDispatch();
     const navigate      = useNavigate();
     // saparetes the condidates and members
@@ -23,13 +22,11 @@ function HouseKeeping(){
     const [act, setAct] = useState(null)
     const [removeMember ,setRemoveMember] = useState(null)
 
-    let voted = {}
     // let Is_delegate = false
     const [Is_delegate, setIs_delegate] = useState(false)
     
     // saperate condidates on each page load or podmembers changes
     useEffect(()=>{
-
         setMembers(podMembers?.filter((member)=> member.is_member))
         setCondidate(podMembers?.filter((member)=> !member.is_member))
     },[podMembers])
@@ -45,7 +42,6 @@ function HouseKeeping(){
             if(data.type){
                 switch(data.type){
                     case 'podmember':
-                        console.log("m: ", data.data.podMembers)
                         dispatch(addPodmMembers(data.data.podMembers))
                         dispatch(pod(data.data.pod))
                         break
@@ -59,24 +55,10 @@ function HouseKeeping(){
                         if(data.data.done && data.data.is_member){
                             dispatch(addPodmMembers(data.data.data.podmembers))
                             dispatch(pod(data.data.data.pod))
-                            // remove the vote in
-                            localStorage.removeItem('podVoteIn')
-                            // dispatch(podVoteIn({
-                            //     voter:data.data.voter,
-                            //     condidate: data.data.condidate,
-                            //     done: data.data.done,
-                            //     data:'voted in',
-                            //     type: 'voteIn'
-                            // }))
-
                         }else if(!data.data.is_member && data.data.done){
-                            dispatch(podVoteIn(data.data)) 
-                        }else if(!data.data.done){
-                            dispatch(podVoteIn(data.data)) 
-                            alert(data.data.data)
-                        }
+                            dispatch(addPodmMembers(data.data.data))
+                        }else if(!data.data.done){ alert(data.data.data)}
                         break
-
                     case 'voteOut':
                         if(!data.data.done){
                             alert(data.data.data)
@@ -108,17 +90,6 @@ function HouseKeeping(){
                         dispatch(addPodmMembers(data.data.data.podMembers))
                         dispatch(pod(data.data.data.pod))
                         setShowModel(false)
-                        // check here to remove from votedin this member
-                        const Vins = VoteIn.filter((i)=> !i.condidate === data.data.done)
-                        
-                        localStorage.removeItem('podVoteIn')
-                        if(Vins.length>0){
-                            dispatch(podVoteIn(Vins))
-                        }
-                        // check for the member being removed to be redirected too voter page 
-                        // after setting the userType back to zero and remove the pod and podmember
-                        // from localstorage...
-
                         // check if the data.data.done is the username of the logged in user
                         if(data.data.done === AuthUser.username){
                             let u = {...AuthUser}
@@ -132,6 +103,9 @@ function HouseKeeping(){
                     case 'chat_message':
                         console.log(data)
                         break
+                    default :
+                    console.log("no action: no case...")
+                    break
                 }
             } //end of if(data.type)
         };
@@ -140,11 +114,10 @@ function HouseKeeping(){
         chatSocket.onclose = function(e) {
             console.log("chat socket closed...")
         };
-
     },[])
 
     // handing the changing of the pod key invitation
-    const handleChngInvtKey =()=>{
+    const handleChngInvtKey = () => {
         chatSocket.send(JSON.stringify({
             type: "podInvitationKey",
             pod: podInfo.code,
@@ -161,18 +134,6 @@ function HouseKeeping(){
         }));
     }
 
-    // check if the the user has already voted for the condidate. 
-    VoteIn.map((e)=>{
-        if(e.voter === AuthUser.username && condidate[0]?.user.username === e.condidate){
-           voted = e
-        }
-    })
-
-    // this is for the condidates voted in counts
-    let voteCond = VoteIn.filter((i)=>{
-        return condidate[0]?.user.username === i.condidate
-    })
-
     // check if the user logged in is delegate.
     useEffect(()=>{
         if(members){
@@ -183,7 +144,6 @@ function HouseKeeping(){
     },[members])
     // removing the pod permemently.
     const handleDesolve =()=>{
-        console.log("desolving the pod...")
         chatSocket.send(JSON.stringify({
             type: "desolvePod",
             pod: podInfo.code,
@@ -191,7 +151,6 @@ function HouseKeeping(){
         }));
     }
     const handleRemove =()=>{
-        console.log("removing the condidate/member: ",removeMember)
         chatSocket.send(JSON.stringify({
             type: "removemember",
             pod: podInfo.code,
@@ -222,7 +181,15 @@ function HouseKeeping(){
                 setShowModel(true)
                 break
             case 'voteOut':
-                console.log("heresdsd")
+                setModelContent (`Unchecking ‘Yes’ means you want to vote this member out. If a simple majority of existing
+                members vote a member out, they are removed from the group. Are you sure you want to vote
+                this member out?`)
+                setAct('voteOut')
+                setRemoveMember(member)
+                setShowModel(true)
+                break
+            default:
+                console.log("no case in handle show model")
                 break
         }
     } 
@@ -234,28 +201,21 @@ function HouseKeeping(){
             if(Is_delegate){
                 // check if the podmember is one
                 if(podMembers?.length === 1){
-                    return (
-                        <>
-                        <span>
+                    return ( <> <span>
                             Dessolve Pod 
                             <input className='mx-2 form-check-input' type="checkbox" 
                             onChange={()=>handleModelShow('dessolvePod', '')} checked={showModel}/>
-                        </span>
-                        </>
-                    )
+                        </span> </>  )
                 }else{
                     // if the podmember is one one and logged in user is a delegate; then remove the member
                     if(member?.is_delegate){
                         return ""
                     }else{
-                        return (
-                            <>
-                                <input type="checkbox" 
+                        return ( <>  <input type="checkbox" 
                                 className='form-check-input' 
                                 checked={showModel}
                                 onChange={()=>handleModelShow('removemember', member.id)} />
-                            </>
-                        )
+                            </> )
                     }
                     return ""
                 } //end of podmemeber being one
@@ -269,7 +229,6 @@ function HouseKeeping(){
                         className='form-check-input mx-2' 
                         checked={true}
                         onChange={()=>handleModelShow('removemember', member.id)} />
-
                     </>)
                 }else{
                     return ""
@@ -278,14 +237,12 @@ function HouseKeeping(){
 
         }else{
             if(member.voteOuts.length > (members.length/2) && Is_delegate ){
-               return (
-                    <> majarity has voted him/her out. Would you remove him/her?
+               return (  <> majarity has voted him/her out. Would you remove him/her?
                         <input type="checkbox" 
                         className='form-check-input mx-2' 
                         checked={showModel}
-                        onChange={()=>handleModelShow('removemember', member.id)} />
-                    </>
-                )
+                        onChange={()=>handleModelShow('removemember', member)} />
+                    </> )
             }else{
                 return ""
             }
@@ -300,6 +257,7 @@ function HouseKeeping(){
             member: member.id,
             voter: AuthUser.username,
         }));
+        setShowModel(false)
     }
 
     const handleDelegate =(member)=>{
@@ -309,24 +267,20 @@ function HouseKeeping(){
             recipient: member.id,
             voter: AuthUser.username,
         }));
-        console.log('deleaged done/...')
     }
 
     const voteInsChck = (voteIns)=>{
         const vtrs = []
-        voteIns.map(i => {
-            vtrs.push(i.substring(0,5))
-        })
+        voteIns.map(i => vtrs.push(i.substring(0,5)))
         return !vtrs.includes(AuthUser.username)
     }
 
     const delegated = (putF) =>{
         const puts = []
-        putF.map(i=>{
-            puts.push(i.substring(0,5))
-        })
+        putF.map(i=> puts.push(i.substring(0,5)))
         return puts.includes(AuthUser.username)
     }
+
     return (
         <div className="container">
             <Modal
@@ -346,6 +300,12 @@ function HouseKeeping(){
                     <>
                     <Button variant="danger" onClick={()=>handleRemove()}> proceed </Button>
                     <Button variant="secondary" onClick={()=>setShowModel(false)}> Cancel </Button>
+                    </>
+                    :""}
+                    {act === 'voteOut'? 
+                    <>
+                    <Button variant="danger" onClick={()=>handleVoteOut(removeMember)}> Yes </Button>
+                    <Button variant="secondary" onClick={()=>setShowModel(false)}> No </Button>
                     </>
                     :""}
                     
@@ -396,11 +356,11 @@ function HouseKeeping(){
                                     <input type="checkbox" 
                                     className='form-check-input mx-2'
                                     checked={voteInsChck(member?.voteOuts)}
-                                    onChange={()=> handleVoteOut(member)}/>
+                                    onChange={()=> handleModelShow('voteOut', member)}/>
                                    </>
                                    : null}
                                 </td>
-                                <td>{Is_delegate? podInfo?.is_active? member.voteOuts.length==0? "":member.voteOuts.length :null :null}</td>
+                                <td>{Is_delegate? podInfo?.is_active? member.voteOuts.length===0? "":member.voteOuts.length :null :null}</td>
                                 <td> {podInfo?.is_active? <>
                                     Yes 
                                     <input type="checkbox" 
@@ -408,7 +368,7 @@ function HouseKeeping(){
                                     checked={delegated(member?.putFarward)}
                                     onChange={()=> handleDelegate(member)}/>
                                 </>:null}</td>
-                                <td>{ podInfo?.is_active? member.putFarward.length==0? "":member.putFarward.length :null}</td>
+                                <td>{ podInfo?.is_active? member.putFarward.length===0? "":member.putFarward.length :null}</td>
                                 <td>{actions(member)}</td>
                             </tr>
                         ))
@@ -417,33 +377,14 @@ function HouseKeeping(){
                             <tr>
                                 <td >01</td>
                                 <td>{condidate[0]?.user.users.legalName}</td>
-                                <td>
-                                    {AuthUser.username === condidate[0].user.username? null :
-                                        voted?.condidate === condidate[0].user.username? 
-                                        voted?.voter === AuthUser.username? "voted":
-                                        <>
-                                        <label htmlFor="checkbox">YES</label>
-                                        <input type="checkbox"  
-                                            value={condidate[0].id} 
-                                            onChange={handleVoteIn} 
-                                            className ='mx-2 form-check-input' />
-                                        </>
-                                        :
-                                        <>
-                                        <label htmlFor="checkbox">YES</label>
-                                        <input type="checkbox" 
-                                            value={condidate[0].id} 
-                                            onChange={handleVoteIn} 
-                                            className ='mx-2 form-check-input' />
-                                        </>
-                                    }
-                                
+                                <td> Yes
+                                <input type="checkbox" 
+                                    className='form-check-input mx-2'
+                                    value={condidate[0].id} 
+                                    checked={!voteInsChck(condidate[0]?.voteIns)}
+                                    onChange={(e)=> handleVoteIn(e)}/>
                                 </td>
-                                <td>
-                                    {AuthUser.username === condidate[0]?.user.username? null: 
-                                    Object.keys(voteCond).length
-                                    }
-                                </td>
+                                <td>In: {condidate[0]?.voteIns.length} </td>
                                 <td></td>
                                 <td></td>
                                 <td>
@@ -464,27 +405,19 @@ function HouseKeeping(){
                 <p><strong>Status: </strong>{podInfo?.is_active? "This pod is active!"
                     :"This Pod will become active when it has six members."} 
                 </p>
-                {Is_delegate? 
-                <>
+                {Is_delegate?  <>
                     {condidate?.length === 0 ? 
                     <p>There are no Member Candidates. Invite voters in your district to join by giving them a Pod Invitation Key.</p>
-                    :
-                    <p>There is a Member Candidate awaiting a majority vote of existing members.</p>
-                    }
-                    {members?.length >= 3 ? "":
-                        <>
+                    : <p>There is a Member Candidate awaiting a majority vote of existing members.</p>}
+                    {members?.length >= 3 ? "":  <>
                         <p>Once you generate a new key, the old one will not work.</p>
                         <p>The creator of this Pod has been automatically made First Delegate. To elect a different First
-                            Delegate, hold an election. Elections can be held when you have six or more members.
-                        </p>
+                            Delegate, hold an election. Elections can be held when you have six or more members. </p>
                         <p>Only the F-Del can dissolve a Pod, and may only do so when they are the only member left.</p>
-                        </>
-                    }
-                </>
-                :
+                        </> } </> :
                 // check if the user is member or condidate
             // this check is for condidate throughing undefined exception
-                condidate != undefined?
+                condidate !== undefined?
                     condidate[0]?.user.username === AuthUser.username ? 
                     <>
                         <p> You are a Member Candidate awaiting a majority vote of existing members.</p>
@@ -535,9 +468,7 @@ function HouseKeeping(){
                         members.
                         </p>
                         <p>Only the F-Del can dissolve a Pod, and may only do so when they are the only member left.</p>
-                    </>
-               : "nulllll"
-                }
+                    </>: "" }
             </div>
             {/* helper links for delegate */}
             {Is_delegate? 
@@ -551,7 +482,7 @@ function HouseKeeping(){
             : 
             // helping links for pod members
             // this check is for condidate throughing undefined exception
-            condidate != undefined?
+            condidate !== undefined?
                 AuthUser.username === condidate[0]?.user.username ? null : 
                 <div className='row'>
                     <strong>Learn about:</strong>

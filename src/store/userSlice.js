@@ -4,22 +4,19 @@ import { createSlice } from '@reduxjs/toolkit'
 const userLocal = JSON.parse(localStorage.getItem('AuthUser'))
 const podLocal = JSON.parse(localStorage.getItem('pod'))
 const podMembersLocal = JSON.parse(localStorage.getItem('podMembers'))
-const podVonteIn = JSON.parse(localStorage.getItem('podVoteIn'))
 
 let userInit = null;
 let podInit = null;
 let podMembersInit = null
-let podVonteInInit = []
+
 userLocal ? userInit = userLocal: userInit = null;
 podLocal ? podInit = podLocal: podInit = null;
 podMembersLocal ? podMembersInit = podMembersLocal: podMembersInit = null;
-podVonteIn ? podVonteInInit = podVonteIn: podVonteInInit = [];
 
 const initialState = {
   user: userInit,
   pod: podInit,
   podMembers: podMembersInit,
-  podVoteIn:podVonteInInit,
 }
 
 export const UserSlice = createSlice({
@@ -50,10 +47,6 @@ export const UserSlice = createSlice({
       state.podMembers = null
       localStorage.removeItem('pod');
       localStorage.removeItem('podMembers');
-    },
-    podVoteIn:(state, action)=>{
-      state.podVoteIn.push(action.payload);
-      toLocalStorage('podVoteIn', state.podVoteIn)
     }
 
   },
@@ -64,6 +57,6 @@ function toLocalStorage(store,user){
 }
 
 // Action creators are generated for each case reducer function
-export const { authenticate,logout, pod, addPodmMembers,desolvePod,podVoteIn } = UserSlice.actions
+export const { authenticate,logout, pod, addPodmMembers,desolvePod } = UserSlice.actions
 export default UserSlice.reducer
 
