@@ -10,10 +10,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 app.use(express.static(__dirname + '/'));
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8000);
 
 //production mode
 if (process.env.NODE_ENV === "production") {
+  console.log('production')
   app.use(express.static(path.join(__dirname, "build")));
   app.get("*", (req, res) => {
     res.sendFile(path.join((__dirname + "/build/index.html")));
