@@ -25,7 +25,7 @@ function JoinPod(){
                 let header = {'Authorization': `Bearer ${token}`}
                 const url = `${window.location.protocol}//${baseURL}/api/create-pod/`
                 const param = {"user": AuthUser.username, 'district':AuthUser.users.district.code}
-                console.log(header, param)
+               
                 axios.post(url, param, {headers:header})
                 .then( response => {
                     if(response.status === 400 ){

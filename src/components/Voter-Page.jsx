@@ -185,9 +185,9 @@ function VoterPage(){
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
                     <ul className="list-unstyled">
                         <li><Link  to={'/voter-page'}>List of Delegates</Link></li>
-                        <li><Link  to={'/voter-page'}>Back-and-Forth</Link></li>
+                        <li><Link  to={'/pod-back-n-forth'}>Back-and-Forth</Link></li>
                         <li><Link  to={'/voter-page'}> Member Contact Page </Link></li>
-                        <li><Link  to={'/voter-page'}>Pod Housekeeping Page</Link></li>
+                        <li><Link  to={'/house-keeping-page'}>Pod Housekeeping Page</Link></li>
                     </ul>
                 </div>
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">

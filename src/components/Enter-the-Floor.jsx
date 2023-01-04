@@ -69,6 +69,7 @@ function EnterTheFloor(){
                 }
             })
             .catch(error => {
+                
                 setErr("Something went wrong. Check your inputs and try again.");
                 console.log(error)
             });  
