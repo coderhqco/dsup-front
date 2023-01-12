@@ -314,7 +314,7 @@ function HouseKeeping(){
             <div className="row">
                 <div className="col-sm-12 col-md-3"></div>
                 <div className="col-sm-12 col-md-6 mt-3">
-                    <h1 className="text-center">House Keeping page</h1>
+                    <h1 className="text-center">HouseKeeping page</h1>
                     <h3 className='text-center'>pod: {podInfo?.district.code}-{podInfo?.code}</h3>
                     <h4 className='text-center'>Invitation Key: {podInfo?.invitation_code}</h4>
                     {Is_delegate? 
