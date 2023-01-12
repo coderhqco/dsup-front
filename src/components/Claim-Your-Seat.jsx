@@ -37,15 +37,11 @@ function ClaimYourSeat(){
     }
     
     const handlePassword = (e) =>{
-        if(e.target.value.length >=7){
-            if(passcheck(e.target.value)){
-                setPassword(e.target.value)
-                setPass_Err(false);
-            }else{
-                setPass_Err(true);
-            }
+        if(passcheck(e.target.value)){
+            setPassword(e.target.value)
+            setPass_Err(false);
         }else{
-            setPass_Err(false)
+            setPass_Err(true);
         }
     }
 
