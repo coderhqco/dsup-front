@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { Link , useNavigate} from 'react-router-dom';
-import {useSelector, useDispatch} from 'react-redux';
+import { useDispatch} from 'react-redux';
 import {authenticate} from '../store/userSlice.js';
 import axios from 'axios';
 import {baseURL} from '../store/conf.js'
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 function EnterTheFloor(){
-    const AuthUser = useSelector((state) => state.AuthUser.user);
+    // const AuthUser = useSelector((state) => state.AuthUser.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -70,7 +70,6 @@ function EnterTheFloor(){
                 }
             })
             .catch(error => {
-                
                 setErr("Something went wrong. Check your inputs and try again.");
                 console.log(error)
             });  
@@ -104,7 +103,7 @@ function EnterTheFloor(){
                                     value={district} 
                                     onChange={(e)=> setDistrict(e.target.value.toUpperCase())} 
                                     maxLength="4"  
-                                    style={{'text-transfer': 'uppercase'}}
+                                    style={{'textTransfer': 'uppercase'}}
                                     placeholder="District" 
                                     type="text" 
                                     name="district"  />
