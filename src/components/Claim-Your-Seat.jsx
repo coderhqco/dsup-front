@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 import axios from "axios";
 import {baseURL} from '../store/conf.js'
+import { Eye, EyeSlash } from 'react-bootstrap-icons';
 
 function ClaimYourSeat(){
     const navigate = useNavigate();
@@ -17,6 +18,8 @@ function ClaimYourSeat(){
     const [submitStatus , setSubmitStatus] = useState(false);
     const [District_OK, setDistrict_OK] = useState(false);
     const [Pass_Err , setPass_Err] = useState(false);
+    const [passwordType, setPasswordType]   = useState('password');    // show/hide password input
+    const [passwordTypeConf, setPasswordTypeConf]   = useState('password'); // show/hide confirm password input
 
     const [formErr, setFormErr] = useState('');
     const [is_formErr, setIs_formErr] = useState(false);
@@ -37,20 +40,24 @@ function ClaimYourSeat(){
     }
     
     const handlePassword = (e) =>{
-        if(passcheck(e.target.value)){
-            setPassword(e.target.value)
+        setPassword(e)
+        if(passcheck(e)){
             setPass_Err(false);
+            setSubmitStatus(true);
         }else{
             setPass_Err(true);
+            setSubmitStatus(false);
         }
     }
 
     const handleConfirmPass = (e) =>{
-        if(e.target.value === password){
-            setConfirmPass(false);
-            setPassword2(e.target.value);
-        }else{
+        setPassword2(e);
+        if(e === password){
             setConfirmPass(true);
+            setSubmitStatus(true);
+        }else{
+            setConfirmPass(false);
+            setSubmitStatus(false);
         }
     }
 
@@ -87,6 +94,34 @@ function ClaimYourSeat(){
             console.log("err: ", err)
         });
     }
+    const changePassType = ()=>{
+        passwordType === 'password' ? setPasswordType('') : setPasswordType('password'); 
+    }
+    const changePassTypeConfirm = ()=>{
+        passwordTypeConf === 'password' ? setPasswordTypeConf('') : setPasswordTypeConf('password'); 
+    }
+
+    const generatePass = (e)=>{
+        e.preventDefault()
+        // this password could be wrong in a very rare case...
+        const res = GenPass(8);
+
+        setPassword(res);
+        setPassword2(res);
+        setConfirmPass(true);
+        setPasswordType('')
+        setPasswordTypeConf('')
+    }
+    function GenPass(length) {
+        var result           = '';
+        var characters       = '0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+  
 
     return (
         <div className="container p-3">
@@ -106,7 +141,8 @@ function ClaimYourSeat(){
                 </p>
             </div>
 
-            <form onSubmit={(e)=>handleSubmit(e)} className="form-horizontal form-label-left mx-auto bg-light p-3 rounded-2 shadow-sm mb-3 ">
+            <form onSubmit={(e)=>handleSubmit(e)} 
+            className="form-horizontal form-label-left mx-auto bg-light p-3 rounded-2 shadow-sm mb-3 ">
                 <div className="row d-flex justify-content-center">
                     <div className="col col-sm-12 col-md-6" id="big-font">
                         <label htmlFor="district" className="text-right">District:</label>
@@ -165,11 +201,27 @@ function ClaimYourSeat(){
                         id="address" placeholder="enter your address"/>
                         <br/>
 
-                        <label htmlFor="password" className="text-right">Password:</label>
-                        <input type="password" className="form-control" 
-                        onChange={(e)=> handlePassword(e)}
-                        id="password" placeholder="enter your a password"/>
-                        {Pass_Err ? <p className="text-danger m-0">Your password is not valid</p> : ''}
+                        <button className="btn btn-primary my-2" onClick={(e)=>generatePass(e)}>
+                            Generate Password
+                        </button>
+                        <div className="input-group mb-3 border rounded">
+                            <input className="form-control border-0" 
+                            onChange={(e)=> handlePassword(e.target.value)}
+                            type={passwordType} 
+                            value={password}
+                            placeholder="enter your a password"
+                            name="password" 
+                            id="password" />
+                            <div className=" p-1 px-2 bg-white rounded">
+                                {passwordType === 'password'?
+                                <EyeSlash size="30" onClick={(e)=> changePassType()} />
+                                : 
+                                <Eye size="30" onClick={(e)=>changePassType()}/>
+                                }
+                            </div>
+                        </div>
+
+                        {Pass_Err && password.length > 0 ? <p className="text-danger m-0">Your password is not valid</p> : ''}
                         <p className="m-0 fw-bold">Password Guidline:</p>
                         <ol>
                             <li>Is at least 8 characters long</li>
@@ -180,11 +232,24 @@ function ClaimYourSeat(){
 
                         <br/>
                         <label htmlFor="confirm_password" className="text-right">Confirm Password:</label>
-                        <input type="password" className="form-control" 
-                        onChange={(e)=> handleConfirmPass(e)}
-                        id="confirm_password" placeholder="conform your password"/>
-                        {confirmPass ? <p className="m-0 text-danger">Your password did not match.</p>: ''}
-                        <br/>
+                        <div className="input-group mb-3 border rounded ">
+                        <input 
+                        type={passwordTypeConf} 
+                        className="form-control border-0" 
+                        onChange={(e)=> handleConfirmPass(e.target.value)}
+                        value={password2}
+                        id="confirm_password" 
+                        placeholder="conform your password"/>
+                            <div className=" p-1 px-2 bg-white rounded">
+                                {passwordTypeConf === 'password'?
+                                <EyeSlash size="30" onClick={(e)=> changePassTypeConfirm()} />
+                                : 
+                                <Eye size="30" onClick={(e)=>changePassTypeConfirm()}/>
+                                }
+                            </div>
+                        </div>
+                        {!confirmPass && password2.length>0 ? <p className="m-0 text-danger">Your password did not match.</p>: ''}
+                      
                         
                         <div className="row">
                             <div className="col">
@@ -197,7 +262,10 @@ function ClaimYourSeat(){
                         </div>
                         <div className="row">
                             <div className="col text-center">
-                             <input type="submit" value="Create my account" className="btn-primary btn" />
+                             <input type="submit" 
+                             disabled={submitStatus ? false : true }
+                             value="Create my account" 
+                             className="btn-primary btn" />
                             </div>
                         </div>
                     </div>

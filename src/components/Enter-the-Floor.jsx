@@ -4,13 +4,14 @@ import {useSelector, useDispatch} from 'react-redux';
 import {authenticate} from '../store/userSlice.js';
 import axios from 'axios';
 import {baseURL} from '../store/conf.js'
-
+import { Eye, EyeSlash } from 'react-bootstrap-icons';
 function EnterTheFloor(){
     const AuthUser = useSelector((state) => state.AuthUser.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [district,    setDistrict]        = useState('');
+    const [passwordType, setPasswordType]   = useState('password');
     const [entry_code,  setEntry_code]      = useState('');
     const [password,    setPassword]        = useState('');
     const [token,       setToken]           = useState(''); 
@@ -77,6 +78,10 @@ function EnterTheFloor(){
     
         e.preventDefault();
     }
+
+    const changePassType = ()=>{
+        passwordType === 'password' ? setPasswordType('') : setPasswordType('password'); 
+    }
     return (
         <div className="container">
             <h1 className="text-center mt-5">Enter The Floor</h1>
@@ -95,18 +100,46 @@ function EnterTheFloor(){
                             <div className="row">
                                 <div className="col">
                                     <label>District</label>
-                                    <input className="form-control" value={district} onChange={(e)=> setDistrict(e.target.value)} maxLength="4"  placeholder="District" type="text" name="district"  />
+                                    <input className="form-control" 
+                                    value={district} 
+                                    onChange={(e)=> setDistrict(e.target.value.toUpperCase())} 
+                                    maxLength="4"  
+                                    style={{'text-transfer': 'uppercase'}}
+                                    placeholder="District" 
+                                    type="text" 
+                                    name="district"  />
+
                                     <span className="error text-danger hide" ></span>
                                 </div>
                                 <div className="col">
                                     <label>Entry Code</label>
-                                    <input className="form-control" value={entry_code} onChange={(e)=> setEntry_code(e.target.value)} maxLength="5" placeholder="Entry code" type="text" name="userName" />
+                                    <input className="form-control" 
+                                    value={entry_code} 
+                                    onChange={(e)=> setEntry_code(e.target.value.toUpperCase())} 
+                                    maxLength="5" 
+                                    placeholder="Entry code" 
+                                    type="text" 
+                                    name="userName" />
                                 </div>
                             </div>
                             <br/>
 
                             <label >Password</label>
-                            <input className="form-control" value={password} onChange={(e)=> setPassword(e.target.value)} type="password" name="password" id="password" />
+                            <div className="input-group mb-3 bg-gray border rounded">
+                                <input className="form-control border-0" 
+                                value={password} onChange={(e)=> setPassword(e.target.value)} 
+                                type={passwordType} 
+                                name="password" 
+                                id="password" />
+
+                                <div className=" p-1 px-2">
+                                    {passwordType === 'password'?
+                                    <EyeSlash size="30" onClick={(e)=> changePassType()} />
+                                    : 
+                                    <Eye size="30" onClick={(e)=>changePassType()}/>
+                                    }
+                                </div>
+                            </div>
                             
                             <br />
                             {err.length > 0 ? 
