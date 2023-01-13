@@ -180,8 +180,8 @@ function ClaimYourSeat(){
                             type="radio" name="flexRadioDefault" 
                             id="flexRadioDefault1"/>
                             <label className="form-check-label" htmlFor="flexRadioDefault1">
-                               I believe i am eligible to vote in this district under the name and address 
-                               i will provide below and i intend to register as a voter within 30 days.
+                               I believe I am eligible to vote in this district under the name and address 
+                               I will provide below and I intend to register as a voter within 30 days.
                             </label>
                         </div>
                         <br/>
