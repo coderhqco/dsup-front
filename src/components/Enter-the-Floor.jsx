@@ -145,7 +145,13 @@ function EnterTheFloor(){
                             <p className='text-danger'>{err}</p>
                             : '' }
                             <br/>
-                            <input type="submit" onClick={handleSubmit} name="commit" value="Enter the Floor" className="btn-xl btn btn-primary" data-disable-with="Enter the Floor" />
+                            <div className="container text-center">
+                                <input type="submit" onClick={handleSubmit} 
+                                name="commit" value="Enter the Floor" 
+                                className="btn-xl btn btn-primary" 
+                                data-disable-with="Enter the Floor" />
+
+                            </div>
                         </form>  
                     </div>
                 <div className="col-sm-12 col-md-3 col-lg-4"></div>
