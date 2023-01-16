@@ -24,7 +24,7 @@ function UserActivate(){
     return (
         <div className="container">
         <div className="row center">
-            {message === true?
+            {/* {message === true? */}
             <div className="mt-5">
                 <h3 className="text-success text-center">Congratulations </h3>
                 <p className="text-center">
@@ -39,7 +39,7 @@ function UserActivate(){
                     <Link className='btn btn-primary' to="/enter-the-floor"> Enter The Floor</Link>
                 </p>
             </div>
-            : <>
+            {/* : <>
                 <p 
                 className='text-center text-danger'> Activation link is invalid!</p>
                 <div className="container text-center">
@@ -47,7 +47,7 @@ function UserActivate(){
                 className='btn btn-primary'>Back to Home</Link>
                 </div>
             </>
-             } 
+             }  */}
         </div>
     </div>
     )

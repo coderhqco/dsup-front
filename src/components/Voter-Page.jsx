@@ -14,6 +14,8 @@ function VoterPage(){
     const [pageLoaded, setPageLoaded] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const podMembers    = useSelector((state) => state.AuthUser.podMembers);
+    const [delegate, setDelegate] = useState(podMembers?.filter((e)=> e.is_delegate === true)[0]);
     
     let date = new Date(AuthUser.date_joined)
 
@@ -47,7 +49,6 @@ function VoterPage(){
         switch(action){
             // if no action is specified, fetch user info and pod
             case 'userinfo':
-                console.log("getting user info")
                 if(AuthUser.token.access.length > 0){
                     const url = `${window.location.protocol}//${baseURL}/api/userinfo/`;
                     const params = {user: AuthUser.username}
@@ -60,7 +61,6 @@ function VoterPage(){
                             if(response.data.user.users.userType===1){
                                 dispatch(pod(response.data.pod))
                             }
-                            console.log("user and pod is set.")
                         }else{
                             setMessage({type:"alert alert-danger",msg:"could not get user info and pod"})
                         }
@@ -125,12 +125,16 @@ function VoterPage(){
                         <div className="col-sm-12 col-md-6 col-lg-6">
                             <Link to='/house-keeping-page' className="btn btn-primary m-2"> My pod</Link>
                         </div>
+                        {/* add if the user is delegate and then show this two. */}
+                        { AuthUser?.username === delegate?.user?.username ? <>
                         <div className="col-sm-12 col-md-6 col-lg-6">
                             <a className="btn btn-primary m-2" >Join First Link</a>
                         </div>
                         <div className="col-sm-12 col-md-6 col-lg-6">
                             <a className="btn btn-primary m-2" >Create First Link</a>
                         </div>
+                        </>
+                        : ""}
                         <div className="col-sm-12 col-md-6 col-lg-6">
                             <a className="btn btn-primary m-2" >Back-and-Forth</a>
                         </div>
