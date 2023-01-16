@@ -24,7 +24,7 @@ function HouseKeeping(){
 
     // let Is_delegate = false
     const [Is_delegate, setIs_delegate] = useState(false)
-    
+    const [delegate, setDelegate] = useState(podMembers.filter((e)=> e.is_delegate === true)[0]);
     // saperate condidates on each page load or podmembers changes
     useEffect(()=>{
         setMembers(podMembers?.filter((member)=> member.is_member))
@@ -315,7 +315,8 @@ function HouseKeeping(){
                 <div className="col-sm-12 col-md-3"></div>
                 <div className="col-sm-12 col-md-6 mt-3">
                     <h1 className="text-center">HouseKeeping page</h1>
-                    <h3 className='text-center'>pod: {podInfo?.district.code}-{podInfo?.code}</h3>
+                    <h3 className='text-center'>Pod: {podInfo?.code} District: {podInfo?.district.code}</h3>
+                    <h4>  First Delegate: {delegate?.user?.users?.legalName}  </h4>
                     <h4 className='text-center'>Invitation Key: {podInfo?.invitation_code}</h4>
                     {Is_delegate? 
                     <button className='d-block mx-auto my-2 btn btn-success text-center' 

@@ -190,7 +190,10 @@ function ClaimYourSeat(){
                         <input type="email" 
                         onChange={(e)=>setEmail(e.target.value)}
                         className="form-control"  id="email" 
-                        placeholder="enter your email"/>
+                        placeholder="enter your email address"/>
+                        <span><span className="fw-bold">Notes:</span> This email address will only be used to confirm your registration. 
+                            Once you join a Pod, all further communications from the project will go through your First Delegate.</span>
+                            <br />
                         {is_formErr ? <p className="m-0 text-danger"> {formErr?.email ? 'Email already taken':''}</p> : ''}
                         <br/>
 
