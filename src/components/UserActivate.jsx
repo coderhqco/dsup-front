@@ -12,19 +12,23 @@ function UserActivate(){
     
     axios.get(`${window.location.protocol}//${baseURL}/api/activate/${uid}/${token}/`)
     .then( response=>{
+        console.log("starting...")
         if(response.status === 200){
+            
             setMessage(true)
             setEntryCode(response.data.entry_code)
+            console.log("ok...")
         }
     })
     .catch(error => {
+        console.log("error")
         setMessage(false);
     });
 
     return (
         <div className="container">
         <div className="row center">
-            {/* {message? */}
+            {message === true?
             <div className="mt-5">
                 <h3 className="text-success text-center">Congratulations </h3>
                 <p className="text-center">
@@ -39,10 +43,10 @@ function UserActivate(){
                     <Link className='btn btn-primary' to="/enter-the-floor"> Enter The Floor</Link>
                 </p>
             </div>
-            
-            {/*  :  */}
-            <p className='text-center text-danger'> Activation link is invalid!</p>
-            {/*  }  */}
+            :
+            <p 
+            className='text-center text-danger'> Activation link is invalid!</p>
+             } 
         </div>
     </div>
     )
