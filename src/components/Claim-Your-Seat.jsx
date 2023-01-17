@@ -34,7 +34,12 @@ function ClaimYourSeat(){
                 setDistrict_OK(false);
             }else{
                 // set the border of the district input red and show help text
-                setDistrict_OK(true);
+                if(e.target.value.length > 0){
+                    setDistrict_OK(true) 
+                }else{
+                    setDistrict_OK(false)
+                }
+                
             }
         }); //endof then function
     }
@@ -130,38 +135,33 @@ function ClaimYourSeat(){
                 <p> If you've already claimed your seat,
                     you can enter the floor of your District Legislature (D-Leg).
                 </p>
-                <Link className="btn btn-xl btn-primary" to="/enter-the-floor" >Enter the Floor</Link>
+                <Link className="btn btn-lg btn-primary m-3" to="/enter-the-floor" >Enter the Floor</Link>
                
                 <p className="mt-3">Otherwise...</p>
                 <h1>Claim Your Seat</h1>
-                <p>Fill out the form below. <br/>
-                    <strong>NOTE:</strong> Enter your district as your two-letter state postal code
-                    followed by a two-digit number. For instance, 
-                    the third district in Alabama would be AL03.
-                </p>
+                {/* <p>Fill out the form below. <br/> </p> */}
             </div>
 
             <form onSubmit={(e)=>handleSubmit(e)} 
             className="form-horizontal form-label-left mx-auto bg-light p-3 rounded-2 shadow-sm mb-3 ">
                 <div className="row d-flex justify-content-center">
                     <div className="col col-sm-12 col-md-6" id="big-font">
-                        <label htmlFor="district" className="text-right">District:</label>
+                    <span>
+                    Enter your district as your two-letter state postal code
+                    followed by a two-digit number. For instance, 
+                    the third district in Alabama would be AL03.
+                        </span>
+                        <br />
+                        {/* <label htmlFor="district" className="text-right">District:</label> */}
                         <input type="text" 
                         maxLength={4}
                         onChange={(e) => setDistrict(e.target.value)}
                         onBlur = {(e) => handleCheck(e)}
-                        className={`form-control text-uppercase ${District_OK ? 'border border-2 border-danger': ''}`}
-                        id="district" placeholder="enter your district"/>
+                        className={`form-control ${District_OK ? 'border border-2 border-danger': ''}`}
+                        id="district" placeholder="Enter your 4-digit district code"/>
                         {District_OK ? <p className="p-0 text-danger"> Please enter a valid district code. </p>: ''} 
-                        <br/>
-
-                        <label htmlFor="legalName" required ={true} className="text-right">Legal Name:</label>
-                        <input type="text" 
-                        onChange={(e)=> setLegalName(e.target.value)}
-                        className="form-control" 
-                        id="legalName" placeholder="enter your full name"/>
-                        {is_formErr ? <p className="m-0 text-danger"> {formErr?.legalName? formErr?.legalName[0]:''}</p> : ''}
-                        <br/>
+                    
+                        <br />
 
                         <div className="form-check">
                             <input className="form-check-input"
@@ -185,34 +185,55 @@ function ClaimYourSeat(){
                             </label>
                         </div>
                         <br/>
+                        
+                        <span> 
+                        Use your name as it appears on your voter registration card. If you don't know exactly,
+                         use your name as it would 
+                        normally appear on legal documents, in the order you would use for your signature.
+                        </span> <br />
+                        {/* <label htmlFor="legalName" required ={true} className="text-right">Legal Name:</label> */}
+                        <input type="text" 
+                        onChange={(e)=> setLegalName(e.target.value)}
+                        className="form-control" 
+                        id="legalName" placeholder="Enter your full legal name "/>
+                        {is_formErr ? <p className="m-0 text-danger"> {formErr?.legalName? formErr?.legalName[0]:''}</p> : ''}
+                        <br/>
 
-                        <label htmlFor="email" className="text-right">Email:</label>
+                        
+                        <span> This email address will only be used to confirm your registration. 
+                            Once you join a Pod, all further communications from the project will go through your First Delegate.</span>
+                            <br />
+                        {/* <label htmlFor="email" className="text-right">Email:</label> */}
                         <input type="email" 
                         onChange={(e)=>setEmail(e.target.value)}
                         className="form-control"  id="email" 
-                        placeholder="enter your email address"/>
-                        <span><span className="fw-bold">Notes:</span> This email address will only be used to confirm your registration. 
-                            Once you join a Pod, all further communications from the project will go through your First Delegate.</span>
-                            <br />
+                        placeholder="Enter your email address (see note above)"/>
                         {is_formErr ? <p className="m-0 text-danger"> {formErr?.email ? 'Email already taken':''}</p> : ''}
                         <br/>
-
-                        <label htmlFor="address" className="text-right">Address:</label>
-                        <input type="text" 
-                        className="form-control" 
+                        
+                        <span>
+                             Use the address that appears on your voter registration card. 
+                            If you don't know exactly, use your address as you would write it if sending a letter.
+                        </span> <br />
+                        {/* <label htmlFor="address" className="text-right">Address:</label> */}
+                        <textarea placeholder = "Enter your address "
                         onChange={(e)=>setAddress(e.target.value)}
+                        className="form-control" rows="5" /> 
+                        {/* <input type="text" 
+                        className="form-control" 
+                        
                         id="address" placeholder="enter your address"/>
-                        <br/>
-
+                        <br/> */}
+                        <br />
                         <button className="btn btn-primary my-2" onClick={(e)=>generatePass(e)}>
-                            Generate Password
+                            Generate password
                         </button>
                         <div className="input-group mb-3 border rounded">
                             <input className="form-control border-0" 
                             onChange={(e)=> handlePassword(e.target.value)}
                             type={passwordType} 
                             value={password}
-                            placeholder="enter your a password"
+                            placeholder="Enter your password"
                             name="password" 
                             id="password" />
                             <div className=" p-1 px-2 bg-white rounded">
@@ -225,7 +246,7 @@ function ClaimYourSeat(){
                         </div>
 
                         {Pass_Err && password.length > 0 ? <p className="text-danger m-0">Your password is not valid</p> : ''}
-                        <p className="m-0 fw-bold">Password Guidline:</p>
+                        <p className="m-0 fw-bold">Password guidline:</p>
                         <ol>
                             <li>Is at least 8 characters long</li>
                             <li>Has at least one upper and lower case</li>
@@ -234,7 +255,7 @@ function ClaimYourSeat(){
                         </ol>
 
                         <br/>
-                        <label htmlFor="confirm_password" className="text-right">Confirm Password:</label>
+                        {/* <label htmlFor="confirm_password" className="text-right">Confirm your password:</label> */}
                         <div className="input-group mb-3 border rounded ">
                         <input 
                         type={passwordTypeConf} 
@@ -242,7 +263,7 @@ function ClaimYourSeat(){
                         onChange={(e)=> handleConfirmPass(e.target.value)}
                         value={password2}
                         id="confirm_password" 
-                        placeholder="conform your password"/>
+                        placeholder="Conform your password"/>
                             <div className=" p-1 px-2 bg-white rounded">
                                 {passwordTypeConf === 'password'?
                                 <EyeSlash size="30" onClick={(e)=> changePassTypeConfirm()} />
@@ -251,7 +272,7 @@ function ClaimYourSeat(){
                                 }
                             </div>
                         </div>
-                        {!confirmPass && password2.length>0 ? <p className="m-0 text-danger">Your password did not match.</p>: ''}
+                        {!confirmPass && password2.length>0 ? <p className="m-0 text-danger">Your password does not match.</p>: ''}
                       
                         
                         <div className="row">
@@ -268,7 +289,7 @@ function ClaimYourSeat(){
                              <input type="submit" 
                              disabled={submitStatus ? false : true }
                              value="Create my account" 
-                             className="btn-primary btn" />
+                             className="btn btn-lg btn-primary m-3" />
                             </div>
                         </div>
                     </div>

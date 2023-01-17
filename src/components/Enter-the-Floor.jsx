@@ -87,7 +87,7 @@ function EnterTheFloor(){
             <div className="row text-center ">
                 <div className="col col-sm-12 ">
                     <p >If you haven't done so already, to Enter the Floor, you must first</p>  
-                    <Link to='/claim-your-seat' className='btn btn-primary mb-3'>Claim Your Seat</Link>
+                    <Link to='/claim-your-seat' className='btn btn-lg btn-primary m-3'>Claim Your Seat</Link>
                     <p >If you've already Claimed Your Seat, Enter the Floor:</p>
                 </div>
             </div>
@@ -148,7 +148,7 @@ function EnterTheFloor(){
                             <div className="container text-center">
                                 <input type="submit" onClick={handleSubmit} 
                                 name="commit" value="Enter the Floor" 
-                                className="btn-xl btn btn-primary" 
+                                className="btn btn-lg btn-primary m-3" 
                                 data-disable-with="Enter the Floor" />
 
                             </div>

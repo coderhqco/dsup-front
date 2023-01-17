@@ -201,7 +201,7 @@ function HouseKeeping(){
                 // check if the podmember is one
                 if(podMembers?.length === 1){
                     return ( <> <span>
-                            Dessolve Pod 
+                            Dissolve Pod 
                             <input className='mx-2 form-check-input' type="checkbox" 
                             onChange={()=>handleModelShow('dessolvePod', '')} checked={showModel}/>
                         </span> </>  )
@@ -313,7 +313,7 @@ function HouseKeeping(){
             <div className="row">
                 <div className="col-sm-12 col-md-3"></div>
                 <div className="col-sm-12 col-md-6 mt-3">
-                    <h1 className="text-center">HouseKeeping page</h1>
+                    <h1 className="text-center">Housekeeping page</h1>
                     <h3 className='text-center'>Pod: {podInfo?.code} District: {podInfo?.district.code}</h3>
                    
                     <h4 className='text-center'>Invitation Key: {podInfo?.invitation_code}</h4>
