@@ -207,7 +207,7 @@ function ClaimYourSeat(){
                         <input type="email" 
                         onChange={(e)=>setEmail(e.target.value)}
                         className="form-control"  id="email" 
-                        placeholder="Enter your email address (see note above)"/>
+                        placeholder="Enter your email address"/>
                         {is_formErr ? <p className="m-0 text-danger"> {formErr?.email ? 'Email already taken':''}</p> : ''}
                         <br/>
                         
