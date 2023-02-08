@@ -9,8 +9,9 @@ const PodBackNforth =()=>{
     const AuthUser = useSelector((state) => state.AuthUser.user);
     
     const [message, setMessage] = useState('')
-    const [serverMessage, setServerMessage] = useState();
+    const [serverMessage, setServerMessage] = useState([]);
     let socketRef = useRef(null);
+
     useEffect(()=>{
         let ws_schame = window.location.protocol == "https:" ? "wss" : "ws";
         const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/ws/${podInfo.code}/${AuthUser.username}/`
@@ -18,7 +19,7 @@ const PodBackNforth =()=>{
         socketRef.current = new WebSocket(url);
         
         socketRef.current.onopen =(event)=>{
-            console.log("web socket connected", event);
+            console.log("web socket connected opened. ");
         };
 
         socketRef.current.onmessage =(event)=>{
@@ -26,9 +27,7 @@ const PodBackNforth =()=>{
             setServerMessage(data.message);
 
             // here get all the messages. 
-            // new messages shall be complete like: date, id, pod, sender, message
-            
-            console.log(data)
+            // new message
         };
         socketRef.current.onerror = (error)=>{
             console.log("web socket error: ", error)
@@ -44,6 +43,7 @@ const PodBackNforth =()=>{
         
     },[]);
 
+    
 
     const handleSend =()=>{
         console.log(socketRef.current)
@@ -52,6 +52,7 @@ const PodBackNforth =()=>{
             setMessage("");
           }
     }
+
     return (
         <div className="container">
             <div className="row">
@@ -63,7 +64,8 @@ const PodBackNforth =()=>{
                             <h5 className="modal-title">{podInfo?.district?.code} - {podInfo?.code}</h5>
                         </div>
                         <div className=" modal-dialog-scrollable bg-white p-3 border">
-                            {}
+                            
+                        {listMessages}
                         </div>
                         <div className="modal-footer m-1 justify-content-center">
                             <div className="input-group mb-3">
