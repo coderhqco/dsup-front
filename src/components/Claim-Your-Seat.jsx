@@ -246,7 +246,7 @@ function ClaimYourSeat(){
                         </div>
 
                         {Pass_Err && password.length > 0 ? <p className="text-danger m-0">Your password is not valid</p> : ''}
-                        <p className="m-0 fw-bold">Password guidline:</p>
+                        <p className="m-0 fw-bold">Password Guidlines:</p>
                         <ol>
                             <li>Is at least 8 characters long</li>
                             <li>Has at least one upper and lower case</li>
@@ -263,7 +263,7 @@ function ClaimYourSeat(){
                         onChange={(e)=> handleConfirmPass(e.target.value)}
                         value={password2}
                         id="confirm_password" 
-                        placeholder="Conform your password"/>
+                        placeholder="Confirm your password"/>
                             <div className=" p-1 px-2 bg-white rounded">
                                 {passwordTypeConf === 'password'?
                                 <EyeSlash size="30" onClick={(e)=> changePassTypeConfirm()} />
