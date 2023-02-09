@@ -15,7 +15,6 @@ const PodBackNforth =()=>{
     useEffect(()=>{
         let ws_schame = window.location.protocol == "https:" ? "wss" : "ws";
         const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/ws/${podInfo.code}/${AuthUser.username}/`
-        console.log("url: ", url)
         socketRef.current = new WebSocket(url);
         
         socketRef.current.onopen =(event)=>{
@@ -24,9 +23,18 @@ const PodBackNforth =()=>{
 
         socketRef.current.onmessage =(event)=>{
             const data = JSON.parse(event.data);
-            setServerMessage(data.message);
-
+            
+            // setServerMessage([serverMessage,...data]);
+            if (Array.isArray(data)) {
+                console.log("array: ", data)
+                setServerMessage([...serverMessage, data]);
+              } else {
+                console.log("obj: ", data)
+                setServerMessage({ ...serverMessage, ...data });
+              }
+            
             // here get all the messages. 
+
             // new message
         };
         socketRef.current.onerror = (error)=>{
@@ -63,9 +71,9 @@ const PodBackNforth =()=>{
                         <div className="modal-header ">
                             <h5 className="modal-title">{podInfo?.district?.code} - {podInfo?.code}</h5>
                         </div>
+
                         <div className=" modal-dialog-scrollable bg-white p-3 border">
-                            
-                        {listMessages}
+                        {serverMessage?.map((item)=>item.sender +"="+item.message)}
                         </div>
                         <div className="modal-footer m-1 justify-content-center">
                             <div className="input-group mb-3">
