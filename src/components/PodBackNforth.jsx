@@ -12,6 +12,16 @@ const PodBackNforth =()=>{
     const [serverMessage, setServerMessage] = useState([]);
     let socketRef = useRef(null);
 
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+    useEffect(() => {
+        scrollToBottom()
+    },[serverMessage])
+
+
     useEffect(()=>{
         let ws_schame = window.location.protocol == "https:" ? "wss" : "ws";
         const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/ws/${podInfo.code}/${AuthUser.username}/`
@@ -28,10 +38,10 @@ const PodBackNforth =()=>{
             if (Array.isArray(data)) {
                 // when the first time it connects, it retrives a list of old messages
                 setServerMessage(data);
-              } else {
+            } else {
                 // when a new message is being sent and receives an instance of it
                 setServerMessage((serverMessage) => [...serverMessage, data]);
-              }
+            }
         };
         socketRef.current.onerror = (error)=>{
             console.log("web socket error: ", error)
@@ -47,12 +57,6 @@ const PodBackNforth =()=>{
         
     },[]);
 
-    const clickedme = ()=>{
-        serverMessage.map((item)=>{
-            console.log(item.message)
-        })
-    }
-
     const handleSend =()=>{
         console.log(socketRef.current)
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
@@ -60,41 +64,62 @@ const PodBackNforth =()=>{
             setMessage("");
           }
     }
-
-    return (
-        <div className="container">
-            <div className="row">
-                <div className="col-sm-12 col-md-3"></div>
-                <div className="col-sm-12 col-md-6 mt-3">
-                    <button className='btn' onClick={()=>clickedme()} >click me</button>
-                    <div className="modal-dialog-scrollable shadow-sm rounded-2 bg-light p-2">
-                        <div className="modal-header ">
-                            <h5 className="modal-title">{podInfo?.district?.code} - {podInfo?.code}</h5>
-                        </div>
-                        <div className="modal-content bg-white p-3 border">
-                            <ul>
-                                {serverMessage.map((message, index) => (
-                                <li key={index}>{message.date}</li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div className="modal-footer m-1 justify-content-center">
-                            <div className="input-group mb-3">
-                                <input type="text" className="form-control" 
-                                    placeholder="Username" 
-                                    value={message}
-                                    onChange={(e)=>setMessage(e.target.value)}
-                                    aria-label="Username" aria-describedby="basic-addon1"/>
-                                <span className="input-group-text" 
-                                    onClick={handleSend} 
-                                    style={{"cursor":"pointer"}}
-                                    id="basic-addon1">Enter</span>
-                            </div>
-                        </div>
+    const msg = (message, index) => {
+        const longDate = new Date(message.date);
+        const yr = longDate.getFullYear()
+        const mon = longDate.getMonth()
+        const day = longDate.getDate()
+        
+        if(AuthUser.username === message.sender.username){
+            return (
+                <div key={index} className="d-flex align-item-baseline text-end justify-content-end mb-3 mx-4">
+                    <div className=' px-2 bg-tertiary rounded '>
+                        {message.message}
+                    </div> 
+                    <div className='fw-bold'>
+                        <p>:{message.sender.username}</p>
                     </div>
                 </div>
-                <div className="col-sm-12 col-md-3"></div>
+            )
+        }else{
+            return (
+                <div key={index} className="d-flex align-item-baseline mb-3 mx-3 ">
+                    <div className='fw-bold'>
+                        <p>{message.sender.username}: </p>
+                        <div ref={messagesEndRef} />
+                    </div>
+                    <div className=' px-2 rounded '>
+                       {message.message}
+                    </div>
+                </div>
+            )
+        }
+    }
+
+    return (
+        <div className="container my-5">
+            <div className="card mx-auto w-50"  >
+                <div className="card-header border-0 shadow-sm text-center" >
+                    <h1>{podInfo.code}-{podInfo.district.code}</h1>
+                </div>
+                <div className="card-body mh-100 p-0" style={{height:"500px", overflowY:'auto'}}>
+                {serverMessage.map((message, index) => msg(message, index))} 
+                </div>
+                <div className="card-header shadow-sm p-3 z-1 border-0">  
+                    <div className="input-group">
+                        <input type="text" className="form-control" 
+                            placeholder="Message..." 
+                            value={message}
+                            onChange={(e)=>setMessage(e.target.value)}
+                            aria-label="Username" aria-describedby="basic-addon1"/>
+                        <span className="input-group-text" 
+                            onClick={handleSend} 
+                            style={{"cursor":"pointer"}}
+                            id="basic-addon1">Send</span>
+                    </div>
+                </div>
             </div>
+
         </div>
     )
 }
