@@ -1,8 +1,6 @@
-import {useSelector,useDispatch, } from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useState, useEffect,useRef} from 'react';
-import axios from 'axios';
-import {pod,authenticate} from '../store/userSlice.js';
-import {baseURL} from '../store/conf.js'
+
 
 const PodBackNforth =()=>{
     const podInfo = useSelector((state) => state.AuthUser.pod);
@@ -13,10 +11,10 @@ const PodBackNforth =()=>{
     let socketRef = useRef(null);
 
     const messagesEndRef = useRef(null)
-
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
+
     useEffect(() => {
         scrollToBottom()
     },[serverMessage])
@@ -65,10 +63,10 @@ const PodBackNforth =()=>{
           }
     }
     const msg = (message, index) => {
-        const longDate = new Date(message.date);
-        const yr = longDate.getFullYear()
-        const mon = longDate.getMonth()
-        const day = longDate.getDate()
+        // const longDate = new Date(message.date);
+        // const yr = longDate.getFullYear()
+        // const mon = longDate.getMonth()
+        // const day = longDate.getDate()
         
         if(AuthUser.username === message.sender.username){
             return (

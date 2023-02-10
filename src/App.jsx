@@ -25,7 +25,6 @@ function App(){
         <Route path="/house-keeping-page" element={<ProtectedRoute><Header/><HouseKeeping/><Footer/></ProtectedRoute>}/>
         <Route path="/join-pod" element={<ProtectedRoute><Header/><JoinPod/><Footer/></ProtectedRoute>}/>
         <Route path="/pod-back-n-forth" element={<ProtectedRoute><Header/><PodBackNforth/><Footer/></ProtectedRoute>}/>
-        {/* <Route path="/backforth" element={<ProtectedRoute><Header/><BackForth/><Footer/></ProtectedRoute>}/> */}
         
         <Route path="/sign-up" element={<><Header/><SignUpConfirm/><Footer/></>}/>
         <Route path="/api/activate/:uid/:token" element={<><Header/><UserActivate/><Footer/></>}/>
