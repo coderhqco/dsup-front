@@ -26,16 +26,12 @@ const PodBackNforth =()=>{
             
             // setServerMessage([serverMessage,...data]);
             if (Array.isArray(data)) {
-                console.log("array: ", data)
-                setServerMessage([...serverMessage, data]);
+                // when the first time it connects, it retrives a list of old messages
+                setServerMessage(data);
               } else {
-                console.log("obj: ", data)
-                setServerMessage({ ...serverMessage, ...data });
+                // when a new message is being sent and receives an instance of it
+                setServerMessage((serverMessage) => [...serverMessage, data]);
               }
-            
-            // here get all the messages. 
-
-            // new message
         };
         socketRef.current.onerror = (error)=>{
             console.log("web socket error: ", error)
@@ -51,7 +47,11 @@ const PodBackNforth =()=>{
         
     },[]);
 
-    
+    const clickedme = ()=>{
+        serverMessage.map((item)=>{
+            console.log(item.message)
+        })
+    }
 
     const handleSend =()=>{
         console.log(socketRef.current)
@@ -66,14 +66,17 @@ const PodBackNforth =()=>{
             <div className="row">
                 <div className="col-sm-12 col-md-3"></div>
                 <div className="col-sm-12 col-md-6 mt-3">
-                    <div className="modal-dialog shadow-sm rounded-2 bg-light p-2">
-                        <div className="modal-content">
+                    <button className='btn' onClick={()=>clickedme()} >click me</button>
+                    <div className="modal-dialog-scrollable shadow-sm rounded-2 bg-light p-2">
                         <div className="modal-header ">
                             <h5 className="modal-title">{podInfo?.district?.code} - {podInfo?.code}</h5>
                         </div>
-
-                        <div className=" modal-dialog-scrollable bg-white p-3 border">
-                        {serverMessage?.map((item)=>item.sender +"="+item.message)}
+                        <div className="modal-content bg-white p-3 border">
+                            <ul>
+                                {serverMessage.map((message, index) => (
+                                <li key={index}>{message.date}</li>
+                                ))}
+                            </ul>
                         </div>
                         <div className="modal-footer m-1 justify-content-center">
                             <div className="input-group mb-3">
@@ -87,7 +90,6 @@ const PodBackNforth =()=>{
                                     style={{"cursor":"pointer"}}
                                     id="basic-addon1">Enter</span>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>
