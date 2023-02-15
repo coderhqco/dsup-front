@@ -31,7 +31,7 @@ const PodBackNforth =()=>{
 
         socketRef.current.onmessage =(event)=>{
             const data = JSON.parse(event.data);
-            
+            console.log("data: ", data)
             // setServerMessage([serverMessage,...data]);
             if (Array.isArray(data)) {
                 // when the first time it connects, it retrives a list of old messages
@@ -63,10 +63,6 @@ const PodBackNforth =()=>{
           }
     }
     const msg = (message, index) => {
-        // const longDate = new Date(message.date);
-        // const yr = longDate.getFullYear()
-        // const mon = longDate.getMonth()
-        // const day = longDate.getDate()
         
         if(AuthUser.username === message.sender.username){
             return (

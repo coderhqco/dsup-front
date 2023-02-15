@@ -136,7 +136,8 @@ function VoterPage(){
                         </>
                         : ""}
                         <div className="col-sm-12 col-md-6 col-lg-6">
-                            <a className="btn btn-primary m-2" >Back-and-Forth</a>
+                        <Link  className='btn btn-primary m-2' to={'/pod-back-n-forth'}>Back-and-Forth</Link>
+                            {/* <a className="btn btn-primary m-2" >Back-and-Forth</a> */}
                         </div>
                     </div>
                 )
