@@ -1,10 +1,11 @@
 import {Link} from 'react-router-dom';
 import {useSelector,useDispatch} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useHistory} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 import {pod,authenticate} from '../store/userSlice.js';
 import {baseURL} from '../store/conf.js'
+import jwtDecode from 'jwt-decode';
 
 function VoterPage(){
     const AuthUser = useSelector((state) => state.AuthUser.user);
@@ -18,6 +19,7 @@ function VoterPage(){
     const [delegate, setDelegate] = useState(podMembers?.filter((e)=> e.is_delegate === true)[0]);
     
     let date = new Date(AuthUser.date_joined)
+
 
     // get the new access token on each page load or redirect
     useEffect(()=>{
@@ -105,6 +107,17 @@ function VoterPage(){
                 console.log("defualt is here")
         }
     },[action])
+
+    useEffect(() => {
+      const isTokenExpired = () => {
+        const decodedToken = jwtDecode(AuthUser.token.refresh);
+        return decodedToken.exp < Date.now() / 1000;
+      };
+  
+      if (isTokenExpired()) {
+        navigate('/enter-the-floor');
+      }
+    }, []);
 
     const houseKeepingType = () => {
         switch(AuthUser?.users?.userType){

@@ -62,11 +62,9 @@ const PodBackNforth =()=>{
 
     const handleLoad =()=>{
         setPages(pages+1)
-        console.log("post: ", pages)
         if(socketRef.current && socketRef.current.readyState === WebSocket.OPEN){
             socketRef.current.send(`page_number,${pages}`)
         }
-
         scrollToTop();
         
     }
@@ -104,7 +102,6 @@ const PodBackNforth =()=>{
                 <div key={index} className="d-flex align-item-baseline mb-3 mx-3 ">
                     <div className='fw-bold'>
                         <p>{message.sender.username}: </p>
-                      
                     </div>
                     <div className=' px-2 rounded '>
                        {message.message}
