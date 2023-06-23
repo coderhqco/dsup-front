@@ -31,7 +31,6 @@ function Home(){
             <a href="https://rubyonrails.org/" className="row text-decoration-none text-dark">
               <img src={logo} 
                 alt="Democracy Straight Up"/>
-                <span className="fs-2">Democracy Straight Up</span>
             </a>
           </div>
         </div>
