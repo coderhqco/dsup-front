@@ -1,5 +1,26 @@
 /* styles for index and all app inside */
 
+@font-face {
+    font-family: 'DroidSerif-Bold';
+    src: url('./fonts/DroidSerif-Bold.ttf');
+  }
+  
+  
+  @font-face {
+    font-family: 'DroidSerif-Regular';
+    src: url('./fonts/DroidSerif-Regular.ttf');
+  }
+  
+  @font-face {
+    font-family: 'DroidSerif-Italic';
+    src: url('./fonts/DroidSerif-Italic.ttf');
+  }
+
+  body {
+    font-family: 'DroidSerif-Regular';
+  }
+
+
 .image_check {
     display: flex;
     justify-content: center;

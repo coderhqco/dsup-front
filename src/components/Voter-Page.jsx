@@ -6,7 +6,6 @@ import axios from 'axios';
 import { pod, authenticate } from '../store/userSlice.js';
 import { baseURL } from '../store/conf.js'
 import jwtDecode from 'jwt-decode';
-import Button from 'react-bootstrap/Button';
 import { Container, Row, Col } from 'react-bootstrap';
 
 
@@ -15,6 +14,7 @@ function VoterPage() {
     const [message, setMessage] = useState({ type: 'alert alert-', msg: '' });
     const [token, setToken] = useState('');
     const [action, setAction] = useState('');
+    // eslint-disable-next-line
     const [pageLoaded, setPageLoaded] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -128,10 +128,10 @@ function VoterPage() {
                 return (
                     <div className="row text-center">
                         <div className="col-sm-12 ">
-                            <Link to={'/join-pod'} className="btn btn-primary m-2">Join a Pod</Link>
+                            <Link to={'/join-pod'} className="btn btn-success m-2">Join a Pod</Link>
                         </div>
                         <div className="col-sm-12 ">
-                            <a onClick={() => setAction('createPod')} className="btn btn-primary m-2">Create a Pod</a>
+                            <a onClick={() => setAction('createPod')} className="btn btn-success m-2">Create a Pod</a>
                         </div>
                     </div>
                 )
@@ -221,10 +221,10 @@ function VoterPage() {
             <div className="row">
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
                     <ul className="list-unstyled">
-                        <li className="mb-2"><Link to={'/voter-page'}><Button variant="dark"> List of Delegates</Button></Link></li>
-                        <li className="mb-2"><Link to={'/pod-back-n-forth'}><Button variant="dark"> Back-and-Forth </Button></Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'}> <Button variant="dark"> Member Contact Page </Button> </Link></li>
-                        <li className="mb-2"><Link to={'/house-keeping-page'}> <Button variant="dark"> Pod Housekeeping Page </Button></Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'} className="btn btn-dark m-2">List of Delegates</Link></li>
+                        <li className="mb-2"><Link to={'/pod-back-n-forth'} className="btn btn-dark m-2"> Back-and-Forth </Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'} className="btn btn-dark m-2">  Member Contact Page </Link></li>
+                        <li className="mb-2"><Link to={'/house-keeping-page'} className="btn btn-dark m-2">  Pod Housekeeping Page </Link></li>
                     </ul>
                 </div>
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
@@ -232,10 +232,10 @@ function VoterPage() {
                 </div>
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
                     <ul className="list-unstyled">
-                        <li className="mb-2"><Link to={'/voter-page'}> <Button variant="dark"> First Link Meeting Schedule </Button></Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'}> <Button variant="dark"> Meeting Minutes Log </Button></Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'}> <Button variant="dark"> Bill Metrics </Button> </Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'}> <Button variant="dark"> Voter Settings </Button></Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'} className="btn btn-dark m-2"> First Link Meeting Schedule </Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'} className="btn btn-dark m-2">  Meeting Minutes Log </Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'} className="btn btn-dark m-2"> Bill Metrics </Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'} className="btn btn-dark m-2"> Voter Settings </Link></li>
                     </ul>
                 </div>
             </div>
