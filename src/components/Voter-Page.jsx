@@ -6,8 +6,7 @@ import axios from 'axios';
 import { pod, authenticate } from '../store/userSlice.js';
 import { baseURL } from '../store/conf.js'
 import jwtDecode from 'jwt-decode';
-import { Container, Row, Col } from 'react-bootstrap';
-
+import { Card, Container, Row, Col, Table } from 'react-bootstrap';
 
 function VoterPage() {
     const AuthUser = useSelector((state) => state.AuthUser.user);
@@ -190,34 +189,41 @@ function VoterPage() {
                         : ""}
                 </div>
             </div>
-
-            {/* <div className="row mt-3">
-                <div className="col-sm-12 col-md-12 col-lg-12 row">
-                    <div className="col-sm-6">
-                        <p>Voter:</p>
-                    </div>
-                    <div className="col-sm-6">
-                        <h1 >{AuthUser?.users?.legalName}</h1>
-                    </div>
-                    <h3 className="text-center">Your Verification Score: {AuthUser?.users?.verificationScore}/7</h3>
-                </div>
-                <div className="col-sm-12 col-md-12 col-lg-12">
-                    <h1 className="text-center"> District: {AuthUser.users?.district?.code} </h1>
-                </div>
-            </div> */}
-
             <Container>
                 <Row>
-                    <Col xs="auto">
-                        <p className="text-left">Voter:</p>
+                    <Col>
+                        <Row>
+                            <Col xs="auto">
+                                <p className="text-left">Voter:</p>
+                            </Col>
+                            <Col>
+                                <h1>{AuthUser?.users?.legalName}</h1>
+                            </Col>
+                        </Row>
                     </Col>
                     <Col>
-                        <h1>John Doe</h1>
+                        <Row>
+                            <Col xs="auto">
+                                <p className="text-left">Verification Score:</p>
+                            </Col>
+                            <Col>
+                                <h1>{AuthUser?.users?.verificationScore}/7</h1>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col>
+                        <Row>
+                            <Col xs="auto">
+                                <p className="text-left">District:</p>
+                            </Col>
+                            <Col>
+                                <h1>{AuthUser.users?.district?.code}</h1>
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
             </Container>
 
-            {/* the three columns on  */}
             <div className="row">
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
                     <ul className="list-unstyled">
@@ -239,7 +245,19 @@ function VoterPage() {
                     </ul>
                 </div>
             </div>
-
+            <h1 className="header-cursive" style={{marginBottom: "1%"}}>Upcoming Bills...</h1>
+            <div className="d-flex flex-row flex-nowrap overflow-auto">
+                {[...Array(12)].map((_, index) => (
+                    <Card key={index} style={{ minWidth: '300px' }} className="mx-2">
+                        <Card.Body>
+                            <Card.Title>Card Title {index + 1}</Card.Title>
+                            <Card.Text>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                ))}
+            </div>
         </div>
     )
 }

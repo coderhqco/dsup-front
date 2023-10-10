@@ -32,4 +32,15 @@
     margin-right: 0px;
     height: 30px;
 }
+
+.header-cursive {
+    font-family: 'DroidSerif-Italic';
+    font-size: 30px;
+    color: black;
+    margin: 0;
+    padding: 0;
+    margin-left: 10px;
+}
+
+
   
