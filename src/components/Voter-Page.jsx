@@ -22,6 +22,9 @@ function VoterPage() {
 
     let date = new Date(AuthUser.date_joined)
 
+    // placeholder rows below before we get the data from the backend for each bill 
+    const rows = Array(10).fill().map((_, i) => i + 1);
+
 
     // get the new access token on each page load or redirect
     useEffect(() => {
@@ -224,6 +227,7 @@ function VoterPage() {
                 </Row>
             </Container>
 
+            {/* the three columns on  */}
             <div className="row">
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
                     <ul className="list-unstyled">
@@ -245,8 +249,8 @@ function VoterPage() {
                     </ul>
                 </div>
             </div>
-            <h1 className="header-cursive" style={{marginBottom: "1%"}}>Upcoming Bills...</h1>
-            <div className="d-flex flex-row flex-nowrap overflow-auto">
+            <h1 className="header-cursive" style={{ marginBottom: "1%" }}>Upcoming Bills...</h1>
+            {/* <div className="d-flex flex-row flex-nowrap overflow-auto">
                 {[...Array(12)].map((_, index) => (
                     <Card key={index} style={{ minWidth: '300px' }} className="mx-2">
                         <Card.Body>
@@ -257,7 +261,40 @@ function VoterPage() {
                         </Card.Body>
                     </Card>
                 ))}
-            </div>
+            </div> */}
+
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>HR #</th>
+                        <th>Short Title</th>
+                        <th>Scheduled...</th>
+                        <th>Username</th>
+                        <th>Your Vote</th>
+                        <th>Advisement</th>
+                        <th>District Tally</th>
+                        <th>National Tally</th>
+                        <th>More...</th>
+                        <th>Metrics</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows.map(row => (
+                        <tr key={row}>
+                            <td>Bill {row}</td>
+                            <td>BILL NAME</td>
+                            <td>DATE</td>
+                            <td>VOTE</td>
+                            <td>YEA</td>
+                            <td>None</td>
+                            <td>#</td>
+                            <td>#</td>
+                            <td> <Link to={'/bills/${row}'}>Link</Link></td>
+                            <td>Info</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
         </div>
     )
 }
