@@ -1,23 +1,18 @@
 /* styles for index and all app inside */
 
-@font-face {
-    font-family: 'DroidSerif-Bold';
-    src: url('./fonts/DroidSerif-Bold.ttf');
-  }
-  
-  
-  @font-face {
-    font-family: 'DroidSerif-Regular';
-    src: url('./fonts/DroidSerif-Regular.ttf');
-  }
-  
-  @font-face {
-    font-family: 'DroidSerif-Italic';
-    src: url('./fonts/DroidSerif-Italic.ttf');
-  }
 
   body {
-    font-family: 'DroidSerif-Regular';
+    font-family: 'Cabin-Regular';
+  }
+
+  @font-face {
+    font-family: 'Cabin-Regular';
+    src: url('./fonts/Cabin-Bold.otf');
+  }
+
+  @font-face {
+    font-family: 'Cabin-Italic';
+    src: url('./fonts/Cabin-Italic.otf');
   }
 
 
@@ -34,7 +29,7 @@
 }
 
 .header-cursive {
-    font-family: 'DroidSerif-Italic';
+    font-family: 'Cabin-Italic';
     font-size: 30px;
     color: black;
     margin: 0;

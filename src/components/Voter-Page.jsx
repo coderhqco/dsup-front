@@ -192,7 +192,7 @@ function VoterPage() {
                         : ""}
                 </div>
             </div>
-            <Container>
+            <Container style = {{marginTop: "2%"}}>
                 <Row>
                     <Col>
                         <Row>
@@ -231,10 +231,10 @@ function VoterPage() {
             <div className="row">
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
                     <ul className="list-unstyled">
-                        <li className="mb-2"><Link to={'/voter-page'} className="btn btn-dark m-2">List of Delegates</Link></li>
-                        <li className="mb-2"><Link to={'/pod-back-n-forth'} className="btn btn-dark m-2"> Back-and-Forth </Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'} className="btn btn-dark m-2">  Member Contact Page </Link></li>
-                        <li className="mb-2"><Link to={'/house-keeping-page'} className="btn btn-dark m-2">  Pod Housekeeping Page </Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'}>List of Delegates</Link></li>
+                        <li className="mb-2"><Link to={'/pod-back-n-forth'}> Back-and-Forth </Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'}>  Member Contact Page </Link></li>
+                        <li className="mb-2"><Link to={'/house-keeping-page'}>  Pod Housekeeping Page </Link></li>
                     </ul>
                 </div>
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
@@ -242,14 +242,15 @@ function VoterPage() {
                 </div>
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
                     <ul className="list-unstyled">
-                        <li className="mb-2"><Link to={'/voter-page'} className="btn btn-dark m-2"> First Link Meeting Schedule </Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'} className="btn btn-dark m-2">  Meeting Minutes Log </Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'} className="btn btn-dark m-2"> Bill Metrics </Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'} className="btn btn-dark m-2"> Voter Settings </Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'}> First Link Meeting Schedule </Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'}>  Meeting Minutes Log </Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'}> Bill Metrics </Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'}> Voter Settings </Link></li>
                     </ul>
                 </div>
             </div>
             <h1 className="header-cursive" style={{ marginBottom: "1%" }}>Upcoming Bills...</h1>
+            <p> <Link> See full list of bills... </Link></p>
             {/* <div className="d-flex flex-row flex-nowrap overflow-auto">
                 {[...Array(12)].map((_, index) => (
                     <Card key={index} style={{ minWidth: '300px' }} className="mx-2">
@@ -261,7 +262,9 @@ function VoterPage() {
                         </Card.Body>
                     </Card>
                 ))}
-            </div> */}
+            </div> 
+            // this is the scrollale card version of the table below
+            */}
 
             <Table striped bordered hover>
                 <thead>
