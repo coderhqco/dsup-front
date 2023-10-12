@@ -49,10 +49,7 @@ function Header() {
                                 : ""}
                         </li>
                         <li className="nav-item">
-                            <span className="nav-link fs-5">
-                                <i className="bi bi-gear-fill"></i>
-                                Settings
-                            </span>
+                            <Link className="nav-link fs-5" to={'/settings'}> Settings <i className="bi bi-gear-fill"></i></Link>
                         </li>
                     </ul>
                 </div>

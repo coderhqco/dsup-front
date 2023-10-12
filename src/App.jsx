@@ -12,6 +12,7 @@ import JoinPod from './components/joinPod.jsx';
 import HouseKeeping from './components/houseKeeping.jsx';
 import UserActivate from './components/UserActivate';
 import PodBackNforth from './components/PodBackNforth.jsx';
+import SettingsPage from './components/SettingsPage.jsx';
 
 function App(){
   return (
@@ -29,6 +30,8 @@ function App(){
         <Route path="/sign-up" element={<><Header/><SignUpConfirm/><Footer/></>}/>
         <Route path="/api/activate/:uid/:token" element={<><Header/><UserActivate/><Footer/></>}/>
         <Route path='/*' element={<><Header/><Error/> <Footer/> </>}></Route>
+        <Route path="/settings" element={<><Header/><SettingsPage/><Footer/></>}/>
+
       </Route>
     </Routes>
   )
