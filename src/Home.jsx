@@ -28,7 +28,7 @@ function Home(){
       <div className="row mt-5">
       <div className="col col-sm-12 col-md-4 col-lg-4 mt-4">
           <div className="container text-center ">
-            <a href="https://rubyonrails.org/" className="row text-decoration-none text-dark">
+            <a className="row text-decoration-none text-dark">
               <img src={logo} 
                 alt="Democracy Straight Up"/>
             </a>
