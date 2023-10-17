@@ -1,6 +1,5 @@
 /* styles for index and all app inside */
 
-
   body {
     font-family: 'Cabin-Regular';
   }
@@ -14,7 +13,6 @@
     font-family: 'Cabin-Italic';
     src: url('./fonts/Cabin-Italic.otf');
   }
-
 
 .image_check {
     display: flex;
