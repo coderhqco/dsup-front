@@ -36,12 +36,17 @@ function Header() {
                             </li>
                             : ""}
                         <li className="nav-item">
-                            <Link to='/help' className="nav-link fs-5" >Help</Link>
+                            {AuthUser ?
+                                <Link to='/search' className="nav-link fs-5 active" >Search and Sort For Bills</Link>
+                                : ""}
                         </li>
                         <li className="nav-item">
                             {!AuthUser ?
                                 <Link to='/enter-the-floor' className="nav-link fs-5">Login</Link>
                                 : ""}
+                        </li>
+                        <li className="nav-item">
+                            <Link to='/help' className="nav-link fs-5" >Help</Link>
                         </li>
                         <li className="nav-item">
                             {AuthUser ?
