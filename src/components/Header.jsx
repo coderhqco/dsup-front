@@ -2,7 +2,9 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../store/userSlice.js';
+import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 
 function Header() {
@@ -45,7 +47,7 @@ function Header() {
                                 <Link to='/enter-the-floor' className="nav-link fs-5">Login</Link>
                                 : ""}
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <Link to='/help' className="nav-link fs-5" >Help</Link>
                         </li>
                         <li className="nav-item">
@@ -55,7 +57,21 @@ function Header() {
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link fs-5" to={'/settings'}> Settings <i className="bi bi-gear-fill"></i></Link>
-                        </li>
+                        </li> */}
+                        <Dropdown>
+                            <Dropdown.Toggle id="dropdown-basic">
+                                Settings <i className="bi bi-gear-fill"></i>
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item href="#/action-1"><Link to='/help' >Help</Link></Dropdown.Item>
+                                <Dropdown.Item href="#/action-3"><Link to={'/settings'}> Settings </Link></Dropdown.Item>
+                                {AuthUser ?
+                                    <Dropdown.Item href="#/action-2"><a onClick={handleLogout}>Logout</a></Dropdown.Item>
+                                    : ""}
+
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </ul>
                 </div>
             </div>
