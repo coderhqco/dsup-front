@@ -1,18 +1,18 @@
 /* styles for index and all app inside */
 
   body {
-    font-family: 'Cabin-Regular';
+    font-family: 'Inter-Regular';
   }
 
   @font-face {
-    font-family: 'Cabin-Regular';
-    src: url('./fonts/Cabin-Bold.otf');
+    font-family: 'Inter-Regular';
+    src: url('./fonts/Inter-Regular.ttf');
   }
 
-  @font-face {
+  /* @font-face {
     font-family: 'Cabin-Italic';
     src: url('./fonts/Cabin-Italic.otf');
-  }
+  } */
 
 .image_check {
     display: flex;

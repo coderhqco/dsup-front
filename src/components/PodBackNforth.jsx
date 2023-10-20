@@ -165,7 +165,7 @@ const PodBackNforth = () => {
                             <Card.Subtitle className="mb-2 text-muted">As you are entering the Back & Forth page for the first time, we as you to provide a handle. It is your display name for the Back & Forth, and unless you enter it here, we will not display your real name.</Card.Subtitle>
                             <br />
                             <Form.Control type="text" placeholder="Nickname" />
-                            <div className="text-center d-grid gap-2" style={{marginTop: "1%"}}>
+                            <div className="text-center d-grid gap-2" style={{ marginTop: "1%" }}>
                                 <Button variant="primary" type="submit" onClick={submitNickname}>
                                     Submit
                                 </Button>
