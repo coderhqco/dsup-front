@@ -7,7 +7,7 @@ import jwtDecode from 'jwt-decode';
 
 function Home(){
   const AuthUser = useSelector((state) => state.AuthUser.user);
-
+  console.log(AuthUser)
   const isRefreshTokenExpired = () => {
     try {
       const decodedToken = jwtDecode(AuthUser.token.refresh);

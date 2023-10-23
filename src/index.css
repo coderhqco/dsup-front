@@ -14,6 +14,11 @@
     src: url('./fonts/Cabin-Italic.otf');
   } */
 
+  @font-face {
+    font-family: 'Inter-Bold';
+    src: url('./fonts/Inter-Bold.ttf');
+  }
+
 .image_check {
     display: flex;
     justify-content: center;
@@ -30,6 +35,23 @@
     font-family: 'Cabin-Italic';
     font-size: 30px;
     color: black;
+    margin: 0;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.back-and-forth-nickname-font {
+    font-family: 'Inter-Bold';
+    font-size: 20px;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+
+.f-del-tag {
+    font-family: 'Inter-Bold';
+    font-size: 15px;
+    color: red;
     margin: 0;
     padding: 0;
     margin-left: 10px;

@@ -19,6 +19,7 @@ function VoterPage() {
     const navigate = useNavigate();
     const podMembers = useSelector((state) => state.AuthUser.podMembers);
     const [delegate, setDelegate] = useState(podMembers?.filter((e) => e.is_delegate === true)[0]);
+    const [bills, setBills] = useState([]);
 
     let date = new Date(AuthUser.date_joined)
 
@@ -123,6 +124,10 @@ function VoterPage() {
             navigate('/enter-the-floor');
         }
     }, []);
+
+    // useEffect(() => {
+    //     if (AuthUser.users.userType === 1) {
+            
 
     const houseKeepingType = () => {
         switch (AuthUser?.users?.userType) {

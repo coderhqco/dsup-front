@@ -97,13 +97,41 @@ const PodBackNforth = () => {
     const msg = (message, index) => {
         if (AuthUser.username === message.sender.username) {
             return (
-                <div key={index} className="d-flex align-item-baseline text-end justify-content-end mb-3 mx-4">
-                    <div className=' px-2 bg-tertiary rounded '>
-                        {message.message}
+                <div key={index} className="d-flex align-item-baseline align-item-baseline mb-3 mx-4 ">
+                    <div >
+                        <p className='back-and-forth-nickname-font'>{message.sender.username}
+                        </p>
+                        <p> {message.message}</p>
                     </div>
-                    <div className='fw-bold'>
-                        <p>:{message.sender.username}
-                            [{date_short(message.date)}]</p>
+                    <div style={{ marginLeft: ".5%" }}>
+                        <p>
+                            {(() => {
+                                switch (AuthUser.users.userType) {
+                                    case 0:
+                                        return "Content for User Type 0";
+                                    case 1:
+                                        return (
+                                            <div>
+                                                <p className='f-del-tag'>[F-Del]</p>
+                                            </div>
+                                        );
+                                    case 2:
+                                        return "Content for User Type 2";
+                                    case 3:
+                                        return "Content for User Type 3";
+                                    case 4:
+                                        return "Content for User Type 4";
+                                    case 5:
+                                        return "Content for User Type 5";
+                                    default:
+                                        return "Fallback Content";
+                                }
+                            })()}
+                        </p>
+                    </div>
+
+                    <div style={{ marginLeft: "3%" }}>
+                        [{date_short(message.date)}]
                     </div>
                 </div>
             )
@@ -125,7 +153,8 @@ const PodBackNforth = () => {
     // we can change it to User.nickname, which will be the name that is displayed in the chat. if no nickname, then
     // the prompt to create a username will be displayed.
     {
-        return !AuthUser ? (
+        // User.handle? 
+        return AuthUser ? (
             <div className="container my-5">
                 <div className="card mx-auto "  >
                     <div className="card-header border-0 shadow-sm text-center" >
@@ -161,10 +190,10 @@ const PodBackNforth = () => {
                 <Container className='d-flex align-items-center justify-content-center'>
                     <Card style={{ width: '50%' }}>
                         <Card.Body>
-                            <Card.Title>Choose a Nickname</Card.Title>
+                            <Card.Title>Choose a Handle</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted">As you are entering the Back & Forth page for the first time, we as you to provide a handle. It is your display name for the Back & Forth, and unless you enter it here, we will not display your real name.</Card.Subtitle>
                             <br />
-                            <Form.Control type="text" placeholder="Nickname" />
+                            <Form.Control type="text" placeholder="Handle" />
                             <div className="text-center d-grid gap-2" style={{ marginTop: "1%" }}>
                                 <Button variant="primary" type="submit" onClick={submitNickname}>
                                     Submit
