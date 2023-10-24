@@ -53,6 +53,23 @@ function VoterPage() {
             });
     }, [])
 
+
+    // get the bills on each page load or redirect
+    useEffect(() => {
+        axios.get(`${window.location.protocol}//${baseURL}/api/bills/`)
+            .then(response => {
+                if (response.status === 200) {
+                    setBills(response.data)
+                } else {
+                    setMessage({ type: "alert alert-danger", msg: "could not get bills" })
+                }
+            })
+            .catch(error => {
+                setMessage({ type: "alert alert-danger", msg: "Could not receive list of bills... something went wrong with your request." })
+                console.log(error)
+            });
+    }, [])
+
     useEffect(() => {
         switch (action) {
             // if no action is specified, fetch user info and pod
@@ -229,7 +246,7 @@ function VoterPage() {
             </Container>
 
             {/* the three columns on  kyle note: fix to center the below when on mobile*/}
-            
+
             <div className="row">
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
                     <ul className="list-unstyled">
@@ -259,29 +276,28 @@ function VoterPage() {
                     <tr className='bills-list-voter-page-header-row'>
                         <th>HR #</th>
                         <th>Short Title</th>
-                        <th>Scheduled...</th>
-                        <th>Username</th>
+                        <th>Latest Action</th>
                         <th>Your Vote</th>
                         <th>Advisement</th>
                         <th>District Tally</th>
                         <th>National Tally</th>
-                        <th>More...</th>
+                        <th>Bill Link</th>
                         <th>Metrics</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {rows.map(row => (
-                        <tr key={row}>
-                            <td>Bill {row}</td>
-                            <td>BILL NAME</td>
-                            <td>DATE</td>
-                            <td>VOTE</td>
-                            <td>YEA</td>
-                            <td>None</td>
-                            <td>#</td>
-                            <td>#</td>
-                            <td> <Link to={'/bills/${row}'}>Link</Link></td>
-                            <td>Info</td>
+                    {bills.slice(0, 10).map((bill, index) => (
+                        <tr key={index}>
+                            <td>{bill.number}</td>
+                            <td>{bill.title}</td>
+                            {/* Include other bill properties as needed */}
+                            <td>{bill.latest_action_date}</td>
+                            <td>{bill.your_vote}</td>
+                            <td>{bill.advisement}</td>
+                            <td>{bill.district_tally}</td>
+                            <td>{bill.national_tally}</td>
+                            <td><a href={bill.url}>Link</a></td>
+                            <td>TBD</td>
                         </tr>
                     ))}
                 </tbody>
