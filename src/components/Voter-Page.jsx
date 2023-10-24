@@ -146,7 +146,7 @@ function VoterPage() {
                 return (
                     <div className="row text-center">
                         <div className="col-sm-12 col-md-6 col-lg-6">
-                            <Link to='/house-keeping-page' className="btn btn-primary m-2"> My pod</Link>
+                            <Link to='/house-keeping-page' className="btn btn-primary m-2 fixed-height-button"> My Pod</Link>
                         </div>
                         {/* add if the user is delegate and then show this two. */}
                         {AuthUser?.username === delegate?.user?.username ? <>
@@ -159,7 +159,7 @@ function VoterPage() {
                         </>
                             : ""}
                         <div className="col-sm-12 col-md-6 col-lg-6">
-                            <Link className='btn btn-primary m-2' to={'/pod-back-n-forth'}>Back-and-Forth</Link>
+                            <Link className='btn btn-primary m-2 fixed-height-button' to={'/pod-back-n-forth'}>Back-and-Forth</Link>
                             {/* <a className="btn btn-primary m-2" >Back-and-Forth</a> */}
                         </div>
                     </div>
