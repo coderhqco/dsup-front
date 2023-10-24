@@ -123,11 +123,7 @@ function VoterPage() {
         if (isTokenExpired()) {
             navigate('/enter-the-floor');
         }
-    }, []);
-
-    // useEffect(() => {
-    //     if (AuthUser.users.userType === 1) {
-            
+    }, []);    
 
     const houseKeepingType = () => {
         switch (AuthUser?.users?.userType) {
@@ -254,7 +250,7 @@ function VoterPage() {
                     </ul>
                 </div>
             </div>
-            <h1 className="header-cursive" style={{ marginBottom: "1%" }}>Upcoming Bills...</h1>
+            <h1 className="header-cursive" style={{ marginBottom: "1%" }}>Bills With Latest Action...</h1>
             <p> <Link> See full list of bills... </Link></p>
             {/* <div className="d-flex flex-row flex-nowrap overflow-auto">
                 {[...Array(12)].map((_, index) => (
@@ -273,7 +269,7 @@ function VoterPage() {
 
             <Table striped bordered hover>
                 <thead>
-                    <tr>
+                    <tr className='bills-list-voter-page-header-row'>
                         <th>HR #</th>
                         <th>Short Title</th>
                         <th>Scheduled...</th>

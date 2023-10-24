@@ -18,6 +18,7 @@
     font-family: 'Inter-Bold';
     src: url('./fonts/Inter-Bold.ttf');
   }
+  
 
 .image_check {
     display: flex;
@@ -62,4 +63,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.bills-list-voter-page-header-row {
+  font-family: 'Inter-Bold';
+  font-size: 18px;
+  color: black;
 }
