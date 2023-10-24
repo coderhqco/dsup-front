@@ -104,7 +104,7 @@ const PodBackNforth = () => {
                         <p> {message.message}</p>
                     </div>
                     <div style={{ marginLeft: ".5%" }}>
-                        <p>
+                        <div>
                             {(() => {
                                 switch (AuthUser.users.userType) {
                                     case 0:
@@ -127,7 +127,7 @@ const PodBackNforth = () => {
                                         return "Fallback Content";
                                 }
                             })()}
-                        </p>
+                        </div>
                     </div>
 
                     <div style={{ marginLeft: "3%" }}>
