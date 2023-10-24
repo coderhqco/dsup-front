@@ -123,7 +123,7 @@ function VoterPage() {
         if (isTokenExpired()) {
             navigate('/enter-the-floor');
         }
-    }, []);    
+    }, []);
 
     const houseKeepingType = () => {
         switch (AuthUser?.users?.userType) {
@@ -193,7 +193,7 @@ function VoterPage() {
                         : ""}
                 </div>
             </div>
-            <Container style = {{marginTop: "2%"}}>
+            <Container style={{ marginTop: "2%" }} >
                 <Row>
                     <Col>
                         <Row>
@@ -228,7 +228,8 @@ function VoterPage() {
                 </Row>
             </Container>
 
-            {/* the three columns on  */}
+            {/* the three columns on  kyle note: fix to center the below when on mobile*/}
+            
             <div className="row">
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
                     <ul className="list-unstyled">
@@ -250,22 +251,8 @@ function VoterPage() {
                     </ul>
                 </div>
             </div>
-            <h1 className="header-cursive" style={{ marginBottom: "1%" }}>Bills With Latest Action...</h1>
+            <h1 className="header-semibold" style={{ marginBottom: "1%" }}>Bills With Latest Action...</h1>
             <p> <Link> See full list of bills... </Link></p>
-            {/* <div className="d-flex flex-row flex-nowrap overflow-auto">
-                {[...Array(12)].map((_, index) => (
-                    <Card key={index} style={{ minWidth: '300px' }} className="mx-2">
-                        <Card.Body>
-                            <Card.Title>Card Title {index + 1}</Card.Title>
-                            <Card.Text>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                ))}
-            </div> 
-            // this is the scrollale card version of the table below
-            */}
 
             <Table striped bordered hover>
                 <thead>
