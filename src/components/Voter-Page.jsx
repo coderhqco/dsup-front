@@ -164,10 +164,10 @@ function VoterPage() {
                         {/* add if the user is delegate and then show this two. */}
                         {AuthUser?.username === delegate?.user?.username ? <>
                             <div className="col-sm-12 col-md-6 col-lg-6">
-                                <a className="btn btn-primary m-2" >Join First Link</a>
+                                <a className="btn btn-primary m-2 fixed-height-button" >Join First Link</a>
                             </div>
                             <div className="col-sm-12 col-md-6 col-lg-6">
-                                <a className="btn btn-primary m-2" >Create First Link</a>
+                                <a className="btn btn-primary m-2 fixed-height-button" >Create First Link</a>
                             </div>
                         </>
                             : ""}
@@ -271,7 +271,7 @@ function VoterPage() {
             <h1 className="header-semibold" style={{ marginBottom: "1%" }}>Bills With Latest Action...</h1>
             <p> <Link> See full list of bills... </Link></p>
 
-            <Table striped bordered hover>
+            <Table striped bordered hover responsive>
                 <thead>
                     <tr className='bills-list-voter-page-header-row'>
                         <th>HR #</th>

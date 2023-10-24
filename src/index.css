@@ -71,6 +71,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: 'Inter-SemiBold';
 }
 
 .bills-list-voter-page-header-row {
