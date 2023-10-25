@@ -154,7 +154,7 @@ const PodBackNforth = () => {
     // the prompt to create a username will be displayed.
     {
         // User.handle? 
-        return AuthUser ? (
+        return !AuthUser ? (
             <div className="container my-5">
                 <div className="card mx-auto "  >
                     <div className="card-header border-0 shadow-sm text-center" >
