@@ -53,6 +53,23 @@ function VoterPage() {
             });
     }, [])
 
+
+    // get the bills on each page load or redirect
+    useEffect(() => {
+        axios.get(`${window.location.protocol}//${baseURL}/api/bills/`)
+            .then(response => {
+                if (response.status === 200) {
+                    setBills(response.data)
+                } else {
+                    setMessage({ type: "alert alert-danger", msg: "could not get bills" })
+                }
+            })
+            .catch(error => {
+                setMessage({ type: "alert alert-danger", msg: "Could not receive list of bills... something went wrong with your request." })
+                console.log(error)
+            });
+    }, [])
+
     useEffect(() => {
         switch (action) {
             // if no action is specified, fetch user info and pod
@@ -123,7 +140,7 @@ function VoterPage() {
         if (isTokenExpired()) {
             navigate('/enter-the-floor');
         }
-    }, []);    
+    }, []);
 
     const houseKeepingType = () => {
         switch (AuthUser?.users?.userType) {
@@ -147,10 +164,10 @@ function VoterPage() {
                         {/* add if the user is delegate and then show this two. */}
                         {AuthUser?.username === delegate?.user?.username ? <>
                             <div className="col-sm-12 col-md-6 col-lg-6">
-                                <a className="btn btn-primary m-2" >Join First Link</a>
+                                <a className="btn btn-primary m-2 fixed-height-button" >Join First Link</a>
                             </div>
                             <div className="col-sm-12 col-md-6 col-lg-6">
-                                <a className="btn btn-primary m-2" >Create First Link</a>
+                                <a className="btn btn-primary m-2 fixed-height-button" >Create First Link</a>
                             </div>
                         </>
                             : ""}
@@ -193,7 +210,7 @@ function VoterPage() {
                         : ""}
                 </div>
             </div>
-            <Container style = {{marginTop: "2%"}}>
+            <Container style={{ marginTop: "2%" }} >
                 <Row>
                     <Col>
                         <Row>
@@ -228,9 +245,10 @@ function VoterPage() {
                 </Row>
             </Container>
 
-            {/* the three columns on  */}
-            <div className="row">
-                <div className="col-sm-12 col-md-4 d-flex justify-content-center">
+            {/* the three columns on  kyle note: fix to center the below when on mobile*/}
+
+            <div className="row d-flex justify-content-center align-items-center">
+                <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
                     <ul className="list-unstyled">
                         <li className="mb-2"><Link to={'/voter-page'}>List of Delegates</Link></li>
                         <li className="mb-2"><Link to={'/pod-back-n-forth'}> Back-and-Forth </Link></li>
@@ -241,7 +259,7 @@ function VoterPage() {
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
                     {houseKeepingType()}
                 </div>
-                <div className="col-sm-12 col-md-4 d-flex justify-content-center">
+                <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
                     <ul className="list-unstyled">
                         <li className="mb-2"><Link to={'/voter-page'}> First Link Meeting Schedule </Link></li>
                         <li className="mb-2"><Link to={'/voter-page'}>  Meeting Minutes Log </Link></li>
@@ -250,51 +268,37 @@ function VoterPage() {
                     </ul>
                 </div>
             </div>
-            <h1 className="header-cursive" style={{ marginBottom: "1%" }}>Bills With Latest Action...</h1>
+            <h1 className="header-semibold" style={{ marginBottom: "1%" }}>Bills With Latest Action...</h1>
             <p> <Link> See full list of bills... </Link></p>
-            {/* <div className="d-flex flex-row flex-nowrap overflow-auto">
-                {[...Array(12)].map((_, index) => (
-                    <Card key={index} style={{ minWidth: '300px' }} className="mx-2">
-                        <Card.Body>
-                            <Card.Title>Card Title {index + 1}</Card.Title>
-                            <Card.Text>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                ))}
-            </div> 
-            // this is the scrollale card version of the table below
-            */}
 
-            <Table striped bordered hover>
+            <Table striped bordered hover responsive>
                 <thead>
                     <tr className='bills-list-voter-page-header-row'>
                         <th>HR #</th>
                         <th>Short Title</th>
-                        <th>Scheduled...</th>
-                        <th>Username</th>
+                        <th>Latest Action</th>
                         <th>Your Vote</th>
                         <th>Advisement</th>
                         <th>District Tally</th>
                         <th>National Tally</th>
-                        <th>More...</th>
+                        <th>Bill Link</th>
                         <th>Metrics</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {rows.map(row => (
-                        <tr key={row}>
-                            <td>Bill {row}</td>
-                            <td>BILL NAME</td>
-                            <td>DATE</td>
-                            <td>VOTE</td>
-                            <td>YEA</td>
-                            <td>None</td>
-                            <td>#</td>
-                            <td>#</td>
-                            <td> <Link to={'/bills/${row}'}>Link</Link></td>
-                            <td>Info</td>
+                    {bills.slice(0, 10).map((bill, index) => (
+                        <tr key={index}>
+                            <td>{bill.number}</td>
+                            <td>{bill.title}</td>
+                            {/* Include other bill properties as needed */}
+                            <td>{bill.latest_action_date}</td>
+                            <td>{bill.your_vote}</td>
+                            {/* Need to add advisement as an attribute on the bills model*/}
+                            <td>{bill.advisement}</td>
+                            <td>{bill.district_tally}</td>
+                            <td>{bill.national_tally}</td>
+                            <td><a href={bill.url}>Link</a></td>
+                            <td>TBD</td>
                         </tr>
                     ))}
                 </tbody>

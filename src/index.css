@@ -1,61 +1,69 @@
 /* styles for index and all app inside */
 
-  body {
-    font-family: 'Inter-Regular';
-  }
+body {
+  font-family: 'Inter-Regular';
+}
 
-  @font-face {
-    font-family: 'Inter-Regular';
-    src: url('./fonts/Inter-Regular.ttf');
-  }
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('./fonts/Inter-Regular.ttf');
+}
 
-  /* @font-face {
+/* @font-face {
     font-family: 'Cabin-Italic';
     src: url('./fonts/Cabin-Italic.otf');
   } */
 
-  @font-face {
-    font-family: 'Inter-Bold';
-    src: url('./fonts/Inter-Bold.ttf');
-  }
-  
+@font-face {
+  font-family: 'Inter-Bold';
+  src: url('./fonts/Inter-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Inter-SemiBold';
+  src: url('./fonts/Inter-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'Inter-Black';
+  src: url('./fonts/Inter-Black.ttf');
+}
 
 .image_check {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .image_check img {
-    width: 30px;
-    margin-right: 0px;
-    height: 30px;
+  width: 30px;
+  margin-right: 0px;
+  height: 30px;
 }
 
-.header-cursive {
-    font-family: 'Cabin-Italic';
-    font-size: 30px;
-    color: black;
-    margin: 0;
-    padding: 0;
-    margin-left: 10px;
+.header-semibold {
+  font-family: 'Inter-SemiBold';
+  font-size: 30px;
+  color: black;
+  margin: 0;
+  padding: 0;
 }
 
 .back-and-forth-nickname-font {
-    font-family: 'Inter-Bold';
-    font-size: 20px;
-    color: black;
-    margin: 0;
-    padding: 0;
+  font-family: 'Inter-Bold';
+  font-size: 20px;
+  color: black;
+  margin: 0;
+  padding: 0;
 }
 
 .f-del-tag {
-    font-family: 'Inter-Bold';
-    font-size: 15px;
-    color: red;
-    margin: 0;
-    padding: 0;
-    margin-left: 10px;
+  font-family: 'Inter-Bold';
+  font-size: 15px;
+  color: red;
+  margin: 0;
+  padding: 0;
+  margin-left: 10px;
 }
 
 .fixed-height-button {
@@ -63,10 +71,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: 'Inter-SemiBold';
 }
 
 .bills-list-voter-page-header-row {
   font-family: 'Inter-Bold';
   font-size: 18px;
   color: black;
+}
+
+@media (max-width: 768px) {
+  .text-center-on-small {
+    text-align: center;
+  }
 }
