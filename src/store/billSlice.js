@@ -8,12 +8,12 @@ export const billSlice = createSlice({
   name: 'bill',
   initialState,
   reducers: {
-    setBills: (state, action) => {
+    retrieveBills: (state, action) => {
       state.bills = action.payload;
     },
   },
 });
 
-export const { setBills } = billSlice.actions;
+export const { retrieveBills } = billSlice.actions;
 
 export default billSlice.reducer;
