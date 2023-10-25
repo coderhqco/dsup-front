@@ -247,8 +247,8 @@ function VoterPage() {
 
             {/* the three columns on  kyle note: fix to center the below when on mobile*/}
 
-            <div className="row">
-                <div className="col-sm-12 col-md-4 d-flex justify-content-center">
+            <div className="row d-flex justify-content-center align-items-center">
+                <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
                     <ul className="list-unstyled">
                         <li className="mb-2"><Link to={'/voter-page'}>List of Delegates</Link></li>
                         <li className="mb-2"><Link to={'/pod-back-n-forth'}> Back-and-Forth </Link></li>
@@ -259,7 +259,7 @@ function VoterPage() {
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
                     {houseKeepingType()}
                 </div>
-                <div className="col-sm-12 col-md-4 d-flex justify-content-center">
+                <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
                     <ul className="list-unstyled">
                         <li className="mb-2"><Link to={'/voter-page'}> First Link Meeting Schedule </Link></li>
                         <li className="mb-2"><Link to={'/voter-page'}>  Meeting Minutes Log </Link></li>
@@ -293,6 +293,7 @@ function VoterPage() {
                             {/* Include other bill properties as needed */}
                             <td>{bill.latest_action_date}</td>
                             <td>{bill.your_vote}</td>
+                            {/* Need to add advisement as an attribute on the bills model*/}
                             <td>{bill.advisement}</td>
                             <td>{bill.district_tally}</td>
                             <td>{bill.national_tally}</td>

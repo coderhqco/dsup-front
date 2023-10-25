@@ -79,3 +79,9 @@ body {
   font-size: 18px;
   color: black;
 }
+
+@media (max-width: 768px) {
+  .text-center-on-small {
+    text-align: center;
+  }
+}
