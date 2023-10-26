@@ -7,6 +7,7 @@ import { pod, authenticate } from '../store/userSlice.js';
 import { baseURL } from '../store/conf.js'
 import jwtDecode from 'jwt-decode';
 import { Card, Container, Row, Col, Table } from 'react-bootstrap';
+import { retrieveBillsSuccess } from '../store/billSlice';
 
 function VoterPage() {
     const AuthUser = useSelector((state) => state.AuthUser.user);
@@ -19,13 +20,9 @@ function VoterPage() {
     const navigate = useNavigate();
     const podMembers = useSelector((state) => state.AuthUser.podMembers);
     const [delegate, setDelegate] = useState(podMembers?.filter((e) => e.is_delegate === true)[0]);
-    const [bills, setBills] = useState([]);
+    const bills = useSelector((state) => state.bills.bills);
 
     let date = new Date(AuthUser.date_joined)
-
-    // placeholder rows below before we get the data from the backend for each bill 
-    const rows = Array(10).fill().map((_, i) => i + 1);
-
 
     // get the new access token on each page load or redirect
     useEffect(() => {
@@ -53,22 +50,6 @@ function VoterPage() {
             });
     }, [])
 
-
-    // get the bills on each page load or redirect
-    useEffect(() => {
-        axios.get(`${window.location.protocol}//${baseURL}/api/bills/`)
-            .then(response => {
-                if (response.status === 200) {
-                    setBills(response.data)
-                } else {
-                    setMessage({ type: "alert alert-danger", msg: "could not get bills" })
-                }
-            })
-            .catch(error => {
-                setMessage({ type: "alert alert-danger", msg: "Could not receive list of bills... something went wrong with your request." })
-                console.log(error)
-            });
-    }, [])
 
     useEffect(() => {
         switch (action) {
