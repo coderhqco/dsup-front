@@ -4,6 +4,8 @@ import { useState } from 'react';
 import axios from "axios";
 import { baseURL } from '../store/conf.js'
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 function ClaimYourSeat() {
     const navigate = useNavigate();
@@ -134,7 +136,15 @@ function ClaimYourSeat() {
                 <p> If you've already claimed your seat,
                     you can enter the floor of your District Legislature (D-Leg).
                 </p>
-                <Link className="btn btn-lg btn-primary m-3" to="/enter-the-floor" >Enter the Floor</Link>
+                <OverlayTrigger
+                    overlay={
+                        <Tooltip>
+                            <strong>Log In </strong>
+                        </Tooltip>
+                    }
+                >
+                    <Link to="/enter-the-floor" className="btn btn-lg btn-primary m-3 text-decoration-none"> Enter the Floor</Link>
+                </OverlayTrigger>
 
                 <p className="mt-3">Otherwise...</p>
                 <h1>Claim Your Seat</h1>

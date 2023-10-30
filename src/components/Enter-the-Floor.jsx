@@ -6,6 +6,9 @@ import { authenticate } from '../store/userSlice.js';
 import axios from 'axios';
 import { baseURL } from '../store/conf.js'
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+
 function EnterTheFloor() {
     // const AuthUser = useSelector((state) => state.AuthUser.user);
     const dispatch = useDispatch();
@@ -104,16 +107,9 @@ function EnterTheFloor() {
         passwordType === 'password' ? setPasswordType('') : setPasswordType('password');
     }
     return (
-        <div className="container">
+        <div className="container text-center">
             <h1 className="text-center mt-5">Enter The Floor</h1>
-            <div className="row text-center ">
-                <div className="col col-sm-12 ">
-                    <p >If you haven't done so already, to Enter the Floor, you must first</p>
-                    <Link to='/claim-your-seat' className='btn btn-lg btn-primary m-3'>Claim Your Seat</Link>
-                    <p >If you've already Claimed Your Seat, Enter the Floor:</p>
-                </div>
-            </div>
-
+            <p >If you've already Claimed Your Seat, Enter the Floor:</p>
             <div className="row">
                 <div className="col-sm-12 col-md-3 col-lg-4" ></div>
                 <div className="col col-sm-12 col-md-6 col-lg-4">
@@ -161,28 +157,43 @@ function EnterTheFloor() {
                                 }
                             </div>
                         </div>
-
-                        <br />
                         {err.length > 0 ?
                             <p className='text-danger'>{err}</p>
                             : ''}
-                        <br />
                         <div className="container text-center">
-                            <input type="submit" onClick={handleSubmit}
-                                name="commit" value="Enter the Floor"
-                                className="btn btn-lg btn-primary m-3"
-                                data-disable-with="Enter the Floor" />
-
+                            <OverlayTrigger
+                                overlay={
+                                    <Tooltip>
+                                        <strong>Log In </strong>
+                                    </Tooltip>
+                                }
+                                >
+                                <input type="submit" onClick={handleSubmit}
+                                    name="commit" value="Enter the Floor"
+                                    className="btn btn-lg btn-primary m-3"
+                                    data-disable-with="Enter the Floor" />
+                            </OverlayTrigger>
                         </div>
                     </form>
                 </div>
                 <div className="col-sm-12 col-md-3 col-lg-4"></div>
             </div>
 
-            <div className="row">
-                <div className="col-sm-12 col-md-3 col-lg-4"></div>
-                <div className="col-sm-12 col-md-6 col-lg-4"></div>
-                <div className="col-sm-12 col-md-3 col-lg-4"></div>
+            <div className="row text-center ">
+                <div className="col col-sm-12 ">
+                    <br />
+                    <br />
+                    <p >If you haven't done so already, to Enter the Floor, you must first</p>
+                    <OverlayTrigger
+                        overlay={
+                            <Tooltip>
+                                <strong>Sign Up </strong>
+                            </Tooltip>
+                        }
+                    >
+                        <Link to="/claim-your-seat" className="btn btn-md btn-primary m-3 text-decoration-none"> Claim Your Seat</Link>
+                    </OverlayTrigger>
+                </div>
             </div>
         </div>
     )
