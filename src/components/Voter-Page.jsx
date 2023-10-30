@@ -7,7 +7,7 @@ import { pod, authenticate } from '../store/userSlice.js';
 import { baseURL } from '../store/conf.js'
 import jwtDecode from 'jwt-decode';
 import { Card, Container, Row, Col, Table } from 'react-bootstrap';
-import { retrieveBillsSuccess } from '../store/billSlice';
+// import { retrieveBillsSuccess } from '../store/billSlice';
 
 function VoterPage() {
     const AuthUser = useSelector((state) => state.AuthUser.user);
