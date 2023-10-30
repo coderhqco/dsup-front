@@ -1,11 +1,13 @@
 // import logo from './logo.svg';
 import React from "react";
 import logo from './logo.png'
-import {Link,useHistory} from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import jwtDecode from 'jwt-decode';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
-function Home(){
+function Home() {
   const AuthUser = useSelector((state) => state.AuthUser.user);
   console.log(AuthUser)
   const isRefreshTokenExpired = () => {
@@ -26,11 +28,11 @@ function Home(){
     <div className="container">
       <div className="row"></div>
       <div className="row mt-5">
-      <div className="col-sm-12 col-md-4 col-lg-4 mt-4">
+        <div className="col-sm-12 col-md-4 col-lg-4 mt-4">
           <div className="container text-center ">
             <a className="row text-decoration-none text-dark">
-              <img src={logo} 
-                alt="Democracy Straight Up"/>
+              <img src={logo}
+                alt="Democracy Straight Up" />
             </a>
           </div>
         </div>
@@ -39,23 +41,39 @@ function Home(){
             <h1 className="m-4">Welcome to the Democracy Straight-Up Project!</h1>
             <div className="text-center">
               <h2 className="text-secondary m-4">Vote directly on federal legislation.</h2>
-                <div className="row">
-                {isRefreshTokenExpired()===true ? 
+              <div className="row">
+                {isRefreshTokenExpired() === true ?
                   <div className="row">
                     <div className="col col-sm-12 col-md-6 col-lg-6">
-                      <Link to="/claim-your-seat" className="btn btn-lg btn-primary m-3 text-decoration-none"> Claim Your Seat</Link>
+                      <OverlayTrigger
+                        overlay={
+                          <Tooltip>
+                            <strong>Sign Up </strong>
+                          </Tooltip>
+                        }
+                      >
+                        <Link to="/claim-your-seat" className="btn btn-lg btn-primary m-3 text-decoration-none"> Claim Your Seat</Link>
+                      </OverlayTrigger>
                     </div>
                     <div className="col col-sm-12 col-md-6 col-lg-6">
-                      <Link to="/enter-the-floor" className="btn btn-lg btn-primary m-3 text-decoration-none"> Enter the Floor</Link>
+                      <OverlayTrigger
+                        overlay={
+                          <Tooltip>
+                            <strong>Log In </strong>
+                          </Tooltip>
+                        }
+                      >
+                        <Link to="/enter-the-floor" className="btn btn-lg btn-primary m-3 text-decoration-none"> Enter the Floor</Link>
+                      </OverlayTrigger>
                     </div>
                   </div>
-                  :""}
-                </div>
+                  : ""}
+              </div>
             </div>
           </div>
         </div>
-        
-      </div>  
+
+      </div>
     </div>
   );
 }
