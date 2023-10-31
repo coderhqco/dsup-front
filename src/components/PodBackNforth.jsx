@@ -47,23 +47,20 @@ const PodBackNforth = () => {
 
             if (Array.isArray(data)) {
                 // when the first time it connects, it retrives a list of old messages
-
                 // check weather to show  "load more" on pagination from api.
                 data.length < 10 ? setLoadMoreVisible(false) : setLoadMoreVisible(true)
                 setServerMessage((prevserverMessage) => [...data.reverse(), ...prevserverMessage])
-                
-               
             } else {
                 // when a new message is being sent and receives an instance of it
                 setServerMessage((serverMessage) => [...serverMessage, data]);
             }
         };
         socketRef.current.onerror = (error) => {
-            console.log("web socket error: ", error)
+            console.log("web socket: ", error)
         };
 
         socketRef.current.onclose = (event) => {
-            console.log("web socket closed, ", event);
+            console.log("close web socket, ", event);
         };
 
         return () => {
@@ -142,7 +139,18 @@ const PodBackNforth = () => {
             pod: podInfo.code, voter: AuthUser.username, handle:handle
         }
         axios.post(handleURL, handle_data)
-        .then(response =>{ handleModalClose();})
+        .then(response =>{ 
+            handleModalClose();
+            // update all the message handle
+            const handleUpdated = serverMessage.map((object) => ({
+                ...object, // Keep the other fields the same
+                handle: {
+                  ...object.handle, // Keep the other properties of 'handle' the same
+                  handle: handle, // Update the 'handle' property within 'handle' 
+                },
+              }));
+              setServerMessage(handleUpdated)
+        })
         .catch(err =>{ setErrorModal('something went wrong. Try agian!') })
     }
     // User.handle? 
@@ -156,7 +164,7 @@ const PodBackNforth = () => {
                 <div className="card-body mh-100 p-0" style={{ height: "500px", overflowY: 'auto' }}>
                     <div className='text-center p-2' >
                      
-                        {loadMoreVisible && (<a href="#" className='btn btn-sm btn-outline-primary' onClick={handleLoad}>load more</a>)}
+                        {loadMoreVisible && (<a href="#" className='btn btn-sm btn-outline-primary rounded-pill px-3' onClick={handleLoad}>load more</a>)}
                     </div>
                     {serverMessage.map((message, index) => msg(message, index))}
                     
