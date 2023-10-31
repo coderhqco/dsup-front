@@ -7,7 +7,7 @@ import jwtDecode from 'jwt-decode';
 
 function Home(){
   const AuthUser = useSelector((state) => state.AuthUser.user);
-
+  console.log(AuthUser)
   const isRefreshTokenExpired = () => {
     try {
       const decodedToken = jwtDecode(AuthUser.token.refresh);
@@ -26,15 +26,15 @@ function Home(){
     <div className="container">
       <div className="row"></div>
       <div className="row mt-5">
-      <div className="col col-sm-12 col-md-4 col-lg-4 mt-4">
+      <div className="col-sm-12 col-md-4 col-lg-4 mt-4">
           <div className="container text-center ">
-            <a href="https://rubyonrails.org/" className="row text-decoration-none text-dark">
+            <a className="row text-decoration-none text-dark">
               <img src={logo} 
                 alt="Democracy Straight Up"/>
             </a>
           </div>
         </div>
-        <div className="col col-sm-12 col-md-8 col-lg-8">
+        <div className="col-sm-12 col-md-8 col-lg-8">
           <div className="text-center ">
             <h1 className="m-4">Welcome to the Democracy Straight-Up Project!</h1>
             <div className="text-center">
