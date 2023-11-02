@@ -36,7 +36,7 @@ function Home(){
         </div>
         <div className="col-sm-12 col-md-8 col-lg-8">
           <div className="text-center ">
-            <h1 className="m-4">Welcome to the Democracy Straight-Up Project!</h1>
+            <h1 className="m-4">Welcome to The Democracy, Straight-Up! Project</h1>
             <div className="text-center">
               <h2 className="text-secondary m-4">Vote directly on federal legislation.</h2>
                 <div className="row">
@@ -46,7 +46,7 @@ function Home(){
                       <Link to="/claim-your-seat" className="btn btn-lg btn-primary m-3 text-decoration-none"> Claim Your Seat</Link>
                     </div>
                     <div className="col col-sm-12 col-md-6 col-lg-6">
-                      <Link to="/enter-the-floor" className="btn btn-lg btn-primary m-3 text-decoration-none"> Enter the Floor</Link>
+                      <Link to="/enter-the-floor" className="btn btn-lg btn-primary m-3 text-decoration-none"> Enter The Floor</Link>
                     </div>
                   </div>
                   :""}

@@ -163,7 +163,7 @@ function HouseKeeping(){
     const handleModelShow = (param,member) =>{
         switch(param){
             case 'dessolvePod':
-                setModelContent(`This action will dissolve this Pod permanently, do you want to proceed?`)
+                setModelContent(`This action will dissolve this circle permanently, do you want to proceed?`)
                 setAct('dessolvePod')
                 setShowModel(true);
                 break
@@ -175,7 +175,7 @@ function HouseKeeping(){
                 break
             case 'voteIn':
                 // this case is not implemented yet.
-                setModelContent (`Checking this box will make ${condidate[0]?.user.users.legalName} a member of this Pod.`)
+                setModelContent (`Checking this box will make ${condidate[0]?.user.users.legalName} a member of this circle.`)
                 setAct('voteIn')
                 setShowModel(true)
                 break
@@ -201,7 +201,7 @@ function HouseKeeping(){
                 // check if the podmember is one
                 if(podMembers?.length === 1){
                     return ( <> <span>
-                            Dissolve Pod 
+                            Dissolve Circle 
                             <input className='mx-2 form-check-input' type="checkbox" 
                             onChange={()=>handleModelShow('dessolvePod', '')} checked={showModel}/>
                         </span> </>  )
@@ -223,7 +223,7 @@ function HouseKeeping(){
                 // check if user is this member
                 if(member.user.username === AuthUser.username){
                     return (<>
-                        Would you like to remain in this Pod?
+                        Would you like to remain in this circle?
                         <input type="checkbox" 
                         className='form-check-input mx-2' 
                         checked={true}
@@ -314,7 +314,7 @@ function HouseKeeping(){
                 <div className="col-sm-12 col-md-3"></div>
                 <div className="col-sm-12 col-md-6 mt-3">
                     <h1 className="text-center">Housekeeping page</h1>
-                    <h3 className='text-center'>Pod: {podInfo?.code} District: {podInfo?.district.code}</h3>
+                    <h3 className='text-center'>Circle: {podInfo?.code} District: {podInfo?.district.code}</h3>
                    
                     <h4 className='text-center'>Invitation Key: {podInfo?.invitation_code}</h4>
                     {Is_delegate? 
@@ -322,7 +322,7 @@ function HouseKeeping(){
                         onClick={handleChngInvtKey}>Generate new key</button>
                     :null}
                     {podInfo?.is_active?
-                        <p className='text-center'>Pod Status: ACTIVE!</p>
+                        <p className='text-center'>Circle Status: ACTIVE!</p>
                     : null}
                 </div>
                 <div className="col-sm-12 col-md-3"></div>
@@ -402,18 +402,18 @@ function HouseKeeping(){
             </div>
             {/* message status area */}
             <div className="row border p-3 shadow-sm">
-                <p><strong>Status: </strong>{podInfo?.is_active? "This pod is active!"
-                    :"This Pod will become active when it has six members."} 
+                <p><strong>Status: </strong>{podInfo?.is_active? "This circle is active!"
+                    :"This circle will become active when it has six members."} 
                 </p>
                 {Is_delegate?  <>
                     {condidate?.length === 0 ? 
-                    <p>There are no Member Candidates. Invite voters in your district to join by giving them a Pod Invitation Key.</p>
+                    <p>There are no Member Candidates. Invite voters in your district to join by giving them a Circle Invitation Key.</p>
                     : <p>There is a Member Candidate awaiting a majority vote of existing members.</p>}
                     {members?.length >= 3 ? "":  <>
                         <p>Once you generate a new key, the old one will not work.</p>
-                        <p>The creator of this Pod has been automatically made First Delegate. To elect a different First
+                        <p>The creator of this circle has been automatically made First Delegate. To elect a different First
                             Delegate, hold an election. Elections can be held when you have six or more members. </p>
-                        <p>Only the F-Del can dissolve a Pod, and may only do so when they are the only member left.</p>
+                        <p>Only the F-Del can dissolve a circle, and may only do so when they are the only member left.</p>
                         </> } </> :
                 // check if the user is member or condidate
             // this check is for condidate throughing undefined exception
@@ -421,22 +421,22 @@ function HouseKeeping(){
                     condidate[0]?.user.username === AuthUser.username ? 
                     <>
                         <p> You are a Member Candidate awaiting a majority vote of existing members.</p>
-                        <p> You can wait to see if you are voted in, or you can contact the F-Del of this Pod IRL to discuss
+                        <p> You can wait to see if you are voted in, or you can contact the F-Del of this Circle IRL to discuss
                         being voted in.
                         </p>
-                        <p> If you shouldn’t be trying to join this Pod for any reason, the F-Del can remove you as a
-                        member candidate. After that happens, you will not be able to attempt to join this Pod unless
+                        <p> If you shouldn’t be trying to join this circle for any reason, the F-Del can remove you as a
+                        member candidate. After that happens, you will not be able to attempt to join this circle unless
                         you are given a new Invitation Key. Ask your F-Del IRL.
                         </p>
-                        <p> The creator of this Pod has been automatically made First Delegate. To elect a different First
-                        Delegate, your Pod can hold an election. Elections can be held when you have six or more
+                        <p> The creator of this circle has been automatically made First Delegate. To elect a different First
+                        Delegate, your circle can hold an election. Elections can be held when you have six or more
                         members.
                         </p>
-                        <p>Only the F-Del can dissolve a Pod, and may only do so when they are the only member left.</p>
+                        <p>Only the F-Del can dissolve a circle, and may only do so when they are the only member left.</p>
                     </>
                     :
                     <>
-                        <p>You are a member of the Pod.</p>
+                        <p>You are a member of the circle.</p>
                         {condidate[0]? 
                         <p> There is a Member Candidate awaiting a majority vote of existing members. Check the Yes
                             box next to their name to vote them in. A running total of member votes for this candidate will
@@ -446,38 +446,38 @@ function HouseKeeping(){
                         :""}
                         
                         <p>
-                        If you want someone to join this Pod, give them the PIK. Make sure it is the most recent
-                        (currently valid) PIK generated by the F-Del. If you encounter any problems, please contact
+                        If you want someone to join this circle, give them the CIK. Make sure it is the most recent
+                        (currently valid) CIK generated by the F-Del. If you encounter any problems, please contact
                         the F-Del In Real Life, or ElseWhere On The Internet.
                         </p>
-                        <p>Until this Pod becomes active, you can be removed by the F-Del at any time. </p>
+                        <p>Until this Circle becomes active, you can be removed by the F-Del at any time. </p>
                         <span>
-                        After this Pod becomes active, you can only be removed by: 
+                        After this circle becomes active, you can only be removed by: 
                             <ol>
-                                <li> Unchecking the Yes box next to ‘Would you like to remain in this Pod?’ </li>
+                                <li> Unchecking the Yes box next to ‘Would you like to remain in this circle?’ </li>
                                 <li> Being voted out by a majority of existing members. </li>
                             </ol>
                         </span>
                         <p>
-                        Once a member is removed from a specific Pod, they cannot attempt to rejoin it without a new
-                        Pod Invitation Key.
+                        Once a member is removed from a specific circle, they cannot attempt to rejoin it without a new
+                        Circle Invitation Key.
                         </p>
                         <p>
-                        The creator of this Pod has been automatically made First Delegate. To elect a different First
-                        Delegate, your Pod can hold an election. Elections can be held when you have six or more
+                        The creator of this circle has been automatically made First Delegate. To elect a different First
+                        Delegate, your circle can hold an election. Elections can be held when you have six or more
                         members.
                         </p>
-                        <p>Only the F-Del can dissolve a Pod, and may only do so when they are the only member left.</p>
+                        <p>Only the F-Del can dissolve a circle, and may only do so when they are the only member left.</p>
                     </>: "" }
             </div>
             {/* helper links for delegate */}
             {Is_delegate? 
                 <div className='row'>
                     <strong>Learn about:</strong>
-                    <Link className='mx-3 text-secondary' to="/house-keeping-page">Active vs inactive Pods</Link>
+                    <Link className='mx-3 text-secondary' to="/house-keeping-page">Active vs inactive circle</Link>
                     <Link className='mx-3 text-secondary' to="/house-keeping-page">How to invite new members?</Link>
                     <Link className='mx-3 text-secondary' to="/house-keeping-page">How to hold a First Delegate Election?</Link>
-                    <Link className='mx-3 text-secondary' to="/house-keeping-page">How to dissolve a Pod?</Link>
+                    <Link className='mx-3 text-secondary' to="/house-keeping-page">How to dissolve a circle?</Link>
                 </div>
             : 
             // helping links for pod members
@@ -486,10 +486,10 @@ function HouseKeeping(){
                 AuthUser.username === condidate[0]?.user.username ? null : 
                 <div className='row'>
                     <strong>Learn about:</strong>
-                    <Link className='mx-3 text-secondary' to="/house-keeping-page">Invite someone to join this Pod.</Link>
-                    <Link className='mx-3 text-secondary' to="/house-keeping-page">Being removed from this Pod.</Link>
+                    <Link className='mx-3 text-secondary' to="/house-keeping-page">Invite someone to join this circle.</Link>
+                    <Link className='mx-3 text-secondary' to="/house-keeping-page">Being removed from this circle.</Link>
                     <Link className='mx-3 text-secondary' to="/house-keeping-page">Elect a new first Delegate.</Link>
-                    <Link className='mx-3 text-secondary' to="/house-keeping-page">Pod Dessolution.</Link>
+                    <Link className='mx-3 text-secondary' to="/house-keeping-page">Circle Dessolution.</Link>
                 </div>:""
             }
         </div>

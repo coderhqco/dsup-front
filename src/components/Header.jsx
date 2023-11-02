@@ -44,7 +44,7 @@ function Header() {
                         </li>
                         <li className="nav-item">
                             {!AuthUser ?
-                                <Link to='/enter-the-floor' className="nav-link fs-5">Login</Link>
+                                <Link to='/enter-the-floor' className="nav-link fs-5">Enter The Floor</Link>
                                 : ""}
                         </li>
                         {/* <li className="nav-item">
