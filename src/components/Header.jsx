@@ -39,7 +39,7 @@ function Header() {
                             : ""}
                         <li className="nav-item">
                             {AuthUser ?
-                                <Link to='/search' className="nav-link fs-5 active" >Search and Sort For Bills</Link>
+                                <Link to='/search' className="nav-link fs-5 active" >Search and Sort Bills</Link>
                                 : ""}
                         </li>
                         <li className="nav-item">

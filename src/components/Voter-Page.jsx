@@ -55,20 +55,20 @@ function VoterPage() {
 
 
     // get the bills on each page load or redirect
-    useEffect(() => {
-        axios.get(`${window.location.protocol}//${baseURL}/api/bills/`)
-            .then(response => {
-                if (response.status === 200) {
-                    setBills(response.data)
-                } else {
-                    setMessage({ type: "alert alert-danger", msg: "could not get bills" })
-                }
-            })
-            .catch(error => {
-                setMessage({ type: "alert alert-danger", msg: "Could not receive list of bills... something went wrong with your request." })
-                console.log(error)
-            });
-    }, [])
+    // useEffect(() => {
+    //     axios.get(`${window.location.protocol}//${baseURL}/api/bills/`)
+    //         .then(response => {
+    //             if (response.status === 200) {
+    //                 setBills(response.data)
+    //             } else {
+    //                 setMessage({ type: "alert alert-danger", msg: "could not get bills" })
+    //             }
+    //         })
+    //         .catch(error => {
+    //             setMessage({ type: "alert alert-danger", msg: "Could not receive list of bills... something went wrong with your request." })
+    //             console.log(error)
+    //         });
+    // }, [])
 
     useEffect(() => {
         switch (action) {
@@ -211,14 +211,18 @@ function VoterPage() {
                 </div>
             </div>
             <Container style={{ marginTop: "2%" }} >
+                        <div className="row text-center">
+                            <h1>Voter Page</h1>
+                        </div>
                 <Row>
+                   
                     <Col>
                         <Row>
                             <Col xs="auto">
-                                <p className="text-left">Voter:</p>
+                                <p className="text-left">Voter Name:</p>
                             </Col>
                             <Col>
-                                <h3>{AuthUser?.users?.legalName}</h3>
+                                <p>{AuthUser?.users?.legalName}</p>
                             </Col>
                         </Row>
                     </Col>
@@ -228,7 +232,7 @@ function VoterPage() {
                                 <p className="text-left">Verification Score:</p>
                             </Col>
                             <Col>
-                                <h3>{AuthUser?.users?.verificationScore}/7</h3>
+                                <p>{AuthUser?.users?.verificationScore}/7</p>
                             </Col>
                         </Row>
                     </Col>
@@ -238,7 +242,7 @@ function VoterPage() {
                                 <p className="text-left">District:</p>
                             </Col>
                             <Col>
-                                <h3>{AuthUser.users?.district?.code}</h3>
+                                <p>{AuthUser.users?.district?.code}</p>
                             </Col>
                         </Row>
                     </Col>
@@ -268,11 +272,12 @@ function VoterPage() {
                     </ul>
                 </div>
             </div>
-            <h1 className="header-semibold" style={{ marginBottom: "1%" }}>Bills With Latest Action...</h1>
-            <p> <Link> See full list of bills... </Link></p>
+            <h1 className="header-semibold" style={{ marginBottom: "1%" }}>List of Bills</h1>
+            <p> <Link> Bills sorted by Latest Action </Link></p>
 
+                <p>Bills section is being commented and hidden. This is under construction. </p>
             <Table striped bordered hover responsive>
-                <thead>
+                {/* <thead>
                     <tr className='bills-list-voter-page-header-row'>
                         <th>HR #</th>
                         <th>Short Title</th>
@@ -284,16 +289,16 @@ function VoterPage() {
                         <th>Bill Link</th>
                         <th>Metrics</th>
                     </tr>
-                </thead>
-                <tbody>
+                </thead> */}
+                {/* <tbody>
                     {bills.slice(0, 10).map((bill, index) => (
                         <tr key={index}>
                             <td>{bill.number}</td>
                             <td>{bill.title}</td>
-                            {/* Include other bill properties as needed */}
+                           
                             <td>{bill.latest_action_date}</td>
                             <td>{bill.your_vote}</td>
-                            {/* Need to add advisement as an attribute on the bills model*/}
+                           
                             <td>{bill.advisement}</td>
                             <td>{bill.district_tally}</td>
                             <td>{bill.national_tally}</td>
@@ -301,7 +306,7 @@ function VoterPage() {
                             <td>TBD</td>
                         </tr>
                     ))}
-                </tbody>
+                </tbody> */}
             </Table>
         </div>
     )
