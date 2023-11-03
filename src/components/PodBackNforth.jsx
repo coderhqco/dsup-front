@@ -14,7 +14,6 @@ const PodBackNforth = () => {
     const [serverMessage, setServerMessage] = useState([]);
     const [loadMoreVisible, setLoadMoreVisible] = useState(true);
     const [showModal, setShowModal] = useState(false);
-    const [handle, setHandle] = useState('');
     const [errorModal, setErrorModal] = useState('')
     let socketRef = useRef(null);
 
@@ -100,23 +99,14 @@ const PodBackNforth = () => {
     }
 
     const msg = (message, index) => {
-        /*
-        an entery instance with handle, date format and the message entry
-        */
-       const handle = ()=>{
-        if (message.handle.handle){
-            return <span className='fw-bold h4'>{message.handle.handle}</span>
-        }else{
-            return <span className='fw-bold h4'>{AuthUser.users.legalName}</span>
-        }
-       }
+       
         return (
             <div key={index} className="container mb-3">
                 <div className='row'>
                     {/* checking if this message has handle */}
                     <p className='mb-0'>
-                        {handle()}
-                        <span className='text-muted small'> &nbsp;&nbsp;{date_format(message.date)}&nbsp; [ {date_format(message.date, true)} ] </span>
+                    <span className='fw-bold h4'>{AuthUser.users?.legalName}</span>
+                    <span className='text-muted small'> &nbsp;&nbsp;{date_format(message.date)}&nbsp; [ {date_format(message.date, true)} ] </span>
                     </p>
                 </div>
                 <div className='row'>
@@ -128,36 +118,6 @@ const PodBackNforth = () => {
         )
     }
 
-
-    const handleModalClose = () => setShowModal(false);
-
-    const UpdateHandle =()=>{
-        /* creating or updating of an existing handle. 
-         it updates the existing handle via post request and create one if does not exist already
-         Params: 
-            pod code
-            voter/user username (entry code)
-            a handle name
-        */ 
-        const handleURL = `${window.location.protocol}//${baseURL}/api/create-handle/`;
-        const handle_data = {
-            pod: podInfo.code, voter: AuthUser.username, handle:handle
-        }
-        axios.post(handleURL, handle_data)
-        .then(response =>{ 
-            handleModalClose();
-            // update all the message handle
-            const handleUpdated = serverMessage.map((object) => ({
-                ...object, // Keep the other fields the same
-                handle: {
-                  ...object.handle, // Keep the other properties of 'handle' the same
-                  handle: handle, // Update the 'handle' property within 'handle' 
-                },
-              }));
-              setServerMessage(handleUpdated)
-        })
-        .catch(err =>{ setErrorModal('something went wrong. Try agian!') })
-    }
     // User.handle? 
     return  (
         // the message history area. 
@@ -188,54 +148,10 @@ const PodBackNforth = () => {
                             style={{ "cursor": "pointer" }}
                             id="basic-addon1">Send</span>
                     </div>
-                    <br />
-                    <a href='#' className='h5 text-primary' onClick={()=>setShowModal(true)}>Create/update your handle</a>
+                    
                 </div>
             </div>
 
-        {/*  handle update modal */}
-            <Modal
-            show={showModal}
-            onHide={()=>handleModalClose()}
-            backdrop="static"
-            keyboard={false}>
-                <ModalHeader>
-                    <p className='h5'>What's Your Handle?</p>
-                    <button type="button" className="close btn btn-outline-danger" onClick={()=>setShowModal(false)}>
-                        <span>&times;</span>
-                    </button>
-                </ModalHeader>
-                <Modal.Body> 
-                    {errorModal ? 
-                        <div class="alert alert-danger" role="alert">
-                            {errorModal}
-                        </div>
-                    :''}
-                   
-                    <label htmlFor="handle" className='fw-bold'>Handle:</label>
-                    <input type="text"
-                        onChange={(e) => setHandle(e.target.value)}
-                        className='form-control'
-                        name='handle'
-                        placeholder="Enter new handle here" />
-                    <div className="row p-4">
-                    <button className='btn btn-primary'
-                    onClick={()=>UpdateHandle()}>
-                        Make This My Handle
-                    </button>
-
-                    <p className='mt-3'> A Handle is like a nickname or a screenname, but with a difference.  
-                        It isn't just for fun or to keep things friendly.  
-                        The orders you submit to your delegate, and the reports they send back, 
-                        can contain important information about your political point of view. 
-                        As we all know, we don't always want everyone, either in our personal lives 
-                        or in the larger world, to know exactly what we think on every political issue.  
-                        While members of a Circle should never copy or share the contents of a B&F... things happen. 
-                        Your Handle provides another layer of security in that situation. 
-                    </p>
-                    </div>
-                </Modal.Body>
-            </Modal>
         </div>
     )
 }
