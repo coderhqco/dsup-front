@@ -164,7 +164,7 @@ const PodBackNforth = () => {
         <div className="container my-5">
             <div className="card mx-auto "  >
                 <div className="card-header border-0 shadow-sm text-center" >
-                    <h3>Black & Forth <br /> Circle{podInfo.code} <br />  {podInfo.district.code} </h3>
+                    <h3>Back & Forth <br /> Circle{podInfo.code} <br />  {podInfo.district.code} </h3>
                 </div>
                 <div className="card-body mh-100 p-0" style={{ height: "500px", overflowY: 'auto' }}>
                     <div className='text-center p-2' >
