@@ -130,11 +130,11 @@ function ClaimYourSeat() {
     return (
         <div className="container p-3">
             <div className="text-center">
-                <h1>Enter the Floor</h1>
+                <h1>Enter The Floor</h1>
                 <p> If you've already claimed your seat,
                     you can enter the floor of your District Legislature (D-Leg).
                 </p>
-                <Link className="btn btn-lg btn-primary m-3" to="/enter-the-floor" >Enter the Floor</Link>
+                <Link className="btn btn-lg btn-primary m-3" to="/enter-the-floor" >Enter The Floor</Link>
 
                 <p className="mt-3">Otherwise...</p>
                 <h1>Claim Your Seat</h1>

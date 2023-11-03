@@ -39,12 +39,12 @@ function Header() {
                             : ""}
                         <li className="nav-item">
                             {AuthUser ?
-                                <Link to='/search' className="nav-link fs-5 active" >Search and Sort For Bills</Link>
+                                <Link to='/search' className="nav-link fs-5 active" >Search and Sort Bills</Link>
                                 : ""}
                         </li>
                         <li className="nav-item">
                             {!AuthUser ?
-                                <Link to='/enter-the-floor' className="nav-link fs-5">Login</Link>
+                                <Link to='/enter-the-floor' className="nav-link fs-5">Enter The Floor</Link>
                                 : ""}
                         </li>
                         {/* <li className="nav-item">
