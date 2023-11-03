@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import React from "react";
-import logo from './logo.png'
+import logo from './CYS-Logo.png'
 import {Link,useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import jwtDecode from 'jwt-decode';
@@ -35,10 +35,11 @@ function Home(){
           </div>
         </div>
         <div className="col-sm-12 col-md-8 col-lg-8">
-          <div className="text-center ">
-            <h1 className="m-4">Welcome to The Democracy, Straight-Up! Project</h1>
+          <div className="text-center mt-5">
+            <h2 className="my-4">Welcome to the Claim Your Seat Voting Portal</h2>
+            <h3 className="my-4">Where the will of the people becomes the law of the land.</h3>
             <div className="text-center">
-              <h2 className="text-secondary m-4">Vote directly on federal legislation.</h2>
+              <h4 className="text-secondary m-4">Start voting directly on federal legislation</h4>
                 <div className="row">
                 {isRefreshTokenExpired()===true ? 
                   <div className="row">
