@@ -195,7 +195,7 @@ const PodBackNforth = () => {
             backdrop="static"
             keyboard={false}>
                 <ModalHeader>
-                    <p className='h5'>Update Handle</p>
+                    <p className='h5'>What's Your Handle?</p>
                     <button type="button" className="close btn btn-outline-danger" onClick={()=>setShowModal(false)}>
                         <span>&times;</span>
                     </button>
@@ -206,15 +206,6 @@ const PodBackNforth = () => {
                             {errorModal}
                         </div>
                     :''}
-                    <p> A Handle is like a nickname or a screenname, but with a difference.  
-                        It isn't just for fun or to keep things friendly.  
-                        The orders you submit to your delegate, and the reports they send back, 
-                        can contain important information about your political point of view. 
-                        As we all know, we don't always want everyone, either in our personal lives 
-                        or in the larger world, to know exactly what we think on every political issue.  
-                        While members of a Circle should never copy or share the contents of a B&F... things happen. 
-                        Your Handle provides another layer of security in that situation. 
-                    </p>
                    
                     <label htmlFor="handle" className='fw-bold'>Handle:</label>
                     <input type="text"
@@ -225,8 +216,18 @@ const PodBackNforth = () => {
                     <div className="row p-4">
                     <button className='btn btn-primary'
                     onClick={()=>UpdateHandle()}>
-                        Update
+                        Make This My Handle
                     </button>
+
+                    <p className='mt-3'> A Handle is like a nickname or a screenname, but with a difference.  
+                        It isn't just for fun or to keep things friendly.  
+                        The orders you submit to your delegate, and the reports they send back, 
+                        can contain important information about your political point of view. 
+                        As we all know, we don't always want everyone, either in our personal lives 
+                        or in the larger world, to know exactly what we think on every political issue.  
+                        While members of a Circle should never copy or share the contents of a B&F... things happen. 
+                        Your Handle provides another layer of security in that situation. 
+                    </p>
                     </div>
                 </Modal.Body>
             </Modal>
