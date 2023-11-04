@@ -313,7 +313,7 @@ function HouseKeeping(){
             <div className="row">
                 <div className="col-sm-12 col-md-3"></div>
                 <div className="col-sm-12 col-md-6 mt-3">
-                    <h1 className="text-center">Housekeeping page</h1>
+                    <h1 className="text-center">Housekeeping Page</h1>
                     <h3 className='text-center'>Pod: {podInfo?.code} District: {podInfo?.district.code}</h3>
                    
                     <h4 className='text-center'>Invitation Key: {podInfo?.invitation_code}</h4>
@@ -348,7 +348,7 @@ function HouseKeeping(){
                             <tr key={index} className="border">
                                 <td>{index+1}</td>
                                 <td>{member?.user.users.legalName} {member.is_delegate? 
-                                    <span className='badge bg-primary'>del</span>
+                                    <span className='badge bg-primary'>F-Del</span>
                                 : null} </td>
                                 <td>
                                    {podInfo?.is_active? <>
@@ -475,9 +475,9 @@ function HouseKeeping(){
                 <div className='row'>
                     <strong>Learn about:</strong>
                     <Link className='mx-3 text-secondary' to="/house-keeping-page">Active vs inactive Pods</Link>
-                    <Link className='mx-3 text-secondary' to="/house-keeping-page">How to invite new members?</Link>
-                    <Link className='mx-3 text-secondary' to="/house-keeping-page">How to hold a First Delegate Election?</Link>
-                    <Link className='mx-3 text-secondary' to="/house-keeping-page">How to dissolve a Pod?</Link>
+                    <Link className='mx-3 text-secondary' to="/house-keeping-page">How to invite new members.</Link>
+                    <Link className='mx-3 text-secondary' to="/house-keeping-page">How to hold a First Delegate Election.</Link>
+                    <Link className='mx-3 text-secondary' to="/house-keeping-page">How to dissolve a Pod.</Link>
                 </div>
             : 
             // helping links for pod members
