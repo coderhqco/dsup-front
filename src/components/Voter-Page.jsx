@@ -7,6 +7,8 @@ import { pod, authenticate } from '../store/userSlice.js';
 import { baseURL } from '../store/conf.js'
 import jwtDecode from 'jwt-decode';
 import { Card, Container, Row, Col, Table } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+
 // import { retrieveBillsSuccess } from '../store/billSlice';
 
 function VoterPage() {
@@ -273,7 +275,36 @@ function VoterPage() {
                             <td>{bill.title}</td>
                             {/* Include other bill properties as needed */}
                             <td>{bill.latest_action_date}</td>
-                            <td>{bill.your_vote}</td>
+                            <td>      {['radio'].map((type) => (
+                                <div key={`inline-${type}`} className="mb-3">
+                                    <Form>
+                                        <Form.Check
+                                            inline
+                                            label="YEA"
+                                            name="group1"
+                                            type={type}
+                                            id={index}
+                                        />
+                                        <br />
+                                        <Form.Check
+                                            inline
+                                            label="NAY"
+                                            name="group1"
+                                            type={type}
+                                            id={index}
+                                        />
+                                        <br />
+                                        <Form.Check
+                                            inline
+                                            label="PROXY"
+                                            name="group1"
+                                            type={type}
+                                            id={index}
+                                            defaultChecked
+                                        />
+                                    </Form>
+                                </div>
+                            ))}</td>
                             {/* Need to add advisement as an attribute on the bills model*/}
                             <td>{bill.advisement}</td>
                             <td>{bill.district_tally}</td>
