@@ -109,7 +109,14 @@ function EnterTheFloor() {
     return (
         <div className="container text-center">
             <h1 className="text-center mt-5">Enter The Floor</h1>
-            <p >If you've already Claimed Your Seat, Enter the Floor:</p>
+            <div className="row text-center ">
+                <div className="col col-sm-12 ">
+                    <p >If you haven't done so already, to Enter the Floor, you must first</p>  
+                    <Link to='/claim-your-seat' className='btn btn-lg btn-primary m-3'>Claim Your Seat</Link>
+                    <p >If you've already Claimed Your Seat, Enter the Floor:</p>
+                </div>
+            </div>
+
             <div className="row">
                 <div className="col-sm-12 col-md-3 col-lg-4" ></div>
                 <div className="col col-sm-12 col-md-6 col-lg-4">

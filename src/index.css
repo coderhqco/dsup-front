@@ -85,3 +85,11 @@ body {
     text-align: center;
   }
 }
+
+/* blur unless hovering over username */
+.blur-text-unless-hovering {
+  filter: blur(6px);
+}
+.blur-text-unless-hovering:hover {
+  filter: blur(0px);
+}

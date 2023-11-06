@@ -110,7 +110,7 @@ const PodBackNforth = () => {
                     <p className='mb-0'>
                         {message.handle?.handle ?
                             <span className='fw-bold h4'>{message.handle.handle}</span> :
-                            <span className='fw-bold h4'>{message.sender?.users?.legalName}</span>
+                            <span className='fw-bold h4 blur-text-unless-hovering'>{message.sender?.users?.legalName}</span>
                         }
                         <span className='text-muted small'> &nbsp;&nbsp;{date_format(message.date)}&nbsp; [ {date_format(message.date, true)} ] </span>
                     </p>
