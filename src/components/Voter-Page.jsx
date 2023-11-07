@@ -257,20 +257,20 @@ function VoterPage() {
             <Table striped bordered hover responsive>
                 <thead>
                     <tr className='bills-list-voter-page-header-row'>
-                        <th>HR #</th>
+                        <th>Bill Number</th>
                         <th>Short Title</th>
                         <th>Latest Action</th>
                         <th>Your Vote</th>
                         <th>Advisement</th>
+                        <th>More</th>
                         <th>District Tally</th>
                         <th>National Tally</th>
-                        <th>Bill Link</th>
                     </tr>
                 </thead>
                 <tbody>
                     {bills.slice(0, 10).map((bill, index) => (
                         <tr key={index}>
-                            <td>{bill.number}</td>
+                            <td>H.R. {bill.number}</td>
                             <td>{bill.title}</td>
                             {/* Include other bill properties as needed */}
                             <td>{bill.latest_action_date}</td>
@@ -295,6 +295,15 @@ function VoterPage() {
                                         <br />
                                         <Form.Check
                                             inline
+                                            label="PRESENT"
+                                            name="group1"
+                                            type={type}
+                                            id={index}
+                                            defaultChecked
+                                        />
+                                        <br />
+                                        <Form.Check
+                                            inline
                                             label="PROXY"
                                             name="group1"
                                             type={type}
@@ -305,10 +314,10 @@ function VoterPage() {
                                 </div>
                             ))}</td>
                             {/* Need to add advisement as an attribute on the bills model*/}
-                            <td>{bill.advisement}</td>
-                            <td>{bill.district_tally}</td>
-                            <td>{bill.national_tally}</td>
+                            <td>{bill.advisement} TBD</td>
                             <td><a href={bill.url}>Link</a></td>
+                            <td>{bill.national_tally}</td>
+                            <td>{bill.district_tally}</td>
                         </tr>
                     ))}
                 </tbody>
