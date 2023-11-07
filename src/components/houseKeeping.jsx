@@ -24,6 +24,7 @@ function HouseKeeping(){
 
     // let Is_delegate = false
     const [Is_delegate, setIs_delegate] = useState(false)
+
     // saperate condidates on each page load or podmembers changes
     useEffect(()=>{
         setMembers(podMembers?.filter((member)=> member.is_member))
@@ -138,9 +139,12 @@ function HouseKeeping(){
         if(members){
             if(members[0]?.user.username === AuthUser?.username && members[0].is_delegate){
                 setIs_delegate(true)
+            }else {
+                setIs_delegate(false)
             }
         }
     },[members])
+
     // removing the pod permemently.
     const handleDesolve =()=>{
         chatSocket.send(JSON.stringify({
@@ -334,11 +338,12 @@ function HouseKeeping(){
                             <th>#</th>
                             <th>Member Name</th>
                             <th>Do you want this voter to be a member?</th>
-                            <th>{podInfo?.is_active? "Total Vote Out" :"Total"} </th>
-                            <th>
-                                {podInfo?.is_active? "Put forward as First Delegate" : null}
-                            </th>
-                            <th>{podInfo?.is_active? "Total": null}</th>
+                            <th>{podInfo?.is_active? "Total Vote Out" :"Total Voted"} </th>
+                            {/* if the Circle is not active, do not show these two column */}
+                            {podInfo?.is_active ? <>
+                                <th>Put forward as First Delegate</th>
+                                <th>Total</th>
+                            </>:""}
                             <th>Remove Member</th>
                         </tr>
                     </thead>
@@ -360,33 +365,50 @@ function HouseKeeping(){
                                    </>
                                    : null}
                                 </td>
-                                <td>{Is_delegate? podInfo?.is_active? member.voteOuts.length===0? "":member.voteOuts.length :null :null}</td>
-                                <td> {podInfo?.is_active? <>
-                                    Yes 
-                                    <input type="checkbox" 
-                                    className='form-check-input mx-2'
-                                    checked={delegated(member?.putFarward)}
-                                    onChange={()=> handleDelegate(member)}/>
-                                </>:null}</td>
+
+                                {/* do not show below columns if the circle is not active */}
+                                {podInfo?.is_active ? <>
+                                    <td>{Is_delegate? podInfo?.is_active? member.voteOuts.length===0? "":member.voteOuts.length :null :null}</td>
+                               
+                                    <td> 
+                                        Yes 
+                                        <input type="checkbox" 
+                                        className='form-check-input mx-2'
+                                        checked={delegated(member?.putFarward)}
+                                        onChange={()=> handleDelegate(member)}/>
+                                    </td>
+
+                                </>:
+                                ""}
+                                {/* end pod active condition */}
+
                                 <td>{ podInfo?.is_active? member.putFarward.length===0? "":member.putFarward.length :null}</td>
                                 <td>{actions(member)}</td>
                             </tr>
                         ))
                         : ""}
+
                         {condidate?.length > 0 ? 
                             <tr>
                                 <td >01</td>
                                 <td>{condidate[0]?.user.users.legalName}</td>
-                                <td> Yes
-                                <input type="checkbox" 
-                                    className='form-check-input mx-2'
-                                    value={condidate[0].id} 
-                                    checked={!voteInsChck(condidate[0]?.voteIns)}
-                                    onChange={(e)=> handleVoteIn(e)}/>
+                                <td>
+                                    {condidate[0].user.username === AuthUser.username ? "": 
+                                    <div>
+                                        Yes
+                                    <input type="checkbox" 
+                                        className='form-check-input mx-2'
+                                        value={condidate[0].id} 
+                                        checked={!voteInsChck(condidate[0]?.voteIns)}
+                                        onChange={(e)=> handleVoteIn(e)}/>
+
+                                    </div> }
+                                    
                                 </td>
-                                <td>In: {condidate[0]?.voteIns.length} </td>
-                                <td></td>
-                                <td></td>
+                                <td> {condidate[0]?.voteIns.length} </td>
+                                {/* if Circle is not active, do not show these two column */}
+                                {podInfo?.is_active ? <><td></td> <td></td></> : ""}
+                                
                                 <td>
                                     {Is_delegate? 
                                     <input type = "checkbox" 
