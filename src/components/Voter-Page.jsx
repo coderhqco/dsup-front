@@ -265,7 +265,6 @@ function VoterPage() {
                         <th>District Tally</th>
                         <th>National Tally</th>
                         <th>Bill Link</th>
-                        <th>Metrics</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -310,7 +309,6 @@ function VoterPage() {
                             <td>{bill.district_tally}</td>
                             <td>{bill.national_tally}</td>
                             <td><a href={bill.url}>Link</a></td>
-                            <td>TBD</td>
                         </tr>
                     ))}
                 </tbody>
