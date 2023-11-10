@@ -40,7 +40,7 @@ function EnterTheFloor() {
                         // nagivate to voter page...
                         navigate('/voter-page');
                         //fetch bills below and save to billSlice
-                        loadBills();
+                        // loadBills();
                     } else {
                         setErr("Something went wrong. Check your inputs and try again.");
                     }
@@ -54,10 +54,11 @@ function EnterTheFloor() {
 
     // below function is responsible for fetching the bills and dispatching them to the redux store, billSlice
     const loadBills = () => {
-        const billsURL = `${window.location.protocol}//${baseURL}/api/bills/`;
+        const billsURL = `${window.location.protocol}//${baseURL}/bill/bills/`;
         let header = { 'Authorization': `Bearer ${token.access}` }
         axios.get(billsURL, { headers: header })
             .then(response => {
+                
                 if (response.status === 200) {
                     dispatch(retrieveBillsSuccess(response.data));
                     console.log(response.data)

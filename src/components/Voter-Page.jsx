@@ -22,7 +22,11 @@ function VoterPage() {
     const navigate = useNavigate();
     const podMembers = useSelector((state) => state.AuthUser.podMembers);
     const [delegate, setDelegate] = useState(podMembers?.filter((e) => e.is_delegate === true)[0]);
-    const bills = useSelector((state) => state.bills.bills);
+    // const bills = useSelector((state) => state.bills.bills);
+    
+    const [bills, setBills] = useState({})
+
+    console.log("bills: ", bills)
 
     let date = new Date(AuthUser.date_joined)
 
@@ -52,6 +56,20 @@ function VoterPage() {
             });
     }, [])
 
+    // load bills
+    useEffect(()=>{
+        let header = { 'Authorization': `Bearer ${AuthUser.token.access}` }
+        axios.get(`${window.location.protocol}//${baseURL}/bill/bills/`, { headers: header })
+            .then(response => {
+                setBills(response.data)
+                console.log(response.data)
+            })
+            .catch(error => {
+                setMessage({ type: "alert alert-danger", msg: "error getting bills." })
+                // setErr("Something went wrong. Check your inputs and try again.");
+                console.log(error)
+            });
+    },[])
 
     useEffect(() => {
         switch (action) {
@@ -170,6 +188,19 @@ function VoterPage() {
         }
     }
 
+    const TruncatedString = ({ text }) => {
+        // Check if the text is longer than the maxLength
+        if (text.length > 60) {
+          // If so, truncate the string and add ellipsis
+          const truncatedText = text.slice(0, 60) + '...';
+
+          // Render the truncated text
+          return <span title={text}>{truncatedText}</span>;
+        }
+        // If the text is not longer than the maxLength, render the original text
+        return <span>{text}</span>;
+      };
+
     return (
         <div className="container">
             <div className="row">
@@ -259,22 +290,23 @@ function VoterPage() {
                     <tr className='bills-list-voter-page-header-row'>
                         <th>Bill Number</th>
                         <th>Short Title</th>
-                        <th>Latest Action</th>
+                        <th>Scheduled For Vote</th>
+                        <th>Advice</th>
                         <th>Your Vote</th>
-                        <th>Advisement</th>
-                        <th>More</th>
                         <th>District Tally</th>
                         <th>National Tally</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {bills.slice(0, 10).map((bill, index) => (
+                    {console.log(bills)}
+                    {bills?.results?.map((bill, index) => (
                         <tr key={index}>
                             <td>H.R. {bill.number}</td>
-                            <td>{bill.title}</td>
-                            {/* Include other bill properties as needed */}
-                            <td>{bill.latest_action_date}</td>
-                            <td>      {['radio'].map((type) => (
+                            <td> <Link to={'/'}><TruncatedString text={bill.title} /></Link> </td>
+                            <td>{bill.schedule_date}</td>
+                            <td>{bill.advice}</td>
+                         
+                            <td>{['radio'].map((type) => (
                                 <div key={`inline-${type}`} className="mb-3">
                                     <Form>
                                         <Form.Check
@@ -313,11 +345,27 @@ function VoterPage() {
                                     </Form>
                                 </div>
                             ))}</td>
-                            {/* Need to add advisement as an attribute on the bills model*/}
-                            <td>{bill.advisement} TBD</td>
-                            <td><a href={bill.url}>Link</a></td>
-                            <td>{bill.national_tally}</td>
-                            <td>{bill.district_tally}</td>
+                        
+                            <td>
+                            <span className='border border-dark px-5'>{bill.yea_votes_count}</span>
+                                <br />
+                                <span className='border border-dark px-5'>{bill.nay_votes_count}</span>
+                                <br />
+                                <span className='border border-dark px-5'>{bill.present_votes_count}</span>
+                                <br />
+                                <span className='border border-dark px-5'>{bill.proxy_votes_count}</span>
+                                <br />
+                            </td>
+                            <td>
+                                <span className='border border-dark px-5'>{bill.yea_votes_count}</span>
+                                <br />
+                                <span className='border border-dark px-5'>{bill.nay_votes_count}</span>
+                                <br />
+                                <span className='border border-dark px-5'>{bill.present_votes_count}</span>
+                                <br />
+                                <span className='border border-dark px-5'>{bill.proxy_votes_count}</span>
+                                <br />
+                            </td>
                         </tr>
                     ))}
                 </tbody>
