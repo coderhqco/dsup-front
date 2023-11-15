@@ -33,33 +33,56 @@ function BillPage() {
                 </Card>
             </Container>
             <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
-                <Card style={{ width: '90%', height: "250px"}}>
-                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>Personal Notes <Button variant="success">Add Notes</Button></Card.Title>
+                <Card style={{ width: '90%', height: "250px" }}>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
+                            Personal Notes
+                            <Button variant="success" style={{ textDecoration: 'none' }}>Add Notes</Button>
+                        </div>
+                    </Card.Title>                </Card>
+            </Container>
+            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+                <Card style={{ width: '90%', height: "250px" }}>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
+                            First Delegate Notes
+                            <Button variant="success">Add Notes</Button>
+                        </div>
+                    </Card.Title>                </Card>
+            </Container>
+            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+                <Card style={{ width: '90%', height: "250px" }}>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
+                            Second Delegate Notes
+                        </div>
+                    </Card.Title>                </Card>
+            </Container>
+            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+                <Card style={{ width: '90%', height: "250px" }}>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
+                            MoDA Notes
+                            <Button variant="success">Add Notes</Button>
+                        </div>
+                    </Card.Title>
                 </Card>
             </Container>
             <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
-                <Card style={{ width: '90%', height: "250px"}}>
-                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>First Delegate Notes <Button variant="success">Add Notes</Button></Card.Title>
-                </Card>
+                <Card style={{ width: '90%', height: "250px" }}>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
+                            HoLC Notes
+                        </div>
+                    </Card.Title>                </Card>
             </Container>
             <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
-                <Card style={{ width: '90%', height: "250px"}}>
-                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>Second Delegate Notes <Button variant="success">Add Notes</Button></Card.Title>
-                </Card>
-            </Container>
-            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
-                <Card style={{ width: '90%', height: "250px"}}>
-                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>MoDA Notes <Button variant="success">Add Notes</Button></Card.Title>
-                </Card>
-            </Container>
-            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
-                <Card style={{ width: '90%', height: "250px"}}>
-                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>HoLC Delegate Notes <Button variant="success">Add Notes</Button></Card.Title>
-                </Card>
-            </Container>
-            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
-                <Card style={{ width: '90%', height: "250px"}}>
-                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>House Rep Notes <Button variant="success">Add Notes</Button></Card.Title>
+                <Card style={{ width: '90%', height: "250px" }}>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
+                            House Rep Notes
+                        </div>
+                    </Card.Title>
                 </Card>
             </Container>
         </div>
