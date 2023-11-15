@@ -1,6 +1,8 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+
 
 function BillPage() {
     return (
@@ -8,7 +10,7 @@ function BillPage() {
             <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
                 <Card style={{ width: '90%' }}>
                     <Card.Body>
-                        <Card.Title style={{ fontFamily: "inter-bold" }}>H.R. 1234</Card.Title>
+                        <h1 style={{ fontFamily: "inter-bold" }}>H.R. 1234</h1>
                         <Card.Subtitle style={{ fontFamily: "Inter-SemiBold" }}>BILL TITLE</Card.Subtitle>
                         <br />
                         <Card.Text style={{ fontFamily: "Inter-SemiBold" }}>
@@ -31,8 +33,33 @@ function BillPage() {
                 </Card>
             </Container>
             <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
-                <Card style={{ width: '90%' }}>
-                    Test
+                <Card style={{ width: '90%', height: "250px"}}>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>Personal Notes <Button variant="success">Add Notes</Button></Card.Title>
+                </Card>
+            </Container>
+            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+                <Card style={{ width: '90%', height: "250px"}}>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>First Delegate Notes <Button variant="success">Add Notes</Button></Card.Title>
+                </Card>
+            </Container>
+            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+                <Card style={{ width: '90%', height: "250px"}}>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>Second Delegate Notes <Button variant="success">Add Notes</Button></Card.Title>
+                </Card>
+            </Container>
+            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+                <Card style={{ width: '90%', height: "250px"}}>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>MoDA Notes <Button variant="success">Add Notes</Button></Card.Title>
+                </Card>
+            </Container>
+            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+                <Card style={{ width: '90%', height: "250px"}}>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>HoLC Delegate Notes <Button variant="success">Add Notes</Button></Card.Title>
+                </Card>
+            </Container>
+            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+                <Card style={{ width: '90%', height: "250px"}}>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>House Rep Notes <Button variant="success">Add Notes</Button></Card.Title>
                 </Card>
             </Container>
         </div>
