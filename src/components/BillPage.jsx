@@ -53,17 +53,19 @@ function BillPage() {
                     <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
                             Personal Notes
-                            <Button variant="success" style={{ textDecoration: 'none' }} onClick={handleAddNotes}>Add Notes</Button>
+                            <Button variant="success" style={{ textDecoration: 'none' }} onClick={handleAddNotes}>{ addingNotes ? "Exit" : "Add Notes"}</Button>
                         </div>
                     </Card.Title>
                     {addingNotes && <AddNotesForm setNotes={setNotes} />}
-                    <ul>
-                        {notes.map((note, index) => (
-                            <div>
-                                <li style={{ marginTop: "2%" }} key={index}>{note}</li>
-                            </div>
-                        ))}
-                    </ul>
+
+                    <div style={{ overflow: "auto" }}>
+
+                        <ul>
+                            {notes.map((note, index) => (
+                                <li key={index}>{note}</li>
+                            ))}
+                        </ul>
+                    </div>
                 </Card>
             </Container>
 
