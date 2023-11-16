@@ -1,19 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const billsLocal = JSON.parse(localStorage.getItem('bills'));
+
+let billsInit = null;
+
+billsLocal ? billsInit = billsLocal : billsInit = [];
+
 const initialState = {
-  bills: [], 
+  bills: billsInit
 };
 
 export const billSlice = createSlice({
-  name: 'bill',
+  name: 'bills',
   initialState,
   reducers: {
-    retrieveBills: (state, action) => {
+    retrieveBillsSuccess: (state, action) => {
       state.bills = action.payload;
+      toLocalStorage('bills', state.bills)
+    },
+    retrieveBillsFailure: (state) => {
+      state.bills = [];
     },
   },
 });
 
-export const { retrieveBills } = billSlice.actions;
+function toLocalStorage(store, bills) {
+  localStorage.setItem(store, JSON.stringify(bills));
+}
+
+
+export const { setBills, retrieveBillsSuccess, retrieveBillsFailure } = billSlice.actions;
 
 export default billSlice.reducer;

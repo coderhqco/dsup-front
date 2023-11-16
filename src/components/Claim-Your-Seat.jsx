@@ -4,6 +4,8 @@ import { useState } from 'react';
 import axios from "axios";
 import { baseURL } from '../store/conf.js'
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 function ClaimYourSeat() {
     const navigate = useNavigate();

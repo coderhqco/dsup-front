@@ -318,6 +318,7 @@ function HouseKeeping(){
                 <div className="col-sm-12 col-md-3"></div>
                 <div className="col-sm-12 col-md-6 mt-3">
                     <h1 className="text-center">Housekeeping Page</h1>
+
                     <h3 className='text-center'>Circle: {podInfo?.code} District: {podInfo?.district.code}</h3>
                    
                     <h4 className='text-center'>Invitation Key: {podInfo?.invitation_code}</h4>

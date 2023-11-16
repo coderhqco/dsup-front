@@ -3,7 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import { ModalHeader } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import axios from 'axios';
-import {baseURL} from '../store/conf.js'
+import { baseURL } from '../store/conf.js'
+
 
 
 const PodBackNforth = () => {
@@ -19,7 +20,6 @@ const PodBackNforth = () => {
 
     const scrollableElementRef = useRef(null);
 
-
     useEffect (()=>{
         /** This use effect function is responsible for smooth scrolling to 
          * the end of entries list
@@ -29,8 +29,8 @@ const PodBackNforth = () => {
             const scrollableElement = scrollableElementRef.current;
             // Scroll to the bottom if the element is not in view
             scrollableElement.scrollIntoView({ behavior: "smooth" });
-          }
-    },[serverMessage])
+        }
+    }, [serverMessage])
 
     useEffect(() => {
         /** This useEffect opens the web socket protocal and fetches B&F data */
@@ -88,9 +88,10 @@ const PodBackNforth = () => {
         }
     }
 
-    const date_format = (date, _24h=false) => {
+    const date_format = (date, _24h = false) => {
         /* this function is used on msg function for the date format of message. 
         _24h is only for the last part of the date format which is in hours: minutes: seconds. */
+
         if (_24h === true){
             return new Date(date).toLocaleString('en-US', {hour: "2-digit", minute: "2-digit", second: "2-digit",hour12: false})
         }else{
@@ -105,8 +106,10 @@ const PodBackNforth = () => {
                 <div className='row'>
                     {/* checking if this message has handle */}
                     <p className='mb-0'>
+
                     <span className='fw-bold h4'>{AuthUser.users?.legalName}</span>
                     <span className='text-muted small'> &nbsp;&nbsp;{date_format(message.date)}&nbsp; [ {date_format(message.date, true)} ] </span>
+                                                                                                         
                     </p>
                 </div>
                 <div className='row'>
@@ -119,7 +122,7 @@ const PodBackNforth = () => {
     }
 
     // User.handle? 
-    return  (
+    return (
         // the message history area. 
         <div className="container my-5">
             <div className="card mx-auto "  >
@@ -128,11 +131,11 @@ const PodBackNforth = () => {
                 </div>
                 <div className="card-body mh-100 p-0" style={{ height: "500px", overflowY: 'auto' }}>
                     <div className='text-center p-2' >
-                     
+
                         {loadMoreVisible && (<a href="#" className='btn btn-sm btn-outline-primary rounded-pill px-3' onClick={handleLoad}>load more</a>)}
                     </div>
                     {serverMessage.map((message, index) => msg(message, index))}
-                    
+
                     <div ref={scrollableElementRef} />
                 </div>
 
@@ -148,7 +151,7 @@ const PodBackNforth = () => {
                             style={{ "cursor": "pointer" }}
                             id="basic-addon1">Send</span>
                     </div>
-                    
+    
                 </div>
             </div>
 

@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate, useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { pod, authenticate } from '../store/userSlice.js';
 import { baseURL } from '../store/conf.js'
 import jwtDecode from 'jwt-decode';
 import { Container, Row, Col, Table } from 'react-bootstrap';
+
+import Form from 'react-bootstrap/Form';
+
+// import { retrieveBillsSuccess } from '../store/billSlice';
 
 function VoterPage() {
     const AuthUser = useSelector((state) => state.AuthUser.user);
@@ -19,13 +23,13 @@ function VoterPage() {
     const navigate = useNavigate();
     const podMembers = useSelector((state) => state.AuthUser.podMembers);
     const [delegate, setDelegate] = useState(podMembers?.filter((e) => e.is_delegate === true)[0]);
-    const [bills, setBills] = useState([]);
+    // const bills = useSelector((state) => state.bills.bills);
+    
+    const [bills, setBills] = useState({})
+
+    console.log("bills: ", bills)
 
     let date = new Date(AuthUser.date_joined)
-
-    // placeholder rows below before we get the data from the backend for each bill 
-    const rows = Array(10).fill().map((_, i) => i + 1);
-
 
     // get the new access token on each page load or redirect
     useEffect(() => {
@@ -53,22 +57,21 @@ function VoterPage() {
             });
     }, [])
 
+    // load bills
+    useEffect(()=>{
+        let header = { 'Authorization': `Bearer ${AuthUser.token.access}` }
+        axios.get(`${window.location.protocol}//${baseURL}/bill/bills/`, { headers: header })
+            .then(response => {
+                setBills(response.data)
+                console.log(response.data)
+            })
+            .catch(error => {
+                setMessage({ type: "alert alert-danger", msg: "error getting bills." })
+                // setErr("Something went wrong. Check your inputs and try again.");
+                console.log(error)
+            });
+    },[])
 
-    // get the bills on each page load or redirect
-    // useEffect(() => {
-    //     axios.get(`${window.location.protocol}//${baseURL}/api/bills/`)
-    //         .then(response => {
-    //             if (response.status === 200) {
-    //                 setBills(response.data)
-    //             } else {
-    //                 setMessage({ type: "alert alert-danger", msg: "could not get bills" })
-    //             }
-    //         })
-    //         .catch(error => {
-    //             setMessage({ type: "alert alert-danger", msg: "Could not receive list of bills... something went wrong with your request." })
-    //             console.log(error)
-    //         });
-    // }, [])
 
     useEffect(() => {
         switch (action) {
@@ -187,6 +190,19 @@ function VoterPage() {
         }
     }
 
+    const TruncatedString = ({ text }) => {
+        // Check if the text is longer than the maxLength
+        if (text.length > 60) {
+          // If so, truncate the string and add ellipsis
+          const truncatedText = text.slice(0, 60) + '...';
+
+          // Render the truncated text
+          return <span title={text}>{truncatedText}</span>;
+        }
+        // If the text is not longer than the maxLength, render the original text
+        return <span>{text}</span>;
+      };
+
     return (
         <div className="container">
             <div className="row">
@@ -279,31 +295,84 @@ function VoterPage() {
             <Table striped bordered hover responsive>
                 {/* <thead>
                     <tr className='bills-list-voter-page-header-row'>
-                        <th>HR #</th>
+                        <th>Bill Number</th>
                         <th>Short Title</th>
-                        <th>Latest Action</th>
+                        <th>Scheduled For Vote</th>
+                        <th>Advice</th>
                         <th>Your Vote</th>
-                        <th>Advisement</th>
                         <th>District Tally</th>
                         <th>National Tally</th>
-                        <th>Bill Link</th>
-                        <th>Metrics</th>
                     </tr>
-                </thead> */}
-                {/* <tbody>
-                    {bills.slice(0, 10).map((bill, index) => (
+                </thead>
+                <tbody>
+                    {console.log(bills)}
+                    {bills?.results?.map((bill, index) => (
                         <tr key={index}>
-                            <td>{bill.number}</td>
-                            <td>{bill.title}</td>
-                           
-                            <td>{bill.latest_action_date}</td>
-                            <td>{bill.your_vote}</td>
-                           
-                            <td>{bill.advisement}</td>
-                            <td>{bill.district_tally}</td>
-                            <td>{bill.national_tally}</td>
-                            <td><a href={bill.url}>Link</a></td>
-                            <td>TBD</td>
+                            <td>H.R. {bill.number}</td>
+                            <td> <Link to={'/'}><TruncatedString text={bill.title} /></Link> </td>
+                            <td>{bill.schedule_date}</td>
+                            <td>{bill.advice}</td>
+                         
+                            <td>{['radio'].map((type) => (
+                                <div key={`inline-${type}`} className="mb-3">
+                                    <Form>
+                                        <Form.Check
+                                            inline
+                                            label="YEA"
+                                            name="group1"
+                                            type={type}
+                                            id={index}
+                                        />
+                                        <br />
+                                        <Form.Check
+                                            inline
+                                            label="NAY"
+                                            name="group1"
+                                            type={type}
+                                            id={index}
+                                        />
+                                        <br />
+                                        <Form.Check
+                                            inline
+                                            label="PRESENT"
+                                            name="group1"
+                                            type={type}
+                                            id={index}
+                                            defaultChecked
+                                        />
+                                        <br />
+                                        <Form.Check
+                                            inline
+                                            label="PROXY"
+                                            name="group1"
+                                            type={type}
+                                            id={index}
+                                            defaultChecked
+                                        />
+                                    </Form>
+                                </div>
+                            ))}</td>
+                        
+                            <td>
+                            <span className='border border-dark px-5'>{bill.yea_votes_count}</span>
+                                <br />
+                                <span className='border border-dark px-5'>{bill.nay_votes_count}</span>
+                                <br />
+                                <span className='border border-dark px-5'>{bill.present_votes_count}</span>
+                                <br />
+                                <span className='border border-dark px-5'>{bill.proxy_votes_count}</span>
+                                <br />
+                            </td>
+                            <td>
+                                <span className='border border-dark px-5'>{bill.yea_votes_count}</span>
+                                <br />
+                                <span className='border border-dark px-5'>{bill.nay_votes_count}</span>
+                                <br />
+                                <span className='border border-dark px-5'>{bill.present_votes_count}</span>
+                                <br />
+                                <span className='border border-dark px-5'>{bill.proxy_votes_count}</span>
+                                <br />
+                            </td>
                         </tr>
                     ))}
                 </tbody> */}

@@ -9,9 +9,9 @@ let userInit = null;
 let podInit = null;
 let podMembersInit = null
 
-userLocal ? userInit = userLocal: userInit = null;
-podLocal ? podInit = podLocal: podInit = null;
-podMembersLocal ? podMembersInit = podMembersLocal: podMembersInit = null;
+userLocal ? userInit = userLocal : userInit = null;
+podLocal ? podInit = podLocal : podInit = null;
+podMembersLocal ? podMembersInit = podMembersLocal : podMembersInit = null;
 
 const initialState = {
   user: userInit,
@@ -24,25 +24,25 @@ export const UserSlice = createSlice({
   initialState,
   reducers: {
     authenticate: (state, action) => {
-        state.user = action.payload
-        // add cart to localstorage
-        toLocalStorage('AuthUser',state.user)
+      state.user = action.payload
+      // add cart to localstorage
+      toLocalStorage('AuthUser', state.user)
     },
-    logout: (state) =>{
+    logout: (state) => {
       state.user = null;
       localStorage.removeItem('AuthUser');
       localStorage.removeItem('pod');
       localStorage.removeItem('podMembers');
     },
-    pod:(state,action) =>{
+    pod: (state, action) => {
       state.pod = action.payload
-      toLocalStorage('pod',state.pod);
+      toLocalStorage('pod', state.pod);
     },
-    addPodmMembers:(state, action)=>{
+    addPodmMembers: (state, action) => {
       state.podMembers = action.payload;
       toLocalStorage('podMembers', state.podMembers)
     },
-    desolvePod:(state, action)=>{
+    desolvePod: (state, action) => {
       state.pod = null
       state.podMembers = null
       localStorage.removeItem('pod');
@@ -52,11 +52,11 @@ export const UserSlice = createSlice({
   },
 })
 
-function toLocalStorage(store,user){
+function toLocalStorage(store, user) {
   localStorage.setItem(store, JSON.stringify(user));
 }
 
 // Action creators are generated for each case reducer function
-export const { authenticate,logout, pod, addPodmMembers,desolvePod } = UserSlice.actions
+export const { authenticate, logout, pod, addPodmMembers, desolvePod } = UserSlice.actions
 export default UserSlice.reducer
 
