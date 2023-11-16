@@ -7,7 +7,7 @@ function Footer(){
         <footer className='container'>
             <div className="row my-3">
                 <div className="col">
-                    <p className='text-secondary'>The Democracy Straight-Up Project </p>
+                    <p className='text-secondary'>The Democracy, Straight-Up! Project </p>
                 </div>
                 <div className="col text-end">
                     <Link to='/' className='mx-3 text-secondary'>About</Link>

@@ -7,6 +7,7 @@ import { pod, authenticate } from '../store/userSlice.js';
 import { baseURL } from '../store/conf.js'
 import jwtDecode from 'jwt-decode';
 import { Container, Row, Col, Table } from 'react-bootstrap';
+
 import Form from 'react-bootstrap/Form';
 
 // import { retrieveBillsSuccess } from '../store/billSlice';
@@ -70,6 +71,7 @@ function VoterPage() {
                 console.log(error)
             });
     },[])
+
 
     useEffect(() => {
         switch (action) {
@@ -149,10 +151,10 @@ function VoterPage() {
                 return (
                     <div className="row text-center">
                         <div className="col-sm-12 ">
-                            <Link to={'/join-pod'} className="btn btn-success m-2">Join a Pod</Link>
+                            <Link to={'/join-pod'} className="btn btn-success m-2">Join a Circle</Link>
                         </div>
                         <div className="col-sm-12 ">
-                            <a onClick={() => setAction('createPod')} className="btn btn-success m-2">Create a Pod</a>
+                            <a onClick={() => setAction('createPod')} className="btn btn-success m-2">Create a Circle</a>
                         </div>
                     </div>
                 )
@@ -160,7 +162,7 @@ function VoterPage() {
                 return (
                     <div className="row text-center">
                         <div className="col-sm-12 col-md-6 col-lg-6">
-                            <Link to='/house-keeping-page' className="btn btn-primary m-2 fixed-height-button"> My Pod</Link>
+                            <Link to='/house-keeping-page' className="btn btn-primary m-2 fixed-height-button"> My Circle</Link>
                         </div>
                         {/* add if the user is delegate and then show this two. */}
                         {AuthUser?.username === delegate?.user?.username ? <>
@@ -225,14 +227,18 @@ function VoterPage() {
                 </div>
             </div>
             <Container style={{ marginTop: "2%" }} >
+                        <div className="row text-center">
+                            <h1>Voter Page</h1>
+                        </div>
                 <Row>
+                   
                     <Col>
                         <Row>
                             <Col xs="auto">
-                                <p className="text-left">Voter:</p>
+                                <p className="text-left">Voter Name:</p>
                             </Col>
                             <Col>
-                                <h1>{AuthUser?.users?.legalName}</h1>
+                                <p>{AuthUser?.users?.legalName}</p>
                             </Col>
                         </Row>
                     </Col>
@@ -242,7 +248,7 @@ function VoterPage() {
                                 <p className="text-left">Verification Score:</p>
                             </Col>
                             <Col>
-                                <h1>{AuthUser?.users?.verificationScore}/7</h1>
+                                <p>{AuthUser?.users?.verificationScore}/7</p>
                             </Col>
                         </Row>
                     </Col>
@@ -252,7 +258,7 @@ function VoterPage() {
                                 <p className="text-left">District:</p>
                             </Col>
                             <Col>
-                                <h1>{AuthUser.users?.district?.code}</h1>
+                                <p>{AuthUser.users?.district?.code}</p>
                             </Col>
                         </Row>
                     </Col>
@@ -261,7 +267,7 @@ function VoterPage() {
 
             {/* the three columns on  kyle note: fix to center the below when on mobile*/}
 
-            <div className="row d-flex justify-content-center align-items-center">
+            <div className="row d-flex justify-content-center align-items-center mt-2">
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
                     <ul className="list-unstyled">
                         <li className="mb-2"><Link to={'/voter-page'}>List of Delegates</Link></li>
@@ -276,17 +282,18 @@ function VoterPage() {
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
                     <ul className="list-unstyled">
                         <li className="mb-2"><Link to={'/voter-page'}> First Link Meeting Schedule </Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'}>  Meeting Minutes Log </Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'}> Meeting Minutes Log </Link></li>
                         <li className="mb-2"><Link to={'/voter-page'}> Bill Metrics </Link></li>
                         <li className="mb-2"><Link to={'/voter-page'}> Voter Settings </Link></li>
                     </ul>
                 </div>
             </div>
-            <h1 className="header-semibold" style={{ marginBottom: "1%" }}>Bills With Latest Action...</h1>
-            <p> <Link> See full list of bills... </Link></p>
+            <h1 className="header-semibold" style={{ marginBottom: "1%" }}>List of Bills</h1>
+            <p> <Link> Bills sorted by Latest Action </Link></p>
 
+                <p>Bills section is being commented and hidden. This is under construction. </p>
             <Table striped bordered hover responsive>
-                <thead>
+                {/* <thead>
                     <tr className='bills-list-voter-page-header-row'>
                         <th>Bill Number</th>
                         <th>Short Title</th>
@@ -368,7 +375,7 @@ function VoterPage() {
                             </td>
                         </tr>
                     ))}
-                </tbody>
+                </tbody> */}
             </Table>
         </div>
     )
