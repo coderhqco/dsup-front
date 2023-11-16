@@ -4,6 +4,14 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import AddNotesForm from './AddNotesForm';
 
+// ** READ BELOW **
+
+// this is a sample page for the bill page, it is not connected to the backend
+// currently, this is mimicking a situation where the person signed in is a regular user, and is not a first del or higher
+// the notes section is currently not connected to the backend, but it is a good example of how we can implement it
+// nothing will persist, and "add notes" buttons will have to be added and conditionally rendered later on, this
+// is a quick example and is hard coded and not meant to be a long term solution
+
 function BillPage() {
 
     const [addingNotes, setAddingNotes] = React.useState(false);
