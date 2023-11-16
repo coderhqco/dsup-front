@@ -295,6 +295,7 @@ function VoterPage() {
                         <th>Your Vote</th>
                         <th>District Tally</th>
                         <th>National Tally</th>
+                        <th>More...</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -365,6 +366,12 @@ function VoterPage() {
                                 <br />
                                 <span className='border border-dark px-5'>{bill.proxy_votes_count}</span>
                                 <br />
+                            </td>
+                            <td>
+                                <Link to={`/bill`}>
+                                    More
+                                
+                                </Link>
                             </td>
                         </tr>
                     ))}
