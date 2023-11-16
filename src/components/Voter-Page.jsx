@@ -293,7 +293,7 @@ function VoterPage() {
 
                 <p>Bills section is being commented and hidden. This is under construction. </p>
             <Table striped bordered hover responsive>
-                {/* <thead>
+                <thead>
                     <tr className='bills-list-voter-page-header-row'>
                         <th>Bill Number</th>
                         <th>Short Title</th>
@@ -382,7 +382,7 @@ function VoterPage() {
                             </td>
                         </tr>
                     ))}
-                </tbody> */}
+                </tbody> 
             </Table>
         </div>
     )
