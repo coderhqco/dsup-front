@@ -7,8 +7,7 @@ import { pod, authenticate } from '../store/userSlice.js';
 import { baseURL } from '../store/conf.js'
 import jwtDecode from 'jwt-decode';
 import { Container, Row, Col, Table } from 'react-bootstrap';
-
-import Form from 'react-bootstrap/Form';
+import Bill_Item from './bills/bill_item.jsx';
 
 // import { retrieveBillsSuccess } from '../store/billSlice';
 
@@ -27,8 +26,6 @@ function VoterPage() {
     
     const [bills, setBills] = useState({})
 
-    console.log("bills: ", bills)
-
     let date = new Date(AuthUser.date_joined)
 
     // get the new access token on each page load or redirect
@@ -43,8 +40,6 @@ function VoterPage() {
                     let u = { ...AuthUser }
                     u.token = { refresh: AuthUser.token.refresh, access: response.data.access }
                     dispatch(authenticate(u))
-                    console.log("token is set on token and authuser.token")
-
                     setAction('userinfo')
                 } else {
                     setMessage({ type: "alert alert-danger", msg: "could not get access token" })
@@ -53,7 +48,6 @@ function VoterPage() {
             .catch(error => {
                 setMessage({ type: "alert alert-danger", msg: "something went wrong with your request" })
                 // setErr("Something went wrong. Check your inputs and try again.");
-                console.log(error)
             });
     }, [])
 
@@ -63,7 +57,6 @@ function VoterPage() {
         axios.get(`${window.location.protocol}//${baseURL}/bill/bills/`, { headers: header })
             .then(response => {
                 setBills(response.data)
-                console.log(response.data)
             })
             .catch(error => {
                 setMessage({ type: "alert alert-danger", msg: "error getting bills." })
@@ -306,81 +299,8 @@ function VoterPage() {
                     </tr>
                 </thead>
                 <tbody>
-                    {console.log(bills)}
                     {bills?.results?.map((bill, index) => (
-                        <tr key={index}>
-                            <td>H.R. {bill.number}</td>
-                            <td> <Link to={'/'}><TruncatedString text={bill.title} /></Link> </td>
-                            <td>{bill.schedule_date}</td>
-                            <td>{bill.advice}</td>
-                         
-                            <td>{['radio'].map((type) => (
-                                <div key={`inline-${type}`} className="mb-3">
-                                    <Form>
-                                        <Form.Check
-                                            inline
-                                            label="YEA"
-                                            name="group1"
-                                            type={type}
-                                            id={index}
-                                        />
-                                        <br />
-                                        <Form.Check
-                                            inline
-                                            label="NAY"
-                                            name="group1"
-                                            type={type}
-                                            id={index}
-                                        />
-                                        <br />
-                                        <Form.Check
-                                            inline
-                                            label="PRESENT"
-                                            name="group1"
-                                            type={type}
-                                            id={index}
-                                            defaultChecked
-                                        />
-                                        <br />
-                                        <Form.Check
-                                            inline
-                                            label="PROXY"
-                                            name="group1"
-                                            type={type}
-                                            id={index}
-                                            defaultChecked
-                                        />
-                                    </Form>
-                                </div>
-                            ))}</td>
-                        
-                            <td>
-                            <span className='border border-dark px-5'>{bill.yea_votes_count}</span>
-                                <br />
-                                <span className='border border-dark px-5'>{bill.nay_votes_count}</span>
-                                <br />
-                                <span className='border border-dark px-5'>{bill.present_votes_count}</span>
-                                <br />
-                                <span className='border border-dark px-5'>{bill.proxy_votes_count}</span>
-                                <br />
-                            </td>
-                            <td>
-                                <span className='border border-dark px-5'>{bill.yea_votes_count}</span>
-                                <br />
-                                <span className='border border-dark px-5'>{bill.nay_votes_count}</span>
-                                <br />
-                                <span className='border border-dark px-5'>{bill.present_votes_count}</span>
-                                <br />
-                                <span className='border border-dark px-5'>{bill.proxy_votes_count}</span>
-                                <br />
-                            </td>
-                            <td>
-                                <Link to={`/bill`}>
-                                    More
-                                
-                                </Link>
-                            </td>
-                        </tr>
+                        <Bill_Item bill={bill} key={index} index={index}></Bill_Item> 
                     ))}
                 </tbody> 
             </Table>
