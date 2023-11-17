@@ -12,7 +12,7 @@ import Form from 'react-bootstrap/Form';
 function Bill_Item ({bill, index}){
     return (
         <tr key={index}>
-            <td>H.R. {bill.number} - {index}</td>
+            <td>H.R. {bill.number}</td>
             <td> <Link to={'/'}>{bill.title}</Link> </td>
             <td>{bill.schedule_date}</td>
             <td>{bill.advice}</td>

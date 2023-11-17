@@ -24,6 +24,8 @@ function VoterPage() {
     const [delegate, setDelegate] = useState(podMembers?.filter((e) => e.is_delegate === true)[0]);
     // const bills = useSelector((state) => state.bills.bills);
     
+    const [currentPage, setCurrentPage] = useState(1);
+
     const [bills, setBills] = useState({})
 
     let date = new Date(AuthUser.date_joined)
@@ -54,16 +56,17 @@ function VoterPage() {
     // load bills
     useEffect(()=>{
         let header = { 'Authorization': `Bearer ${AuthUser.token.access}` }
-        axios.get(`${window.location.protocol}//${baseURL}/bill/bills/`, { headers: header })
+        axios.get(`${window.location.protocol}//${baseURL}/bill/bills/?page=${currentPage}`, { headers: header })
             .then(response => {
                 setBills(response.data)
+                console.log("bill: ", response.data)
             })
             .catch(error => {
                 setMessage({ type: "alert alert-danger", msg: "error getting bills." })
                 // setErr("Something went wrong. Check your inputs and try again.");
                 console.log(error)
             });
-    },[])
+    },[currentPage, ])
 
 
     useEffect(() => {
@@ -182,20 +185,6 @@ function VoterPage() {
                 )
         }
     }
-
-    const TruncatedString = ({ text }) => {
-        // Check if the text is longer than the maxLength
-        if (text.length > 60) {
-          // If so, truncate the string and add ellipsis
-          const truncatedText = text.slice(0, 60) + '...';
-
-          // Render the truncated text
-          return <span title={text}>{truncatedText}</span>;
-        }
-        // If the text is not longer than the maxLength, render the original text
-        return <span>{text}</span>;
-      };
-
     return (
         <div className="container">
             <div className="row">
@@ -282,9 +271,7 @@ function VoterPage() {
                 </div>
             </div>
             <h1 className="header-semibold" style={{ marginBottom: "1%" }}>List of Bills</h1>
-            <p> <Link> Bills sorted by Latest Action </Link></p>
-
-                <p>Bills section is being commented and hidden. This is under construction. </p>
+            {/* <p> <Link> Bills sorted by Latest Action </Link></p> */}
             <Table striped bordered hover responsive>
                 <thead>
                     <tr className='bills-list-voter-page-header-row'>
@@ -303,6 +290,30 @@ function VoterPage() {
                         <Bill_Item bill={bill} key={index} index={index}></Bill_Item> 
                     ))}
                 </tbody> 
+                <tfoot className='border-0'>
+                    <tr className='p-2 border-0'>
+                        <td colSpan={4} className='border-0'></td>
+                        <td colSpan={4} className='border-0' style={{ textAlign: 'right' }}>
+                            {bills?.previous ? <span 
+                                className='btn btn-outline-success mx-1 p-0 px-3'
+                                onClick={()=>setCurrentPage(currentPage-1)}>previus</span> : ""}
+
+                            {bills?.previous ? <span 
+                                    className='btn btn-outline-success mx-1 p-0 px-3'
+                                    onClick={()=>setCurrentPage(currentPage-1)}>{currentPage-1}</span>: ""}
+
+                            <span className='btn btn-success mx-1 p-0 px-3'>{currentPage}</span>
+
+                            {bills?.next ? <span 
+                                    className='btn btn-outline-success mx-1 p-0 px-3' 
+                                    onClick={()=>setCurrentPage(currentPage+1)}>{currentPage+1}</span> : ""}
+                            
+                            {bills?.next ? <span 
+                                className='btn btn-outline-success mx-1 p-0 px-3'
+                                onClick={()=>setCurrentPage(currentPage+1)}>next</span> : ""}
+                        </td>
+                    </tr>
+                </tfoot>
             </Table>
         </div>
     )
