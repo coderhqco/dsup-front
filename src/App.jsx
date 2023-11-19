@@ -15,6 +15,7 @@ import PodBackNforth from './components/PodBackNforth.jsx';
 import SettingsPage from './components/SettingsPage.jsx';
 import SearchFeature from './components/SearchFeature.jsx';
 import BillPage from './components/bills/BillPage.jsx';
+import MemberContactPage from './components/MemberContactPage.jsx';
 
 
 function App(){
@@ -38,6 +39,7 @@ function App(){
         <Route path="/bill/:billId" element={<><Header/><BillPage/><Footer/></>}/>
         {/* fake path below, real path above for rendering the specific bill that gets clicked on */}
         <Route path="/bill" element={<><Header/><BillPage/><Footer/></>}/>
+        <Route path="/member-contact" element={<><Header/><MemberContactPage/><Footer/></>}/>
       </Route>
     </Routes>
   )
