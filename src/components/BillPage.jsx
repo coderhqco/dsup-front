@@ -24,7 +24,7 @@ function BillPage() {
 
     return (
         <div>
-            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+            <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: "2%" }}>
                 <Card style={{ width: '90%' }}>
                     <Card.Body>
                         <h1 style={{ fontFamily: "inter-bold" }}>H.R. 1234</h1>
@@ -48,18 +48,19 @@ function BillPage() {
                     </Card.Body>
                 </Card>
             </Container>
-            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+
+            <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: "2%" }}>
+                <h1 className='bill-page-note-headers'>
+                    Personal Notes
+                </h1>
                 <Card style={{ width: '90%', height: "250px" }}>
-                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
-                            Personal Notes
-                            <Button variant="success" style={{ textDecoration: 'none' }} onClick={handleAddNotes}>{ addingNotes ? "Exit" : "Add Notes"}</Button>
+                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%", justifyContent: "right" }}>
+                            <Button variant="success" onClick={handleAddNotes}>{addingNotes ? "Exit" : "Add Notes"}</Button>
                         </div>
                     </Card.Title>
                     {addingNotes && <AddNotesForm setNotes={setNotes} />}
-
                     <div style={{ overflow: "auto" }}>
-
                         <ul>
                             {notes.map((note, index) => (
                                 <li key={index}>{note}</li>
@@ -69,13 +70,18 @@ function BillPage() {
                 </Card>
             </Container>
 
-            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+            <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: "2%" }}>
+                <h1 className='bill-page-note-headers'>
+                    First Delegate Notes
+                </h1>
                 <Card style={{ width: '90%', height: "250px" }}>
-                    <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
-                            First Delegate Notes
+
+                    <Card.Subtitle style={{ marginLeft: "2%" }}>
+                        <div style={{ marginTop: "2%", fontFamily: "Inter-SemiBold" }}>
+                            Notes from your First Delegate
+
                         </div>
-                    </Card.Title>
+                    </Card.Subtitle>
                     <div style={{ overflow: "auto" }}>
                         <ul style={{ marginTop: "2%" }}>
                             <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
@@ -91,13 +97,16 @@ function BillPage() {
                         </ul>
                     </div>               </Card>
             </Container>
-            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+            <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: "2%" }}>
+                <h1 className='bill-page-note-headers'>
+                    Second Delegate Notes
+                </h1>
                 <Card style={{ width: '90%', height: "250px" }}>
                     <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
-                            Second Delegate Notes
-                        </div>
                     </Card.Title>
+                    <Card.Subtitle style={{ marginLeft: "2%", fontFamily: "Inter-SemiBold" }}>
+                        Notes from your Second Delegate
+                    </Card.Subtitle>
                     <div style={{ overflow: "auto" }}>
                         <ul style={{ marginTop: "2%" }}>
                             <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
@@ -114,14 +123,17 @@ function BillPage() {
                     </div>
                 </Card>
             </Container>
-            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+            <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: "2%" }}>
+                <h1 className='bill-page-note-headers'>
+                    MoDA Notes
+                </h1>
                 <Card style={{ width: '90%', height: "250px" }}>
                     <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
-                            MoDA Notes
-                        </div>
                     </Card.Title>
-                    <div style={{ overflow: "auto" }}>
+                    <Card.Subtitle style={{ marginLeft: "2%", fontFamily: "Inter-SemiBold" }}>
+                        Notes from your MoDA
+                    </Card.Subtitle>
+                    <div style={{ overflow: "auto" }} >
                         <ul style={{ marginTop: "2%" }}>
                             <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
                             <li>Curabitur tristique massa eu metus faucibus, vel ullamcorper velit tincidunt.</li>
@@ -137,13 +149,16 @@ function BillPage() {
                     </div>
                 </Card>
             </Container>
-            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+            <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: "2%" }}>
+                <h1 className='bill-page-note-headers'>
+                    HoLC Notes
+                </h1>
                 <Card style={{ width: '90%', height: "250px" }}>
                     <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
-                            HoLC Notes
-                        </div>
                     </Card.Title>
+                    <Card.Subtitle style={{ marginLeft: "2%", fontFamily: "Inter-SemiBold" }}>
+                        Notes from your HoLC
+                    </Card.Subtitle>
                     <div style={{ overflow: "auto" }}>
                         <ul style={{ marginTop: "2%" }}>
                             <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
@@ -159,13 +174,16 @@ function BillPage() {
                         </ul>
                     </div>                </Card>
             </Container>
-            <Container style={{ display: 'flex', justifyContent: 'center', marginTop: "2%" }}>
+            <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginTop: "2%" }}>
+                <h1 className='bill-page-note-headers'>
+                    House Rep Notes
+                </h1>
                 <Card style={{ width: '90%', height: "250px" }}>
                     <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%", textDecoration: "underline" }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%" }}>
-                            House Rep Notes
-                        </div>
                     </Card.Title>
+                    <Card.Subtitle style={{ marginLeft: "2%", fontFamily: "Inter-SemiBold" }}>
+                        Notes from your House Rep
+                    </Card.Subtitle>
                     <div style={{ overflow: "auto" }}>
                         <ul style={{ marginTop: "2%" }}>
                             <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
