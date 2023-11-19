@@ -54,6 +54,11 @@ function BillPage() {
                     Personal Notes
                 </h1>
                 <Card style={{ width: '90%', height: "250px" }}>
+                    <Card.Subtitle style={{ marginLeft: "2%" }}>
+                        <div style={{ marginTop: "2%", fontFamily: "Inter-SemiBold" }}>
+                            Add your own notes here about this bill!
+                        </div>
+                    </Card.Subtitle>
                     <Card.Title style={{ fontFamily: "inter-bold", marginLeft: "1%", marginTop: "1%" }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginRight: "1%", justifyContent: "right" }}>
                             <Button variant="success" onClick={handleAddNotes}>{addingNotes ? "Exit" : "Add Notes"}</Button>
