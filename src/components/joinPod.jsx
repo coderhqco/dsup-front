@@ -151,13 +151,13 @@ function JoinPod(){
             <div className="row">
                 <div className="col-sm-12 col-md-3"></div>
                 <div className="col-sm-12 col-md-6 mt-3">
-                    <h1 className="text-center">Join a Pod {AuthUser.userType}</h1>
+                    <h1 className="text-center">Join A Circle {AuthUser.userType}</h1>
                     <div className="">
-                        <h4 className="text-left">You must have an Invitation Key to join a Pod.</h4>
-                        <p className="text-left">The First Delegate of a pod should send you an Invitation Key. This cannot be done via the website.</p>
-                        <p className="text-left">Or you can create your own Pod and start inviting others to join it.</p>
+                        <h4 className="text-left">You must have an Invitation Key to join a circle.</h4>
+                        <p className="text-left">The First Delegate of a circle should send you an Invitation Key. This cannot be done via the website.</p>
+                        <p className="text-left">Or you can create your own circle and start inviting others to join it.</p>
                         <div className='col text-center'>
-                            <span onClick={handlePod} className="btn btn-primary btn-sm mb-3">Create a Pod</span>
+                            <span onClick={handlePod} className="btn btn-primary btn-sm mb-3">Create A Circle</span>
                         </div>
                     </div>
 
@@ -168,7 +168,7 @@ function JoinPod(){
                     <label className='text-left'>invitation Key</label>
                     <input type="text" onChange={(e)=> setInviteKey(e.target.value)} className="form-control" placeholder='Enter the pod invitation key here' />
                     <div className='col text-center'>
-                        <button className="btn btn-success mt-2" onClick={handleSubmit}> Join the Pod</button>
+                        <button className="btn btn-success mt-2" onClick={handleSubmit}> Join The Circle</button>
                     </div>
                 </div>
                 <div className="col-sm-12 col-md-3"></div>

@@ -7,7 +7,7 @@ import { pod, authenticate } from '../store/userSlice.js';
 import { baseURL } from '../store/conf.js'
 import jwtDecode from 'jwt-decode';
 import { Container, Row, Col, Table } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
+import Bill_Item from './bills/bill_item.jsx';
 
 // import { retrieveBillsSuccess } from '../store/billSlice';
 
@@ -24,9 +24,9 @@ function VoterPage() {
     const [delegate, setDelegate] = useState(podMembers?.filter((e) => e.is_delegate === true)[0]);
     // const bills = useSelector((state) => state.bills.bills);
     
-    const [bills, setBills] = useState({})
+    const [currentPage, setCurrentPage] = useState(1);
 
-    console.log("bills: ", bills)
+    const [bills, setBills] = useState({})
 
     let date = new Date(AuthUser.date_joined)
 
@@ -42,8 +42,6 @@ function VoterPage() {
                     let u = { ...AuthUser }
                     u.token = { refresh: AuthUser.token.refresh, access: response.data.access }
                     dispatch(authenticate(u))
-                    console.log("token is set on token and authuser.token")
-
                     setAction('userinfo')
                 } else {
                     setMessage({ type: "alert alert-danger", msg: "could not get access token" })
@@ -52,24 +50,24 @@ function VoterPage() {
             .catch(error => {
                 setMessage({ type: "alert alert-danger", msg: "something went wrong with your request" })
                 // setErr("Something went wrong. Check your inputs and try again.");
-                console.log(error)
             });
     }, [])
 
     // load bills
     useEffect(()=>{
         let header = { 'Authorization': `Bearer ${AuthUser.token.access}` }
-        axios.get(`${window.location.protocol}//${baseURL}/bill/bills/`, { headers: header })
+        axios.get(`${window.location.protocol}//${baseURL}/bill/bills/?page=${currentPage}`, { headers: header })
             .then(response => {
                 setBills(response.data)
-                console.log(response.data)
+                console.log("bill: ", response.data)
             })
             .catch(error => {
                 setMessage({ type: "alert alert-danger", msg: "error getting bills." })
                 // setErr("Something went wrong. Check your inputs and try again.");
                 console.log(error)
             });
-    },[])
+    },[currentPage, ])
+
 
     useEffect(() => {
         switch (action) {
@@ -149,10 +147,10 @@ function VoterPage() {
                 return (
                     <div className="row text-center">
                         <div className="col-sm-12 ">
-                            <Link to={'/join-pod'} className="btn btn-success m-2">Join a Pod</Link>
+                            <Link to={'/join-pod'} className="btn btn-success m-2">Join a Circle</Link>
                         </div>
                         <div className="col-sm-12 ">
-                            <a onClick={() => setAction('createPod')} className="btn btn-success m-2">Create a Pod</a>
+                            <a onClick={() => setAction('createPod')} className="btn btn-success m-2">Create a Circle</a>
                         </div>
                     </div>
                 )
@@ -160,7 +158,7 @@ function VoterPage() {
                 return (
                     <div className="row text-center">
                         <div className="col-sm-12 col-md-6 col-lg-6">
-                            <Link to='/house-keeping-page' className="btn btn-primary m-2 fixed-height-button"> My Pod</Link>
+                            <Link to='/house-keeping-page' className="btn btn-primary m-2 fixed-height-button"> My Circle</Link>
                         </div>
                         {/* add if the user is delegate and then show this two. */}
                         {AuthUser?.username === delegate?.user?.username ? <>
@@ -187,20 +185,6 @@ function VoterPage() {
                 )
         }
     }
-
-    const TruncatedString = ({ text }) => {
-        // Check if the text is longer than the maxLength
-        if (text.length > 60) {
-          // If so, truncate the string and add ellipsis
-          const truncatedText = text.slice(0, 60) + '...';
-
-          // Render the truncated text
-          return <span title={text}>{truncatedText}</span>;
-        }
-        // If the text is not longer than the maxLength, render the original text
-        return <span>{text}</span>;
-      };
-
     return (
         <div className="container">
             <div className="row">
@@ -225,14 +209,18 @@ function VoterPage() {
                 </div>
             </div>
             <Container style={{ marginTop: "2%" }} >
+                        <div className="row text-center">
+                            <h1>Voter Page</h1>
+                        </div>
                 <Row>
+                   
                     <Col>
                         <Row>
                             <Col xs="auto">
-                                <p className="text-left">Voter:</p>
+                                <p className="text-left">Voter Name:</p>
                             </Col>
                             <Col>
-                                <h1>{AuthUser?.users?.legalName}</h1>
+                                <p>{AuthUser?.users?.legalName}</p>
                             </Col>
                         </Row>
                     </Col>
@@ -242,7 +230,7 @@ function VoterPage() {
                                 <p className="text-left">Verification Score:</p>
                             </Col>
                             <Col>
-                                <h1>{AuthUser?.users?.verificationScore}/7</h1>
+                                <p>{AuthUser?.users?.verificationScore}/7</p>
                             </Col>
                         </Row>
                     </Col>
@@ -252,7 +240,7 @@ function VoterPage() {
                                 <p className="text-left">District:</p>
                             </Col>
                             <Col>
-                                <h1>{AuthUser.users?.district?.code}</h1>
+                                <p>{AuthUser.users?.district?.code}</p>
                             </Col>
                         </Row>
                     </Col>
@@ -261,7 +249,7 @@ function VoterPage() {
 
             {/* the three columns on  kyle note: fix to center the below when on mobile*/}
 
-            <div className="row d-flex justify-content-center align-items-center">
+            <div className="row d-flex justify-content-center align-items-center mt-2">
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
                     <ul className="list-unstyled">
                         <li className="mb-2"><Link to={'/voter-page'}>List of Delegates</Link></li>
@@ -276,15 +264,14 @@ function VoterPage() {
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
                     <ul className="list-unstyled">
                         <li className="mb-2"><Link to={'/voter-page'}> First Link Meeting Schedule </Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'}>  Meeting Minutes Log </Link></li>
+                        <li className="mb-2"><Link to={'/voter-page'}> Meeting Minutes Log </Link></li>
                         <li className="mb-2"><Link to={'/voter-page'}> Bill Metrics </Link></li>
                         <li className="mb-2"><Link to={'/voter-page'}> Voter Settings </Link></li>
                     </ul>
                 </div>
             </div>
-            <h1 className="header-semibold" style={{ marginBottom: "1%" }}>Bills With Latest Action...</h1>
-            <p> <Link> See full list of bills... </Link></p>
-
+            <h1 className="header-semibold" style={{ marginBottom: "1%" }}>List of Bills</h1>
+            {/* <p> <Link> Bills sorted by Latest Action </Link></p> */}
             <Table striped bordered hover responsive>
                 <thead>
                     <tr className='bills-list-voter-page-header-row'>
@@ -299,83 +286,34 @@ function VoterPage() {
                     </tr>
                 </thead>
                 <tbody>
-                    {console.log(bills)}
                     {bills?.results?.map((bill, index) => (
-                        <tr key={index}>
-                            <td>H.R. {bill.number}</td>
-                            <td> <Link to={'/'}><TruncatedString text={bill.title} /></Link> </td>
-                            <td>{bill.schedule_date}</td>
-                            <td>{bill.advice}</td>
-                         
-                            <td>{['radio'].map((type) => (
-                                <div key={`inline-${type}`} className="mb-3">
-                                    <Form>
-                                        <Form.Check
-                                            inline
-                                            label="YEA"
-                                            name="group1"
-                                            type={type}
-                                            id={index}
-                                        />
-                                        <br />
-                                        <Form.Check
-                                            inline
-                                            label="NAY"
-                                            name="group1"
-                                            type={type}
-                                            id={index}
-                                        />
-                                        <br />
-                                        <Form.Check
-                                            inline
-                                            label="PRESENT"
-                                            name="group1"
-                                            type={type}
-                                            id={index}
-                                            defaultChecked
-                                        />
-                                        <br />
-                                        <Form.Check
-                                            inline
-                                            label="PROXY"
-                                            name="group1"
-                                            type={type}
-                                            id={index}
-                                            defaultChecked
-                                        />
-                                    </Form>
-                                </div>
-                            ))}</td>
-                        
-                            <td>
-                            <span className='border border-dark px-5'>{bill.yea_votes_count}</span>
-                                <br />
-                                <span className='border border-dark px-5'>{bill.nay_votes_count}</span>
-                                <br />
-                                <span className='border border-dark px-5'>{bill.present_votes_count}</span>
-                                <br />
-                                <span className='border border-dark px-5'>{bill.proxy_votes_count}</span>
-                                <br />
-                            </td>
-                            <td>
-                                <span className='border border-dark px-5'>{bill.yea_votes_count}</span>
-                                <br />
-                                <span className='border border-dark px-5'>{bill.nay_votes_count}</span>
-                                <br />
-                                <span className='border border-dark px-5'>{bill.present_votes_count}</span>
-                                <br />
-                                <span className='border border-dark px-5'>{bill.proxy_votes_count}</span>
-                                <br />
-                            </td>
-                            <td>
-                                <Link to={`/bill`}>
-                                    More
-                                
-                                </Link>
-                            </td>
-                        </tr>
+                        <Bill_Item bill={bill} key={index} index={index}></Bill_Item> 
                     ))}
-                </tbody>
+                </tbody> 
+                <tfoot className='border-0'>
+                    <tr className='p-2 border-0'>
+                        <td colSpan={4} className='border-0'></td>
+                        <td colSpan={4} className='border-0' style={{ textAlign: 'right' }}>
+                            {bills?.previous ? <span 
+                                className='btn btn-outline-success mx-1 p-0 px-3'
+                                onClick={()=>setCurrentPage(currentPage-1)}>previus</span> : ""}
+
+                            {bills?.previous ? <span 
+                                    className='btn btn-outline-success mx-1 p-0 px-3'
+                                    onClick={()=>setCurrentPage(currentPage-1)}>{currentPage-1}</span>: ""}
+
+                            <span className='btn btn-success mx-1 p-0 px-3'>{currentPage}</span>
+
+                            {bills?.next ? <span 
+                                    className='btn btn-outline-success mx-1 p-0 px-3' 
+                                    onClick={()=>setCurrentPage(currentPage+1)}>{currentPage+1}</span> : ""}
+                            
+                            {bills?.next ? <span 
+                                className='btn btn-outline-success mx-1 p-0 px-3'
+                                onClick={()=>setCurrentPage(currentPage+1)}>next</span> : ""}
+                        </td>
+                    </tr>
+                </tfoot>
             </Table>
         </div>
     )

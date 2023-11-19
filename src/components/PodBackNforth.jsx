@@ -15,13 +15,12 @@ const PodBackNforth = () => {
     const [serverMessage, setServerMessage] = useState([]);
     const [loadMoreVisible, setLoadMoreVisible] = useState(true);
     const [showModal, setShowModal] = useState(false);
-    const [handle, setHandle] = useState('');
     const [errorModal, setErrorModal] = useState('')
     let socketRef = useRef(null);
 
     const scrollableElementRef = useRef(null);
 
-    useEffect(() => {
+    useEffect (()=>{
         /** This use effect function is responsible for smooth scrolling to 
          * the end of entries list
          * does so by new entries being added
@@ -92,27 +91,25 @@ const PodBackNforth = () => {
     const date_format = (date, _24h = false) => {
         /* this function is used on msg function for the date format of message. 
         _24h is only for the last part of the date format which is in hours: minutes: seconds. */
-        if (_24h === true) {
-            return new Date(date).toLocaleString('en-US', { hour: "2-digit", minute: "2-digit", second: "2-digit" })
-        } else {
-            return new Date(date).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', });
-        }
+
+        if (_24h === true){
+            return new Date(date).toLocaleString('en-US', {hour: "2-digit", minute: "2-digit", second: "2-digit",hour12: false})
+        }else{
+            return new Date(date).toLocaleString('en-US', {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric',});
+        } 
     }
 
     const msg = (message, index) => {
-        /*
-        an entery instance with handle, date format and the message entry
-        */
+       
         return (
             <div key={index} className="container mb-3">
                 <div className='row'>
                     {/* checking if this message has handle */}
                     <p className='mb-0'>
-                        {message.handle?.handle ?
-                            <span className='fw-bold h4'>{message.handle.handle}</span> :
-                            <span className='fw-bold h4 blur-text-unless-hovering'>{message.sender?.users?.legalName}</span>
-                        }
-                        <span className='text-muted small'> &nbsp;&nbsp;{date_format(message.date)}&nbsp; [ {date_format(message.date, true)} ] </span>
+
+                    <span className='fw-bold h4'>{AuthUser.users?.legalName}</span>
+                    <span className='text-muted small'> &nbsp;&nbsp;{date_format(message.date)}&nbsp; [ {date_format(message.date, true)} ] </span>
+                                                                                                         
                     </p>
                 </div>
                 <div className='row'>
@@ -124,43 +121,13 @@ const PodBackNforth = () => {
         )
     }
 
-
-    const handleModalClose = () => setShowModal(false);
-
-    const UpdateHandle = () => {
-        /* creating or updating of an existing handle. 
-         it updates the existing handle via post request and create one if does not exist already
-         Params: 
-            pod code
-            voter/user username (entry code)
-            a handle name
-        */
-        const handleURL = `${window.location.protocol}//${baseURL}/api/create-handle/`;
-        const handle_data = {
-            pod: podInfo.code, voter: AuthUser.username, handle: handle
-        }
-        axios.post(handleURL, handle_data)
-            .then(response => {
-                handleModalClose();
-                // update all the message handle
-                const handleUpdated = serverMessage.map((object) => ({
-                    ...object, // Keep the other fields the same
-                    handle: {
-                        ...object.handle, // Keep the other properties of 'handle' the same
-                        handle: handle, // Update the 'handle' property within 'handle' 
-                    },
-                }));
-                setServerMessage(handleUpdated)
-            })
-            .catch(err => { setErrorModal('something went wrong. Try agian!') })
-    }
     // User.handle? 
     return (
         // the message history area. 
         <div className="container my-5">
             <div className="card mx-auto "  >
                 <div className="card-header border-0 shadow-sm text-center" >
-                    <h1>{podInfo.code}-{podInfo.district.code} </h1>
+                    <h3>Back & Forth <br /> Circle{podInfo.code} <br />  {podInfo.district.code} </h3>
                 </div>
                 <div className="card-body mh-100 p-0" style={{ height: "500px", overflowY: 'auto' }}>
                     <div className='text-center p-2' >
@@ -176,7 +143,7 @@ const PodBackNforth = () => {
                 <div className="card-header shadow-sm p-3 z-1 border-0">
                     <div className="input-group">
                         <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"
-                            placeholder="Submit An Entry "
+                            placeholder="Type your entry here. This is your Circle's permanent log of orders sent forward to your First Delegate, and reports and requests they send back. Entries cannot be undone or edited, only amended."
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}> </textarea>
                         <span className="input-group-text"
@@ -184,53 +151,10 @@ const PodBackNforth = () => {
                             style={{ "cursor": "pointer" }}
                             id="basic-addon1">Send</span>
                     </div>
-                    <br />
-                    <a href='#' onClick={() => setShowModal(true)}>Create/update your handle</a>
+    
                 </div>
             </div>
 
-            {/*  handle update modal */}
-            <Modal
-                show={showModal}
-                onHide={() => handleModalClose()}
-                backdrop="static"
-                keyboard={false}>
-                <ModalHeader>
-                    <p className='h5'>Update Handle</p>
-                    <button type="button" className="close btn btn-outline-danger" onClick={() => setShowModal(false)}>
-                        <span>&times;</span>
-                    </button>
-                </ModalHeader>
-                <Modal.Body>
-                    <label htmlFor="handle" className='fw-bold'>Handle:</label>
-                    <input type="text"
-                        onChange={(e) => setHandle(e.target.value)}
-                        className='form-control'
-                        name='handle'
-                        placeholder="Enter new handle here" />
-                    {errorModal ?
-                        <div class="alert alert-danger" role="alert">
-                            {errorModal}
-                        </div>
-                        : ''}
-                    <br />
-                    <p> A Handle is like a nickname or a screenname, but with a difference.
-                        It isn't just for fun or to keep things friendly.
-                        The orders you submit to your delegate, and the reports they send back,
-                        can contain important information about your political point of view.
-                        As we all know, we don't always want everyone, either in our personal lives
-                        or in the larger world, to know exactly what we think on every political issue.
-                        While members of a Circle should never copy or share the contents of a B&F... things happen.
-                        Your Handle provides another layer of security in that situation.
-                    </p>
-                    <div className="row p-4">
-                        <button className='btn btn-primary'
-                            onClick={() => UpdateHandle()}>
-                            Update
-                        </button>
-                    </div>
-                </Modal.Body>
-            </Modal>
         </div>
     )
 }

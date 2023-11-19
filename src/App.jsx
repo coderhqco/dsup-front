@@ -14,7 +14,7 @@ import UserActivate from './components/UserActivate';
 import PodBackNforth from './components/PodBackNforth.jsx';
 import SettingsPage from './components/SettingsPage.jsx';
 import SearchFeature from './components/SearchFeature.jsx';
-import BillPage from './components/BillPage.jsx';
+import BillPage from './components/bills/BillPage.jsx';
 
 
 function App(){
