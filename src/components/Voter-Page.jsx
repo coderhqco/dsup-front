@@ -296,7 +296,7 @@ function VoterPage() {
                         <td colSpan={4} className='border-0' style={{ textAlign: 'right' }}>
                             {bills?.previous ? <span 
                                 className='btn btn-outline-success mx-1 p-0 px-3'
-                                onClick={()=>setCurrentPage(currentPage-1)}>previus</span> : ""}
+                                onClick={()=>setCurrentPage(currentPage-1)}>Previous</span> : ""}
 
                             {bills?.previous ? <span 
                                     className='btn btn-outline-success mx-1 p-0 px-3'
@@ -310,7 +310,7 @@ function VoterPage() {
                             
                             {bills?.next ? <span 
                                 className='btn btn-outline-success mx-1 p-0 px-3'
-                                onClick={()=>setCurrentPage(currentPage+1)}>next</span> : ""}
+                                onClick={()=>setCurrentPage(currentPage+1)}>Next</span> : ""}
                         </td>
                     </tr>
                 </tfoot>
