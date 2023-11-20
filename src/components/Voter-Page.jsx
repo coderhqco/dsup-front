@@ -252,10 +252,10 @@ function VoterPage() {
             <div className="row d-flex justify-content-center align-items-center mt-2">
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
                     <ul className="list-unstyled">
-                        <li className="mb-2"><Link to={'/voter-page'}>List of Delegates</Link></li>
-                        <li className="mb-2"><Link to={'/pod-back-n-forth'}> Back-and-Forth </Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'}>  Member Contact Page </Link></li>
-                        <li className="mb-2"><Link to={'/house-keeping-page'}>  Pod Housekeeping Page </Link></li>
+                        {(AuthUser?.users?.userType != 0) ? <li className="mb-2"><Link to={'/voter-page'}>List of Delegates</Link></li>:""}
+                        {(AuthUser?.users?.userType != 0) ? <li className="mb-2"><Link to={'/pod-back-n-forth'}> Back-and-Forth </Link></li>:""}
+                        {(AuthUser?.users?.userType != 0) ? <li className="mb-2"><Link to={'/member-contact'}>  Member Contact Page </Link></li>:""}
+                        {(AuthUser?.users?.userType != 0) ? <li className="mb-2"><Link to={'/house-keeping-page'}>Pod Housekeeping Page </Link></li>:""}
                     </ul>
                 </div>
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center">
@@ -263,10 +263,12 @@ function VoterPage() {
                 </div>
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
                     <ul className="list-unstyled">
-                        <li className="mb-2"><Link to={'/voter-page'}> First Link Meeting Schedule </Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'}> Meeting Minutes Log </Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'}> Bill Metrics </Link></li>
-                        <li className="mb-2"><Link to={'/voter-page'}> Voter Settings </Link></li>
+                        {(AuthUser?.users?.userType != 0) ? <>
+                            <li className="mb-2"><Link to={'/voter-page'}> First Link Meeting Schedule </Link></li>
+                            <li className="mb-2"><Link to={'/voter-page'}> Meeting Minutes Log </Link></li>
+                            <li className="mb-2"><Link to={'/voter-page'}> Bill Metrics </Link></li>
+                            <li className="mb-2"><Link to={'/voter-page'}> Voter Settings </Link></li>
+                        </>:""}
                     </ul>
                 </div>
             </div>
@@ -296,7 +298,7 @@ function VoterPage() {
                         <td colSpan={4} className='border-0' style={{ textAlign: 'right' }}>
                             {bills?.previous ? <span 
                                 className='btn btn-outline-success mx-1 p-0 px-3'
-                                onClick={()=>setCurrentPage(currentPage-1)}>previus</span> : ""}
+                                onClick={()=>setCurrentPage(currentPage-1)}>Previous</span> : ""}
 
                             {bills?.previous ? <span 
                                     className='btn btn-outline-success mx-1 p-0 px-3'
@@ -310,7 +312,7 @@ function VoterPage() {
                             
                             {bills?.next ? <span 
                                 className='btn btn-outline-success mx-1 p-0 px-3'
-                                onClick={()=>setCurrentPage(currentPage+1)}>next</span> : ""}
+                                onClick={()=>setCurrentPage(currentPage+1)}>Next</span> : ""}
                         </td>
                     </tr>
                 </tfoot>

@@ -93,3 +93,10 @@ body {
 .blur-text-unless-hovering:hover {
   filter: blur(0px);
 }
+
+.bill-page-note-headers {
+  font-family: 'Inter-Bold';
+  font-size: 30px;
+  color: black;
+  text-decoration: underline;
+}

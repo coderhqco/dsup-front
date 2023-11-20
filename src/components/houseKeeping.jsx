@@ -57,7 +57,9 @@ function HouseKeeping(){
                             dispatch(pod(data.data.data.pod))
                         }else if(!data.data.is_member && data.data.done){
                             dispatch(addPodmMembers(data.data.data))
-                        }else if(!data.data.done){ alert(data.data.data)}
+                        }else if(!data.data.done){ 
+                            console.log("check if the user logged in is the same as in the data")
+                            alert(data.data.data)}
                         break
                     case 'voteOut':
                         if(!data.data.done){
