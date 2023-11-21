@@ -16,6 +16,7 @@ const PodBackNforth = () => {
     const [loadMoreVisible, setLoadMoreVisible] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [errorModal, setErrorModal] = useState('')
+    const [err, setErr] = useState('')
     let socketRef = useRef(null);
 
     const scrollableElementRef = useRef(null);
@@ -60,6 +61,7 @@ const PodBackNforth = () => {
         };
 
         socketRef.current.onclose = (event) => {
+            setErr('connection lost! try again.')
             console.log("close web socket, ", event);
         };
 
@@ -122,6 +124,11 @@ const PodBackNforth = () => {
     return (
         // the message history area. 
         <div className="container my-5">
+            <div className="container">
+                <div className="row">
+                    {err ? <div class="alert alert-danger" role="alert">{err} </div> :""}
+                </div>
+            </div>
             <div className="card mx-auto "  >
                 <div className="card-header border-0 shadow-sm text-center" >
                     <h3>Back & Forth <br /> Circle{podInfo.code} <br />  {podInfo.district.code} </h3>
