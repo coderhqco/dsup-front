@@ -83,7 +83,7 @@ const PodBackNforth = () => {
         /* This function sends a new message entry (Back And Forth Entry). 
         It checks if the web socket is open   */
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-            socketRef.current.send(message);
+            socketRef.current.send(JSON.stringify({sender: AuthUser.username,message: message}));
             setMessage("");
         }
     }
@@ -100,16 +100,13 @@ const PodBackNforth = () => {
     }
 
     const msg = (message, index) => {
-       
         return (
             <div key={index} className="container mb-3">
                 <div className='row'>
                     {/* checking if this message has handle */}
                     <p className='mb-0'>
-
-                    <span className='fw-bold h4'>{AuthUser.users?.legalName}</span>
-                    <span className='text-muted small'> &nbsp;&nbsp;{date_format(message.date)}&nbsp; [ {date_format(message.date, true)} ] </span>
-                                                                                                         
+                    <span className='fw-bold h4'>{message.sender?.users?.legalName}</span>
+                    <span className='text-muted small'> &nbsp;&nbsp;{date_format(message.date)}&nbsp; [ {date_format(message.date, true)} ] </span>                                                                                 
                     </p>
                 </div>
                 <div className='row'>

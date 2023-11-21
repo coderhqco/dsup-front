@@ -25,7 +25,6 @@ function VoterPage() {
     // const bills = useSelector((state) => state.bills.bills);
     
     const [currentPage, setCurrentPage] = useState(1);
-
     const [bills, setBills] = useState({})
 
     let date = new Date(AuthUser.date_joined)
@@ -57,10 +56,7 @@ function VoterPage() {
     useEffect(()=>{
         let header = { 'Authorization': `Bearer ${AuthUser.token.access}` }
         axios.get(`${window.location.protocol}//${baseURL}/bill/bills/?page=${currentPage}`, { headers: header })
-            .then(response => {
-                setBills(response.data)
-                console.log("bill: ", response.data)
-            })
+            .then(response => { setBills(response.data) })
             .catch(error => {
                 setMessage({ type: "alert alert-danger", msg: "error getting bills." })
                 // setErr("Something went wrong. Check your inputs and try again.");
@@ -209,9 +205,9 @@ function VoterPage() {
                 </div>
             </div>
             <Container style={{ marginTop: "2%" }} >
-                        <div className="row text-center">
-                            <h1>Voter Page</h1>
-                        </div>
+                <div className="row text-center">
+                    <h1>Voter Page</h1>
+                </div>
                 <Row>
                    
                     <Col>
