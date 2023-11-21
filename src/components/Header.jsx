@@ -5,8 +5,6 @@ import { logout } from '../store/userSlice.js';
 import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-
-
 function Header() {
     const AuthUser = useSelector((state) => state.AuthUser.user);
     const dispatch = useDispatch();
@@ -30,7 +28,7 @@ function Header() {
                     aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                <div className="collapse navbar-collapse" id="navbarSupportedContent" data-toggle="collapse" data-target=".navbar-collapse">
                     <ul className="navbar-nav ms-auto">
                         {AuthUser ?
                             <li className="nav-item">
@@ -40,7 +38,7 @@ function Header() {
                         <li className="nav-item">
                             {AuthUser ?
                                 <Link to='/search' className="nav-link fs-5 active" >Search and Sort Bills</Link>
-                                : ""}
+                                : null}
                         </li>
                         <li className="nav-item">
                             {!AuthUser ?
@@ -69,7 +67,6 @@ function Header() {
                                 {AuthUser ?
                                     <Dropdown.Item href="#/action-2"><a onClick={handleLogout}>Logout</a></Dropdown.Item>
                                     : ""}
-
                             </Dropdown.Menu>
                         </Dropdown>
                     </ul>
