@@ -10,7 +10,7 @@ function SearchFeature() {
         setSearchQuery(e.target.value)
     }
 
-    const filteredBills = bills.filter( (bill) => {
+    const filteredBills = bills?.filter( (bill) => {
         return bill.title.toLowerCase().includes(searchQuery.toLowerCase())
     })
 

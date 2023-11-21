@@ -16,6 +16,7 @@ const PodBackNforth = () => {
     const [loadMoreVisible, setLoadMoreVisible] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [errorModal, setErrorModal] = useState('')
+    const [err, setErr] = useState('')
     let socketRef = useRef(null);
 
     const scrollableElementRef = useRef(null);
@@ -60,6 +61,7 @@ const PodBackNforth = () => {
         };
 
         socketRef.current.onclose = (event) => {
+            setErr('connection lost! try again.')
             console.log("close web socket, ", event);
         };
 
@@ -83,7 +85,7 @@ const PodBackNforth = () => {
         /* This function sends a new message entry (Back And Forth Entry). 
         It checks if the web socket is open   */
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-            socketRef.current.send(message);
+            socketRef.current.send(JSON.stringify({sender: AuthUser.username,message: message}));
             setMessage("");
         }
     }
@@ -100,16 +102,13 @@ const PodBackNforth = () => {
     }
 
     const msg = (message, index) => {
-       
         return (
             <div key={index} className="container mb-3">
                 <div className='row'>
                     {/* checking if this message has handle */}
                     <p className='mb-0'>
-
-                    <span className='fw-bold h4'>{AuthUser.users?.legalName}</span>
-                    <span className='text-muted small'> &nbsp;&nbsp;{date_format(message.date)}&nbsp; [ {date_format(message.date, true)} ] </span>
-                                                                                                         
+                    <span className='fw-bold h4'>{message.sender?.users?.legalName}</span>
+                    <span className='text-muted small'> &nbsp;&nbsp;{date_format(message.date)}&nbsp; [ {date_format(message.date, true)} ] </span>                                                                                 
                     </p>
                 </div>
                 <div className='row'>
@@ -125,6 +124,11 @@ const PodBackNforth = () => {
     return (
         // the message history area. 
         <div className="container my-5">
+            <div className="container">
+                <div className="row">
+                    {err ? <div class="alert alert-danger" role="alert">{err} </div> :""}
+                </div>
+            </div>
             <div className="card mx-auto "  >
                 <div className="card-header border-0 shadow-sm text-center" >
                     <h3>Back & Forth <br /> Circle{podInfo.code} <br />  {podInfo.district.code} </h3>

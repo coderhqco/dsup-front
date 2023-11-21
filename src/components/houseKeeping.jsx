@@ -9,6 +9,7 @@ function HouseKeeping(){
     const AuthUser      = useSelector((state) => state.AuthUser.user);
     const podInfo       = useSelector((state) => state.AuthUser.pod);
     const podMembers    = useSelector((state) => state.AuthUser.podMembers);
+
     const dispatch      = useDispatch();
     const navigate      = useNavigate();
     // saparetes the condidates and members
@@ -22,6 +23,7 @@ function HouseKeeping(){
     const [act, setAct] = useState(null)
     const [removeMember ,setRemoveMember] = useState(null)
 
+    const [is_candidate, setIs_candidate] = useState(false)
     // let Is_delegate = false
     const [Is_delegate, setIs_delegate] = useState(false)
 
@@ -30,6 +32,13 @@ function HouseKeeping(){
         setMembers(podMembers?.filter((member)=> member.is_member))
         setCondidate(podMembers?.filter((member)=> !member.is_member))
     },[podMembers])
+
+    // on each candidate change, check the logged in user if they are candidate only for this Circle.
+    useEffect(()=>{
+        if(condidate){
+            condidate.map((candidate)=>{if(candidate.user.username === AuthUser.username){ setIs_candidate(true); } })
+        }
+    },[condidate,members])
 
     let ws_schame = window.location.protocol === "https:" ? "wss" : "ws";
     const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/ws/pod/${podInfo?.code}/${AuthUser.username}/`
@@ -58,8 +67,11 @@ function HouseKeeping(){
                         }else if(!data.data.is_member && data.data.done){
                             dispatch(addPodmMembers(data.data.data))
                         }else if(!data.data.done){ 
-                            console.log("check if the user logged in is the same as in the data")
-                            alert(data.data.data)}
+                            // show only to the user that clicked. 
+                            if(data.data.voter == AuthUser.username){
+                                alert(data.data.data)
+                            }
+                        }
                         break
                     case 'voteOut':
                         if(!data.data.done){
@@ -100,7 +112,6 @@ function HouseKeeping(){
                             // navigate back to voter page
                             navigate('/voter-page');
                         }
-                        
                         break
                     case 'chat_message':
                         console.log(data)
@@ -355,18 +366,16 @@ function HouseKeeping(){
                          members?.map((member, index)=>(
                             <tr key={index} className="border">
                                 <td>{String(index+1).padStart(2, '0')}</td>
-                                <td>{member?.user.users.legalName} {member.is_delegate? 
-                                    <span className='badge bg-primary'>F-Del</span>
-                                : null} </td>
+                                <td>{member?.user.users.legalName} {member.is_delegate ? <span className='badge bg-primary'>F-Del</span>: null} </td>
                                 <td>
                                    {podInfo?.is_active? <>
-                                    Yes
+                                    Yes 
                                     <input type="checkbox" 
                                     className='form-check-input mx-2'
                                     checked={voteInsChck(member?.voteOuts)}
                                     onChange={()=> handleModelShow('voteOut', member)}/>
                                    </>
-                                   : null}
+                                   :null}
                                 </td>
 
                                 {/* do not show below columns if the circle is not active */}
@@ -396,7 +405,7 @@ function HouseKeeping(){
                                 <td >01</td>
                                 <td>{condidate[0]?.user.users.legalName}</td>
                                 <td>
-                                    {condidate[0].user.username === AuthUser.username ? "": 
+                                    {is_candidate ? "": 
                                     <div>
                                         Yes
                                     <input type="checkbox" 
@@ -443,7 +452,7 @@ function HouseKeeping(){
                 // check if the user is member or condidate
             // this check is for condidate throughing undefined exception
                 condidate !== undefined?
-                    condidate[0]?.user.username === AuthUser.username ? 
+                    is_candidate ? 
                     <>
                         <p> You are a Member Candidate awaiting a majority vote of existing members.</p>
                         <p> You can wait to see if you are voted in, or you can contact the F-Del of this Circle IRL to discuss
@@ -469,6 +478,8 @@ function HouseKeeping(){
                             members, they will automatically become a Member, and the voting will be ‘forgotten’ by the
                             database. </p>
                         :""}
+
+
                         
                         <p>
                         If you want someone to join this Circle, give them the CIK. Make sure it is the most recent

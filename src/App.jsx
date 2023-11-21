@@ -13,7 +13,7 @@ import HouseKeeping from './components/houseKeeping.jsx';
 import UserActivate from './components/UserActivate';
 import PodBackNforth from './components/PodBackNforth.jsx';
 import SettingsPage from './components/SettingsPage.jsx';
-import SearchFeature from './components/SearchFeature.jsx';
+// import SearchFeature from './components/SearchFeature.jsx';
 import BillPage from './components/bills/BillPage.jsx';
 import MemberContactPage from './components/MemberContactPage.jsx';
 
@@ -35,7 +35,7 @@ function App(){
         <Route path="/api/activate/:uid/:token" element={<><Header/><UserActivate/><Footer/></>}/>
         <Route path='/*' element={<><Header/><Error/> <Footer/> </>}></Route>
         <Route path="/settings" element={<><Header/><SettingsPage/><Footer/></>}/>
-        <Route path="/search" element={<><Header/><SearchFeature/><Footer/></>}/>
+        {/* <Route path="/search" element={<><Header/><SearchFeature/><Footer/></>}/> */}
         <Route path="/bill/:billId" element={<><Header/><BillPage/><Footer/></>}/>
         {/* fake path below, real path above for rendering the specific bill that gets clicked on */}
         <Route path="/bill" element={<><Header/><BillPage/><Footer/></>}/>
