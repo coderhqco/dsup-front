@@ -9,7 +9,7 @@ import Error from './components/Error.jsx';
 import VoterPage from './components/Voter-Page.jsx';
 import ProtectedRoute from './protectedRoutes.js';
 import JoinPod from './components/joinPod.jsx';
-import HouseKeeping from './components/houseKeeping.jsx';
+import HouseKeeping from './components/houseKeeping/houseKeeping.jsx';
 import UserActivate from './components/UserActivate';
 import PodBackNforth from './components/PodBackNforth.jsx';
 import SettingsPage from './components/SettingsPage.jsx';
