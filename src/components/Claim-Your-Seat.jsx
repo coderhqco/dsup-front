@@ -117,6 +117,8 @@ function ClaimYourSeat() {
         setConfirmPass(true);
         setPasswordType('')
         setPasswordTypeConf('')
+        setSubmitStatus(true);
+
     }
     function GenPass(length) {
         var result = '';
