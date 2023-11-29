@@ -260,7 +260,7 @@ function VoterPage() {
                 <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
                     <ul className="list-unstyled">
                         {(AuthUser?.users?.userType != 0) ? <>
-                            <li className="mb-2"><Link to={'/voter-page'}> First Link Meeting Schedule </Link></li>
+                            <li className="mb-2"><Link to={'/meeting-schedule'}> First Link Meeting Schedule </Link></li>
                             <li className="mb-2"><Link to={'/voter-page'}> Meeting Minutes Log </Link></li>
                             <li className="mb-2"><Link to={'/voter-page'}> Bill Metrics </Link></li>
                             <li className="mb-2"><Link to={'/voter-page'}> Voter Settings </Link></li>
