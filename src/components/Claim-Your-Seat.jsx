@@ -130,6 +130,23 @@ function ClaimYourSeat() {
         return result;
     }
 
+    /**
+     * Form check in case of submission, any input changes, or click, password generation btn as.
+     */
+    function CheckForm(){
+        // 1. check district input is not empty.
+        if (district.length === 0) {
+            setSubmitStatus(false);
+        }
+        
+        // 2. district input is a valid district code
+        // 3. check legal name input is not empty
+        // 4. check email input is not empty and is valid email format
+        // 5. check address input is not empty
+        // 6. check password input is not empty and is valid password format
+        // 7 check password confirm input is not empty and matches the password
+
+    }
 
     return (
         <div className="container p-3">
