@@ -35,7 +35,7 @@ function Insight() {
 
                 {/* card container for bill text */}
                 <div className="card p-3">
-                    <h4>Text</h4>
+                    <h5>Text</h5>
                     <article>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut 
                     labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
@@ -47,7 +47,7 @@ function Insight() {
             </div>
 
             {/* row section for bill personal notes */}
-            <div className="row my-3">
+            <div className="row my-5">
                 <h1>Personal Notes:</h1>
                 {/* textarea full width of row for personal notes */}
                 <textarea rows={10} placeholder='Place your personal notes here.' >
@@ -55,7 +55,7 @@ function Insight() {
             </div>
 
             {/* row section for bill first delegate notes */}
-            <div className="row my-3">
+            <div className="row my-5">
                 <h1>First Delegate Notes:</h1>
                 {/* textarea full width of row for first delegate notes */}
                 <textarea rows={10} placeholder='Your First Delegate notes will show here.' >
@@ -63,7 +63,7 @@ function Insight() {
             </div>
 
             {/* row section for bill second delegate notes */}
-            <div className="row my-3">
+            <div className="row my-5">
                 <h1>Second Delegate Notes:</h1>
                 {/* textarea full width of row for second delegate notes */}
                 <textarea rows={10} placeholder='Your Second Delegate notes will show here' >
@@ -71,7 +71,7 @@ function Insight() {
             </div>
 
             {/* row section for bill Member of District Assembly notes */}
-            <div className="row my-3">
+            <div className="row my-5">
                 <h1>MoDa Notes:</h1>
                 {/* textarea full width of row for MoDa notes */}
                 <textarea rows={10} placeholder='Your Member Of District Assembly notes will show here.' >
@@ -79,7 +79,7 @@ function Insight() {
             </div>
 
             {/* row section for bill Co-Rep notes */}
-            <div className="row my-3">
+            <div className="row my-5">
                 <h1>Co-Rep Notes:</h1>
                 {/* textarea full width of row for Co-Rep notes */}
                 <textarea rows={10} placeholder='Your Cop-Rep notes will show here.' >
@@ -87,7 +87,7 @@ function Insight() {
             </div>
 
             {/* row section for bill House Rep note */}
-            <div className="row my-3">
+            <div className="row my-5">
                 <h1>House Rep Notes:</h1>
                 {/* textarea full width of row for House Rep notes */}
                 <textarea rows={10} placeholder='Your House Rep notes will show here.' >
