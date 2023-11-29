@@ -1,6 +1,4 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
-import Card from 'react-bootstrap/Card';
 
 // ** READ BELOW **
 
@@ -11,14 +9,6 @@ import Card from 'react-bootstrap/Card';
 // is a quick example and is hard coded and not meant to be a long term solution
 
 function Insight() {
-
-    const [addingNotes, setAddingNotes] = React.useState(false);
-    const [notes, setNotes] = React.useState([]);
-
-    const handleAddNotes = () => {
-        setAddingNotes(!addingNotes);
-    }
-
 
     return (
         <div className='container my-4'>
