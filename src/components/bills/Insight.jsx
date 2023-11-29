@@ -12,7 +12,7 @@ import AddNotesForm from './AddNotesForm';
 // nothing will persist, and "add notes" buttons will have to be added and conditionally rendered later on, this
 // is a quick example and is hard coded and not meant to be a long term solution
 
-function BillPage() {
+function Insight() {
 
     const [addingNotes, setAddingNotes] = React.useState(false);
     const [notes, setNotes] = React.useState([]);
@@ -210,4 +210,4 @@ function BillPage() {
 }
 
 
-export default BillPage;
+export default Insight;

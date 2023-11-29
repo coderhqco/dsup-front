@@ -14,7 +14,7 @@ import UserActivate from './components/UserActivate';
 import PodBackNforth from './components/PodBackNforth.jsx';
 import SettingsPage from './components/SettingsPage.jsx';
 // import SearchFeature from './components/SearchFeature.jsx';
-import BillPage from './components/bills/BillPage.jsx';
+import Insight from './components/bills/Insight.jsx';
 import MemberContactPage from './components/MemberContactPage.jsx';
 
 
@@ -36,9 +36,9 @@ function App(){
         <Route path='/*' element={<><Header/><Error/> <Footer/> </>}></Route>
         <Route path="/settings" element={<><Header/><SettingsPage/><Footer/></>}/>
         {/* <Route path="/search" element={<><Header/><SearchFeature/><Footer/></>}/> */}
-        <Route path="/bill/:billId" element={<><Header/><BillPage/><Footer/></>}/>
+        <Route path="/bill/:billId" element={<><Header/><Insight/><Footer/></>}/>
         {/* fake path below, real path above for rendering the specific bill that gets clicked on */}
-        <Route path="/bill" element={<><Header/><BillPage/><Footer/></>}/>
+        <Route path="/bill" element={<><Header/><Insight/><Footer/></>}/>
         <Route path="/member-contact" element={<><Header/><MemberContactPage/><Footer/></>}/>
       </Route>
     </Routes>
