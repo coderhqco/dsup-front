@@ -276,7 +276,7 @@ function VoterPage() {
                         <th>Bill Number</th>
                         <th style={{"minWidth":"300px"}}>Short Title</th>
                         <th>Scheduled For Vote</th>
-                        <th>Advice</th>
+                        <th>Advisement</th>
                         <th>Your Vote</th>
                         <th>District Tally</th>
                         <th>National Tally</th>
