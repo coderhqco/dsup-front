@@ -40,48 +40,55 @@ function Insight() {
             <div className="row my-5">
                 <h1>Personal Notes:</h1>
                 {/* textarea full width of row for personal notes */}
-                <textarea rows={10} placeholder='Place your personal notes here.' >
-                </textarea>
+
+                <div className='border border-secondary rounded p-2 mb-3'
+                 contentEditable style={{"overflow": "auto", "minHeight":"100px", "maxHeight":"200px"}}>
+                </div>
             </div>
 
             {/* row section for bill first delegate notes */}
             <div className="row my-5">
                 <h1>First Delegate Notes:</h1>
                 {/* textarea full width of row for first delegate notes */}
-                <textarea rows={10} placeholder='Your First Delegate notes will show here.' >
-                </textarea>
+                <div className='border border-secondary rounded p-2 mb-3'
+                 contentEditable style={{"overflow": "auto", "minHeight":"100px", "maxHeight":"200px"}}>
+                </div>
             </div>
 
             {/* row section for bill second delegate notes */}
             <div className="row my-5">
                 <h1>Second Delegate Notes:</h1>
                 {/* textarea full width of row for second delegate notes */}
-                <textarea rows={10} placeholder='Your Second Delegate notes will show here' >
-                </textarea>
+                <div className='border border-secondary rounded p-2 mb-3'
+                 contentEditable style={{"overflow": "auto", "minHeight":"100px", "maxHeight":"200px"}}>
+                </div>
             </div>
 
             {/* row section for bill Member of District Assembly notes */}
             <div className="row my-5">
                 <h1>MoDa Notes:</h1>
                 {/* textarea full width of row for MoDa notes */}
-                <textarea rows={10} placeholder='Your Member Of District Assembly notes will show here.' >
-                </textarea>
+                <div className='border border-secondary rounded p-2 mb-3'
+                 contentEditable style={{"overflow": "auto", "minHeight":"100px", "maxHeight":"200px"}}>
+                </div>
             </div>
 
             {/* row section for bill Co-Rep notes */}
             <div className="row my-5">
-                <h1>Co-Rep Notes:</h1>
-                {/* textarea full width of row for Co-Rep notes */}
-                <textarea rows={10} placeholder='Your Cop-Rep notes will show here.' >
-                </textarea>
+                <h1>HoLC Notes:</h1>
+                {/* textarea full width of row for HoLC notes */}
+                <div className='border border-secondary rounded p-2 mb-3'
+                 contentEditable style={{"overflow": "auto", "minHeight":"100px", "maxHeight":"200px"}}>
+                </div>
             </div>
 
             {/* row section for bill House Rep note */}
             <div className="row my-5">
                 <h1>House Rep Notes:</h1>
                 {/* textarea full width of row for House Rep notes */}
-                <textarea rows={10} placeholder='Your House Rep notes will show here.' >
-                </textarea>
+                <div className='border border-secondary rounded p-2 mb-3'
+                 contentEditable style={{"overflow": "auto", "minHeight":"100px", "maxHeight":"200px"}}>
+                </div>
             </div>
 
         </div>
