@@ -16,6 +16,7 @@ import SettingsPage from './components/SettingsPage.jsx';
 // import SearchFeature from './components/SearchFeature.jsx';
 import Insight from './components/bills/Insight.jsx';
 import MemberContactPage from './components/MemberContactPage.jsx';
+import MeetingSchedulePage from './components/MeetingSchedulePage.jsx';
 
 
 function App(){
@@ -40,6 +41,7 @@ function App(){
         {/* fake path below, real path above for rendering the specific bill that gets clicked on */}
         <Route path="/bill" element={<><Header/><Insight/><Footer/></>}/>
         <Route path="/member-contact" element={<><Header/><MemberContactPage/><Footer/></>}/>
+        <Route path="/meeting-schedule" element={<><Header/><MeetingSchedulePage/><Footer/></>}/>
       </Route>
     </Routes>
   )
