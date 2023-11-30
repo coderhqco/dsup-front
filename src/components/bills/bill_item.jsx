@@ -15,7 +15,13 @@ function Bill_Item ({bill, index}){
             <td>H.R. {bill.number}</td>
             <td style={{"minWidth":"300px"}}>{bill.title} </td>
             <td>{bill.schedule_date}</td>
-            <td>{bill.advice}</td>
+            <td style={{"minWidth":"180px"}}>
+            F-Del &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<span className='alert alert-success p-0 px-2 mx-1'>Yea</span> <br />
+            Sec-Del&nbsp;&nbsp;&nbsp; &nbsp;<span className='alert alert-success p-0 px-2 mx-1'>Yea</span> <br />
+            MoDA &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span className='alert alert-success p-0 px-2 mx-1'>Yea</span> <br />
+            HoLC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<span className='alert alert-danger p-0 px-2 mx-1'>Nea</span> <br />
+            House Rep<span className='alert alert-danger p-0 px-2 mx-1'>Nea</span> <br />
+            </td>
             
             <td>{['radio'].map((type) => (
                 <div key={`inline-${type}`} className="mb-3">
