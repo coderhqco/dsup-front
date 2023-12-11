@@ -1,9 +1,9 @@
 
-const Member = () => {
+const Member = ({member, index}) => {
     return (
         <tr>
-            <td>1</td>
-            <td> Ali lover </td>
+            <td>{index+1}</td>
+            <td> {member?.user?.users?.legalName} </td>
             <td>  
                 Yes 
                 <input checked={false}

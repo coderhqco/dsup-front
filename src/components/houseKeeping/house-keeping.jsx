@@ -14,23 +14,33 @@ function HouseKeeping(){
     const dispatch      = useDispatch();
     const navigate      = useNavigate();
 
-    // saparetes the condidates and members
-    const [condidate, setCondidate]   = useState('')
+    const [candidate, setCandidate]   = useState('')
     const [members, setMembers]       = useState('')
 
     let ws_schame = window.location.protocol === "https:" ? "wss" : "ws";
     const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/circle/${podInfo?.code}/${AuthUser.username}/`
     const chatSocket = new WebSocket(url);
 
+    const MembersFilter = (data)=>{
+        /** This function gets called on each message being sent from server
+         * it saperate the members and candidates and sets their state
+         */
+        console.log("got data: ",data)
+        setMembers(data?.filter((member)=> member.is_member))
+        setCandidate(data?.filter((member)=> !member.is_member))
+    }
+
     useEffect(()=>{
-        // get back the messages...
+        /** This is the functions that receives all the messages from server */
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            console.log(data)
-            if(data.type){
-                switch(data.type){  }
-
-            } //end of if(data.type)
+            /**
+             * all the messages that comes from this end point is the same. 
+             * it contains pod members
+             * make a function that gets the data and saperate the candidates and members
+             * adds the candidates and members to their states. 
+             */
+            MembersFilter(data)
         };
 
         // what happens on closing the connection
@@ -44,6 +54,8 @@ function HouseKeeping(){
              * 2. clear the states
              * 3. terminate any functions in running or in background 
              */
+            setMembers('')
+            setCandidate('')
             console.log("closing the connection")
         }
     },[])
@@ -83,16 +95,48 @@ function HouseKeeping(){
                         </tr>
                     </thead>
                     <tbody>
-                        <Member></Member>
+                        {/**
+                         * It will always be 1 at least. 
+                         * first check if the members is greater than 0. 
+                         *  */ }
+                        {members?.length > 0 ? 
+                            members?.map((member, index)=>(
+                                <Member key={index} index={index} member={member}></Member>
+                            ))
+                        :null}
                     </tbody>
                 </table>
-
                 
                 {/* candidate list table */}
                 <p className='py-0 my-0 mt-2'>Candidate waiting for votes:</p>
-                <Candidate>
+                <table className='table table-bordered '> 
+                    <thead>
+                        <tr>
+                            <th className='fw-bold'>#</th>
+                            <th className='fw-bold'>Candidate Name</th>
+                            <th className='fw-bold'>Do you want this voter to be a member?</th>
+                            
+                            {/**
+                             * check if the auth user is delegate to this circle.
+                             * 
+                             * DO TO []
+                            */}
+                            <th className='fw-bold'>Remove Candidate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {/**
+                     * check if the candidate list is greater than 0
+                     * 
+                     */}
+                     {candidate?.length > 0 ? 
+                        candidate?.map((candidate, index)=>(
+                            <Candidate chatSocket = {chatSocket} key={index} index={index} candidate={candidate}></Candidate>
+                        ))
+                     :<tr><td colSpan='4' className='text-center'>No Candidates</td></tr>}
+                    </tbody>
+                </table>
 
-                </Candidate>
             </div>
 
         </div>
