@@ -48,7 +48,7 @@ const Candidate = ({candidate, index, chatSocket,fDel})=>{
         <td>{index+1}</td>
         <td>{candidate?.user?.users?.legalName}</td>
         <td> <span className='mx-2'>Yes</span>
-            {!voted ?   <input type="checkbox"  checked={voted} 
+            {!voted ?  <input type="checkbox"  checked={voted} 
                     onChange={()=>VoteIn()} className='form-check-input mx-3' />
             :null}
             

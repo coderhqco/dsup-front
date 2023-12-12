@@ -1,9 +1,17 @@
+import {useSelector } from 'react-redux';
+import {useState, useEffect} from 'react';
 
-const Member = ({member, index}) => {
+const Member = ({member, index, fDel}) => {
+    const AuthUser  = useSelector((state) => state.AuthUser.user);
+    
     return (
         <tr>
             <td>{index+1}</td>
-            <td> {member?.user?.users?.legalName} </td>
+            <td> {member?.user?.users?.legalName}
+            {fDel?.user?.username === member?.user?.username? 
+                <span className='alert alert-success p-0 px-2 mx-2'>F-Del</span>
+            :null}
+             </td>
             <td>  
                 Yes 
                 <input checked={false}
