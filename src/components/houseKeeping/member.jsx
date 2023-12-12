@@ -12,7 +12,7 @@ const Member = ({member, index}) => {
                 className='form-check-input mx-2' /> 
 
                 {/* vote counter */}
-                <span className="alert alert-primary p-0 px-2">2 votes</span>
+                <span className="alert alert-primary p-0 px-2">{member?.count_vote_out} votes</span>
             </td>
         </tr>
     );

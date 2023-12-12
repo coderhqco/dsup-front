@@ -5,15 +5,14 @@ import {authenticate,pod, addPodmMembers, desolvePod} from '../../store/userSlic
 import Member from './member.jsx'
 import Candidate  from './candidate.jsx';
 
+
 function HouseKeeping(){
     const AuthUser      = useSelector((state) => state.AuthUser.user);
     const podInfo       = useSelector((state) => state.AuthUser.pod);
-    const podMembers    = useSelector((state) => state.AuthUser.podMembers);
-
     const [err, setErr] = useState('');
-    const dispatch      = useDispatch();
-    const navigate      = useNavigate();
+    const [connectionErr, setConnectionErr] = useState(null);
 
+    const [ fDel , setFDel] = useState('');
     const [candidate, setCandidate]   = useState('')
     const [members, setMembers]       = useState('')
 
@@ -21,13 +20,33 @@ function HouseKeeping(){
     const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/circle/${podInfo?.code}/${AuthUser.username}/`
     const chatSocket = new WebSocket(url);
 
+    // Function to update the error state and schedule the reset
+    useEffect(() => {
+        // Schedule the reset after 5000 milliseconds (5 seconds)
+        setTimeout(() => { setErr('');}, 5000);
+    },[err,])
+
+    useEffect(()=>{
+        // on each changes of members or candidate, check if the Auth user is the delegate for this circle
+    
+
+    }, [members, candidate])
+
     const MembersFilter = (data)=>{
         /** This function gets called on each message being sent from server
-         * it saperate the members and candidates and sets their state
+         * it saperate the delegate, members and candidates and sets their state
          */
-        console.log("got data: ",data)
-        setMembers(data?.filter((member)=> member.is_member))
-        setCandidate(data?.filter((member)=> !member.is_member))
+        if(data.status === 'success'){
+            setMembers(data.member_list?.filter((member)=> member.is_member))
+            setFDel(data.member_list?.find((member) => member.is_delegate))
+            setCandidate(data.member_list?.filter((member)=> !member.is_member))
+        }
+        if(data.status === 'error'){
+            /** if the auth user is the same as user on error message:
+             * set the error state to show to the user.
+             */
+            if(data.user.username === AuthUser.username){setErr(data.message)}
+        }
     }
 
     useEffect(()=>{
@@ -44,7 +63,9 @@ function HouseKeeping(){
         };
 
         // what happens on closing the connection
-        chatSocket.onclose = function(e) { setErr("live connection is closed. Please refresh your page!")};
+        chatSocket.onclose = (e)=>{
+            setConnectionErr("live connection is closed. Please refresh your page!");
+        }
 
 
         // close the connection on page leave. cleanup function
@@ -54,9 +75,12 @@ function HouseKeeping(){
              * 2. clear the states
              * 3. terminate any functions in running or in background 
              */
-            setMembers('')
-            setCandidate('')
-            console.log("closing the connection")
+            setMembers('');
+            setCandidate('');
+            clearTimeout();
+            setFDel('');
+            // return () => { clearTimeout(resetTimeout); };
+            console.log("closing the connection");
         }
     },[])
 
@@ -68,13 +92,17 @@ function HouseKeeping(){
                 <div className="col-sm-12 col-md-6 mt-3">
                     <div className="row">
                         { err ? <div className="alert alert-danger" role="alert">{err} </div>:null}
+                        { connectionErr ? <div className="alert alert-danger" role="alert">{connectionErr} </div>:null}
                     </div>
                     <h1 className="text-center">Housekeeping Page</h1>
                     <h3 className='text-center'>Circle: {podInfo?.code} District: {podInfo?.district.code}</h3>
                     <h4 className='text-center'>Invitation Key: {podInfo?.invitation_code}</h4>
-                    <button className='d-block mx-auto my-2 btn btn-success text-center' 
-                        onClick={()=>console.log("check for being delegate!")}>Generate new key</button>
 
+                    {fDel?.user?.username === AuthUser?.username ?
+                        <button className='d-block mx-auto my-2 btn btn-success text-center' 
+                        onClick={()=>console.log("check for being delegate!")}>Generate new key</button> 
+                        :null}
+                    
                     {podInfo?.is_active?
                         <p className='text-center'>Circle Status: ACTIVE!</p>
                     : null}
@@ -101,7 +129,11 @@ function HouseKeeping(){
                          *  */ }
                         {members?.length > 0 ? 
                             members?.map((member, index)=>(
-                                <Member key={index} index={index} member={member}></Member>
+                                <Member 
+                                key={index} 
+                                index={index} 
+                                member={member}
+                                fDel={fDel}></Member>
                             ))
                         :null}
                     </tbody>
@@ -114,14 +146,8 @@ function HouseKeeping(){
                         <tr>
                             <th className='fw-bold'>#</th>
                             <th className='fw-bold'>Candidate Name</th>
-                            <th className='fw-bold'>Do you want this voter to be a member?</th>
-                            
-                            {/**
-                             * check if the auth user is delegate to this circle.
-                             * 
-                             * DO TO []
-                            */}
-                            <th className='fw-bold'>Remove Candidate</th>
+                            <th className='fw-bold'>Do you want this candidate to be a member?</th>
+                            {fDel?.user?.username === AuthUser?.username ? <th className='fw-bold'>Remove Candidate</th>:null}
                         </tr>
                     </thead>
                     <tbody>
@@ -131,7 +157,12 @@ function HouseKeeping(){
                      */}
                      {candidate?.length > 0 ? 
                         candidate?.map((candidate, index)=>(
-                            <Candidate chatSocket = {chatSocket} key={index} index={index} candidate={candidate}></Candidate>
+                            <Candidate 
+                            chatSocket = {chatSocket} 
+                            key={index} 
+                            index={index} 
+                            candidate={candidate}
+                            fDel={fDel}></Candidate>
                         ))
                      :<tr><td colSpan='4' className='text-center'>No Candidates</td></tr>}
                     </tbody>
