@@ -6,7 +6,10 @@ import { baseURL } from '../../store/conf.js'
 const Member = ({member, index, chatSocket, fDel,podInfo, Iam_member, Iam_delegate}) => {
     const AuthUser  = useSelector((state) => state.AuthUser.user);
     const [voted_out, setVoted_out] = useState(false);
+    const [put_farward, setPut_farward] = useState(false);
 
+    const[clicked, setClicked] = useState(false)   //check the member that clicked 
+    // checking if the member voted out for the member
     useEffect(()=>{ 
         /** Check for the AuthUser if he/she voted in for this candidate */
         const Url = `${window.location.protocol}//${baseURL}/api/circle-vote-out-list/`;
@@ -17,7 +20,20 @@ const Member = ({member, index, chatSocket, fDel,podInfo, Iam_member, Iam_delega
             response.data.map((res)=>{ if(res.voter == AuthUser.id){setVoted_out(true) }})
         })
         .catch(err=>console.log(err))
-    },)
+    },[clicked])
+
+    // checking if the member voted for gelegation.
+    useEffect(()=>{ 
+        /** Check for the AuthUser if he/she vote for delegation  */
+        const putFarwardURL = `${window.location.protocol}//${baseURL}/api/circle-put-farward-list/`;
+        axios.get(putFarwardURL, {params: { member: member.id} },
+        {headers: { Authorization: `Bearer ${AuthUser.token.access}`}})
+        .then(response=>{
+            // checking whether the auth user has voted for delegation.
+            response.data.map((res)=>{ if(res.voter == AuthUser.id){setPut_farward(true) }})
+        })
+        .catch(err=>console.log(err))
+    },[clicked])
 
 
     const removeMember = ()=>{
@@ -44,6 +60,19 @@ const Member = ({member, index, chatSocket, fDel,podInfo, Iam_member, Iam_delega
         }))
     }
 
+    const putFarward = ()=>{
+        /** send the vote to the server */
+        chatSocket.send(JSON.stringify({
+            "action":"putFarward",
+            "payload":{
+                "voter": AuthUser.username,
+                "member":member.id,
+                "pod":member.pod.code,
+            }
+        }))
+        setClicked(!clicked);
+    }
+
     return (
         <tr>
             <td>{index+1}</td>
@@ -52,7 +81,16 @@ const Member = ({member, index, chatSocket, fDel,podInfo, Iam_member, Iam_delega
             </td>
 
             {podInfo?.is_active ? <>
-                <th className='fw-bold'>Yes </th>
+            {/* ckeck if the member is auth user so that he/she can not vote for his own delegation  */}
+                <th className='fw-bold'>Yes 
+                    <input
+                    type="checkbox" 
+                    checked={put_farward}
+                    onChange={()=>putFarward()}
+                    className='form-check-input mx-2'
+                    /> 
+                    <span className="alert alert-primary p-0 px-2 mx-2">{member?.count_put_farward} votes</span>
+                </th>
             </>:null}
              {/* if the pod is not active
              and the member is delegate
