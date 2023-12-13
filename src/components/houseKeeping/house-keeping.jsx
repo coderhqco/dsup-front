@@ -11,6 +11,7 @@ function HouseKeeping(){
     const podInfo       = useSelector((state) => state.AuthUser.pod);
     const [err, setErr] = useState('');
     const [connectionErr, setConnectionErr] = useState(null);
+    const navigate      = useNavigate();
 
     const [ fDel , setFDel] = useState('');
     const [candidate, setCandidate]   = useState('')
@@ -27,16 +28,23 @@ function HouseKeeping(){
     },[err,])
 
     useEffect(()=>{
-        // on each changes of members or candidate, check if the Auth user is the delegate for this circle
-    
-
+        
     }, [members, candidate])
 
     const MembersFilter = (data)=>{
         /** This function gets called on each message being sent from server
          * it saperate the delegate, members and candidates and sets their state
          */
+        
         if(data.status === 'success'){
+            // on each members and candidate changes, check if the auth user is inside the list! 
+            // if not, redirect to the voter page.
+            if(!data.member_list?.find((member)=> member.user.username === AuthUser.username)){
+                setErr('You have been removed fron this circle. Taking you back to your voter page.');
+                navigate('/voter-page');
+            }
+
+
             setMembers(data.member_list?.filter((member)=> member.is_member))
             setFDel(data.member_list?.find((member) => member.is_delegate))
             setCandidate(data.member_list?.filter((member)=> !member.is_member))
@@ -59,6 +67,7 @@ function HouseKeeping(){
              * make a function that gets the data and saperate the candidates and members
              * adds the candidates and members to their states. 
              */
+            console.log("got new message: ", data)
             MembersFilter(data)
         };
 
@@ -140,7 +149,7 @@ function HouseKeeping(){
                 </table>
                 
                 {/* candidate list table */}
-                <p className='py-0 my-0 mt-2'>Candidate waiting for votes:</p>
+                <p className='py-0 my-0 mt-2'>Candidate(s) awaiting votes...</p>
                 <table className='table table-bordered '> 
                     <thead>
                         <tr>
