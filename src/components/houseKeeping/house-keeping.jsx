@@ -1,7 +1,7 @@
 import {useSelector,useDispatch, } from 'react-redux';
 import {useNavigate,Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
-import {authenticate,pod, addPodmMembers, desolvePod} from '../../store/userSlice.js';
+import {pod} from '../../store/userSlice.js';
 import Member from './member.jsx'
 import Candidate  from './candidate.jsx';
 
@@ -12,7 +12,7 @@ function HouseKeeping(){
     const [err, setErr] = useState('');
     const [connectionErr, setConnectionErr] = useState(null);
     const navigate      = useNavigate();
-
+    const dispatch      = useDispatch();
     /** We have fDEl object which contains the details of FDel.
      * Iam_delegate is true if the auth user is a delegate.
      * Iam_member is true of the auth user is a member
@@ -34,14 +34,18 @@ function HouseKeeping(){
         setTimeout(() => { setErr('');}, 5000);
     },[err,])
 
-    useEffect(()=>{
-        
-    }, [members, candidate])
-
     const MembersFilter = (data)=>{
         /** This function gets called on each message being sent from server
          * it saperate the delegate, members and candidates and sets their state
          */
+
+        // if the new data being received is invitation key change, 
+        // update the circle global state and return nothing to stop the function
+        if(data.action === 'invitationKey'){
+            dispatch(pod(data.circle))
+            return
+        }
+
         if(data.status === 'success'){
             // on each members and candidate changes, check if the auth user is inside the list! 
             // if not, redirect to the voter page.
@@ -70,6 +74,7 @@ function HouseKeeping(){
              */
             if(data.user.username === AuthUser.username){setErr(data.message)}
         }
+       
     }
 
     useEffect(()=>{
@@ -109,6 +114,13 @@ function HouseKeeping(){
     },[])
 
 
+    // update or change the circle invitation key
+    const invitationKey=()=>{
+        chatSocket.send(JSON.stringify({
+            "action":"invitationKey",
+            "payload":{ "pod":podInfo.code,}
+        }))
+    }
     return (
         <div className="container">
             <div className="row">
@@ -124,7 +136,7 @@ function HouseKeeping(){
 
                     {fDel?.user?.username === AuthUser?.username ?
                         <button className='d-block mx-auto my-2 btn btn-success text-center' 
-                        onClick={()=>console.log("check for being delegate!")}>Generate new key</button> 
+                        onClick={()=>invitationKey()}>Generate new key</button> 
                         :null}
                     
                     {podInfo?.is_active?
@@ -143,7 +155,6 @@ function HouseKeeping(){
                                 <th className='fw-bold'>Put forward as First Delegate</th>
                             </>:null}
                             {Iam_member || Iam_delegate ? <th className='fw-bold'>Remove Member</th> :null}
-                            
                         </tr>
                     </thead>
                     <tbody>
@@ -156,7 +167,9 @@ function HouseKeeping(){
                                 <Member 
                                 key={index} 
                                 index={index} 
+                                podInfo={podInfo}
                                 member={member}
+                                chatSocket = {chatSocket}
                                 Iam_member={Iam_member}
                                 Iam_delegate={Iam_delegate}
                                 fDel={fDel}></Member>
