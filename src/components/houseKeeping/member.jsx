@@ -1,8 +1,7 @@
 import {useSelector } from 'react-redux';
 import {useState, useEffect} from 'react';
-import { baseURL } from '../../store/conf.js'
 import axios from "axios";
-
+import { baseURL } from '../../store/conf.js'
 
 const Member = ({member, index, chatSocket, fDel,podInfo, Iam_member, Iam_delegate}) => {
     const AuthUser  = useSelector((state) => state.AuthUser.user);
@@ -34,7 +33,6 @@ const Member = ({member, index, chatSocket, fDel,podInfo, Iam_member, Iam_delega
     }
     
     const voteOut = ()=>{
-        console.log("voting out this member...")
         /** send the vote to the server */
         chatSocket.send(JSON.stringify({
             "action":"vote_out",
@@ -67,14 +65,14 @@ const Member = ({member, index, chatSocket, fDel,podInfo, Iam_member, Iam_delega
                 podInfo?.is_active === true ? 
                 // if the user vote out this member
                 <td> Yes 
-                {!voted_out ? 
+                    {!voted_out ? 
                         <input checked={voted_out}
                         onChange={()=>voteOut()}
                         type="checkbox"  
                         className='form-check-input mx-2' /> 
                     :null}
                     <span className="alert alert-primary p-0 px-2 mx-2">{member?.count_vote_out} votes</span>
-                    </td>
+                </td>
 
                 :
                 // if the circle is not active and the auth user is the delegate. 
