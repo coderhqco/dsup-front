@@ -13,7 +13,14 @@ function HouseKeeping(){
     const [connectionErr, setConnectionErr] = useState(null);
     const navigate      = useNavigate();
 
+    /** We have fDEl object which contains the details of FDel.
+     * Iam_delegate is true if the auth user is a delegate.
+     * Iam_member is true of the auth user is a member
+      */
     const [ fDel , setFDel] = useState('');
+    const [Iam_delegate, setIam_delegate] = useState(null)
+    const [Iam_member, setIam_member] = useState(null)
+
     const [candidate, setCandidate]   = useState('')
     const [members, setMembers]       = useState('')
 
@@ -35,7 +42,6 @@ function HouseKeeping(){
         /** This function gets called on each message being sent from server
          * it saperate the delegate, members and candidates and sets their state
          */
-        
         if(data.status === 'success'){
             // on each members and candidate changes, check if the auth user is inside the list! 
             // if not, redirect to the voter page.
@@ -43,8 +49,17 @@ function HouseKeeping(){
                 setErr('You have been removed fron this circle. Taking you back to your voter page.');
                 navigate('/voter-page');
             }
+            /**
+             * set Iam_candidate or Iam_member to true based on AuthUser and is_member
+             * and set Iam_delegate to true based on AuthUser and is_delegate
+             */
+            setIam_member(data.member_list?.find((member)=> member.user.username === AuthUser.username)?.is_member)
+            setIam_delegate(data.member_list?.find((member)=> member.user.username === AuthUser.username)?.is_delegate)
 
-
+            /** set the fDel, candidate list and memebers list on each new message.
+             * these new messages can come from joining a circle, vote in , vote out and ...
+             * basically any changes to the circle can send back the list of members
+             */
             setMembers(data.member_list?.filter((member)=> member.is_member))
             setFDel(data.member_list?.find((member) => member.is_delegate))
             setCandidate(data.member_list?.filter((member)=> !member.is_member))
@@ -127,8 +142,8 @@ function HouseKeeping(){
                             {podInfo?.is_active ? <>
                                 <th className='fw-bold'>Put forward as First Delegate</th>
                             </>:null}
-
-                            <th className='fw-bold'>Remove Member</th>
+                            {Iam_member || Iam_delegate ? <th className='fw-bold'>Remove Member</th> :null}
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -142,6 +157,8 @@ function HouseKeeping(){
                                 key={index} 
                                 index={index} 
                                 member={member}
+                                Iam_member={Iam_member}
+                                Iam_delegate={Iam_delegate}
                                 fDel={fDel}></Member>
                             ))
                         :null}
@@ -155,8 +172,8 @@ function HouseKeeping(){
                         <tr>
                             <th className='fw-bold'>#</th>
                             <th className='fw-bold'>Candidate Name</th>
-                            <th className='fw-bold'>Do you want this candidate to be a member?</th>
-                            {fDel?.user?.username === AuthUser?.username ? <th className='fw-bold'>Remove Candidate</th>:null}
+                            {Iam_delegate || Iam_member ? <th className='fw-bold'>Do you want this candidate to be a member?</th>:null} 
+                            {Iam_delegate ? <th className='fw-bold'>Remove Candidate</th>:null}
                         </tr>
                     </thead>
                     <tbody>
@@ -170,6 +187,8 @@ function HouseKeeping(){
                             chatSocket = {chatSocket} 
                             key={index} 
                             index={index} 
+                            Iam_member={Iam_member}
+                            Iam_delegate={Iam_delegate}
                             candidate={candidate}
                             fDel={fDel}></Candidate>
                         ))

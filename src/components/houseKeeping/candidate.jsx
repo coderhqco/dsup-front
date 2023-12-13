@@ -3,10 +3,9 @@ import {useSelector } from 'react-redux';
 import axios from "axios";
 import { baseURL } from '../../store/conf.js'
 
-const Candidate = ({candidate, index, chatSocket,fDel})=>{
+const Candidate = ({candidate, index, chatSocket,fDel, Iam_member,Iam_delegate})=>{
     const [voted, setVoted] = useState(false);
     const AuthUser  = useSelector((state) => state.AuthUser.user);
-
     useEffect(()=>{ 
         /** Check for the AuthUser if he/she voted in for this candidate */
         const Url = `${window.location.protocol}//${baseURL}/api/circle-vote-in-list/`;
@@ -47,17 +46,17 @@ const Candidate = ({candidate, index, chatSocket,fDel})=>{
         <tr>
         <td>{index+1}</td>
         <td>{candidate?.user?.users?.legalName}</td>
-        <td> <span className='mx-2'>Yes</span>
-            {!voted ?  <input type="checkbox"  checked={voted} 
-                    onChange={()=>VoteIn()} className='form-check-input mx-3' />
-            :null}
-            
-            {/* vote counter */}
-            <span className="alert alert-primary p-0 px-2">{candidate?.count_vote_in} votes</span>
-        </td>
+        {Iam_delegate || Iam_member ? 
+            <td> <span className='mx-2'>Yes</span>
+                {!voted ?  <input type="checkbox"  checked={voted} 
+                        onChange={()=>VoteIn()} className='form-check-input mx-3' />
+                :null}
+                <span className="alert alert-primary p-0 px-2">{candidate?.count_vote_in} votes</span>
+            </td>
+        :null}
 
         {/* check if the auth user is delegate to this circle */}
-        {fDel?.user?.username === AuthUser?.username ? 
+        {Iam_delegate ? 
             <td> Yes 
                 <input 
                 type="checkbox" 
