@@ -9,7 +9,7 @@ import Error from './components/Error.jsx';
 import VoterPage from './components/Voter-Page.jsx';
 import ProtectedRoute from './protectedRoutes.js';
 import JoinPod from './components/joinPod.jsx';
-import HouseKeeping from './components/houseKeeping/houseKeeping.jsx';
+// import HouseKeeping from './components/houseKeeping/houseKeeping.jsx';
 import UserActivate from './components/UserActivate';
 import PodBackNforth from './components/PodBackNforth.jsx';
 import SettingsPage from './components/SettingsPage.jsx';
@@ -18,6 +18,7 @@ import Insight from './components/bills/Insight.jsx';
 import MemberContactPage from './components/MemberContactPage.jsx';
 import MeetingsAndMinutes from './components/MeetingsAndMinutes.jsx';
 
+import HouseKeeping from './components/houseKeeping/house-keeping.jsx';
 
 function App(){
   return (
