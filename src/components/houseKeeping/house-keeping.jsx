@@ -4,7 +4,7 @@ import {useState, useEffect} from 'react';
 import {pod} from '../../store/userSlice.js';
 import Member from './member.jsx'
 import Candidate  from './candidate.jsx';
-
+import axios from "axios";
 
 function HouseKeeping(){
     const AuthUser      = useSelector((state) => state.AuthUser.user);
@@ -22,23 +22,35 @@ function HouseKeeping(){
     const [Iam_member, setIam_member] = useState(null)
 
     const [candidate, setCandidate]   = useState('')
-    const [members, setMembers]       = useState('')
+    const [members, setMembers]  = useState('')
 
     let ws_schame = window.location.protocol === "https:" ? "wss" : "ws";
     const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/circle/${podInfo?.code}/${AuthUser.username}/`
     const chatSocket = new WebSocket(url);
 
+    useEffect(()=>{
+        // if(members?.length > 5){
+            // check for circle endpoint to update
+            // getting the update of pod as it has become active.
+            const podURL = `${window.location.protocol}//${process.env.REACT_APP_BASE_URL}/api/circle/${podInfo.id}/`;
+            let header = { 'Authorization': `Bearer ${AuthUser.token.access}` }
+            axios.get(podURL,{ headers: header } )
+            .then((response)=>{ dispatch(pod(response.data))})
+            .catch(err=>console.log(err))
+        // }
+    },[members,])
+
+
     // Function to update the error state and schedule the reset
     useEffect(() => {
         // Schedule the reset after 5000 milliseconds (5 seconds)
-        setTimeout(() => { setErr('');}, 5000);
+        setTimeout(() => { setErr('');}, 10000);
     },[err,])
 
     const MembersFilter = (data)=>{
         /** This function gets called on each message being sent from server
          * it saperate the delegate, members and candidates and sets their state
          */
-
         // if the new data being received is invitation key change, 
         // update the circle global state and return nothing to stop the function
         if(data.action === 'invitationKey'){
@@ -74,7 +86,6 @@ function HouseKeeping(){
              */
             if(data.user.username === AuthUser.username){setErr(data.message)}
         }
-       
     }
 
     useEffect(()=>{
@@ -87,7 +98,7 @@ function HouseKeeping(){
              * make a function that gets the data and saperate the candidates and members
              * adds the candidates and members to their states. 
              */
-            console.log("got new message: ", data)
+            // console.log("got new message: ", data)
             MembersFilter(data)
         };
 

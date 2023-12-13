@@ -6,6 +6,7 @@ import { baseURL } from '../../store/conf.js'
 const Candidate = ({candidate, index, chatSocket,fDel, Iam_member,Iam_delegate})=>{
     const [voted, setVoted] = useState(false);
     const AuthUser  = useSelector((state) => state.AuthUser.user);
+    
     useEffect(()=>{ 
         /** Check for the AuthUser if he/she voted in for this candidate */
         const Url = `${window.location.protocol}//${baseURL}/api/circle-vote-in-list/`;
