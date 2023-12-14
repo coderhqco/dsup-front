@@ -158,7 +158,7 @@ function HouseKeeping(){
                         { connectionErr ? <div className="alert alert-danger" role="alert">{connectionErr} </div>:null}
                     </div>
                     <h1 className="text-center">Housekeeping Page</h1>
-                    <h3 className='text-center'>Circle: {podInfo?.code} District: {podInfo?.district.code}</h3>
+                    <h3 className='text-center'>Circle No. {podInfo?.code} District: {podInfo?.district.code}</h3>
                     <h4 className='text-center'>Invitation Key: {podInfo?.invitation_code}</h4>
 
                     {fDel?.user?.username === AuthUser?.username ?

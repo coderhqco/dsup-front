@@ -19,8 +19,8 @@ function Bill_Item ({bill, index}){
             F-Del &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<span className='alert alert-success p-0 px-2 mx-1'>Yea</span> <br />
             Sec-Del&nbsp;&nbsp;&nbsp; &nbsp;<span className='alert alert-success p-0 px-2 mx-1'>Yea</span> <br />
             MoDA &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span className='alert alert-success p-0 px-2 mx-1'>Yea</span> <br />
-            HoLC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<span className='alert alert-danger p-0 px-2 mx-1'>Nea</span> <br />
-            House Rep<span className='alert alert-danger p-0 px-2 mx-1'>Nea</span> <br />
+            HoLC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<span className='alert alert-danger p-0 px-2 mx-1'>Nay</span> <br />
+            House Rep<span className='alert alert-danger p-0 px-2 mx-1'>Nay</span> <br />
             </td>
             
             <td>{['radio'].map((type) => (
@@ -36,7 +36,7 @@ function Bill_Item ({bill, index}){
                         <br />
                         <Form.Check
                             inline
-                            label="NAY"
+                            label="Nay"
                             name="group1"
                             type={type}
                             id={index}
