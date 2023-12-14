@@ -1,7 +1,7 @@
 import {useSelector,useDispatch, } from 'react-redux';
 import {useNavigate,Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
-import {pod} from '../../store/userSlice.js';
+import {pod,desolvePod,authenticate} from '../../store/userSlice.js';
 import Member from './member.jsx'
 import Candidate  from './candidate.jsx';
 import axios from "axios";
@@ -13,6 +13,7 @@ function HouseKeeping(){
     const [connectionErr, setConnectionErr] = useState(null);
     const navigate      = useNavigate();
     const dispatch      = useDispatch();
+
     /** We have fDEl object which contains the details of FDel.
      * Iam_delegate is true if the auth user is a delegate.
      * Iam_member is true of the auth user is a member
@@ -20,13 +21,18 @@ function HouseKeeping(){
     const [ fDel , setFDel] = useState('');
     const [Iam_delegate, setIam_delegate] = useState(null)
     const [Iam_member, setIam_member] = useState(null)
-
+    const [dissolve, setDissolve] = useState(false);
     const [candidate, setCandidate]   = useState('')
     const [members, setMembers]  = useState('')
 
     let ws_schame = window.location.protocol === "https:" ? "wss" : "ws";
     const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/circle/${podInfo?.code}/${AuthUser.username}/`
     const chatSocket = new WebSocket(url);
+
+    useEffect(()=>{
+        // on each member change, check if the Circle has one member.
+        if(members.length == 1 && members[0].is_delegate === true){setDissolve(true); }
+    },[members,])
 
     useEffect(()=>{
         // if(members?.length > 5){
@@ -56,6 +62,16 @@ function HouseKeeping(){
         if(data.action === 'invitationKey'){
             dispatch(pod(data.circle))
             return
+        }
+        if(data.action === 'dissolve' && data.status === 'success'){
+            console.log("dissolved...")
+            dispatch(desolvePod())
+            // set the userType to 0 and reset AuthUser
+            let u = {...AuthUser}
+            u.userType = 0
+            dispatch(authenticate(u))
+            // navigate back to voter page
+            navigate('/voter-page');
         }
 
         if(data.status === 'success'){
@@ -177,6 +193,7 @@ function HouseKeeping(){
                             members?.map((member, index)=>(
                                 <Member 
                                 key={index} 
+                                dissolve={dissolve}
                                 index={index} 
                                 podInfo={podInfo}
                                 member={member}

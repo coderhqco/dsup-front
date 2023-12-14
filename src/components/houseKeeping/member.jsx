@@ -3,11 +3,10 @@ import {useState, useEffect} from 'react';
 import axios from "axios";
 import { baseURL } from '../../store/conf.js'
 
-const Member = ({member, index, chatSocket, fDel,podInfo, Iam_member, Iam_delegate}) => {
+const Member = ({member, index, chatSocket,dissolve, fDel,podInfo, Iam_member, Iam_delegate}) => {
     const AuthUser  = useSelector((state) => state.AuthUser.user);
     const [voted_out, setVoted_out] = useState(false);
     const [put_farward, setPut_farward] = useState(false);
-
     const[clicked, setClicked] = useState(false)   //check the member that clicked 
     // checking if the member voted out for the member
     useEffect(()=>{ 
@@ -60,6 +59,18 @@ const Member = ({member, index, chatSocket, fDel,podInfo, Iam_member, Iam_delega
         }))
     }
 
+    const removeCircle = ()=>{
+        /** send the vote to the server */
+        chatSocket.send(JSON.stringify({
+            "action":"dissolve",
+            "payload":{
+                "voter": AuthUser.username,
+                "member":member.id,
+                "pod":member.pod.code,
+            }
+        }))
+    }
+
     const putFarward = ()=>{
         /** send the vote to the server */
         chatSocket.send(JSON.stringify({
@@ -98,7 +109,10 @@ const Member = ({member, index, chatSocket, fDel,podInfo, Iam_member, Iam_delega
              otherwise, the members can vote out to remove.. */}
 
              {/* you can not not remove yourself. */}
-             {member?.user?.username === AuthUser.username ? <td></td> :
+             {member?.user?.username === AuthUser.username ? <td>
+                Dissolve this Circle ? 
+                <input type='checkbox' onChange={()=>removeCircle()} className='form-check-input mx-2'/>
+             </td> :
 
                 podInfo?.is_active === true ? 
                 // if the user vote out this member
