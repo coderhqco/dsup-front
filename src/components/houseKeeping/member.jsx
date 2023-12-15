@@ -127,7 +127,7 @@ const Member = ({member, index, chatSocket,dissolve, fDel,podInfo, Iam_member, I
 
              {/* you can not not remove yourself. */}
              {member?.user?.username === AuthUser.username ? <td>
-                Dissolve this Circle ? 
+                Dissolve This Circle ? 
                 <input type='checkbox' checked={clicked} 
                 onChange={()=>handleInputChange()} 
                 className='form-check-input mx-2'/>

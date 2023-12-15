@@ -1,7 +1,7 @@
 import {useSelector,useDispatch, } from 'react-redux';
 import {useNavigate,Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
-import {pod,desolvePod,authenticate} from '../../store/userSlice.js';
+import {pod,desolvePod,authenticate,addPodmMembers} from '../../store/userSlice.js';
 import Member from './member.jsx'
 import Candidate  from './candidate.jsx';
 import axios from "axios";
@@ -95,6 +95,9 @@ function HouseKeeping(){
             setMembers(data.member_list?.filter((member)=> member.is_member))
             setFDel(data.member_list?.find((member) => member.is_delegate))
             setCandidate(data.member_list?.filter((member)=> !member.is_member))
+
+            // this is circle members list is only for global state to use elsewhere.
+            dispatch(addPodmMembers(data.member_list?.filter((member)=> member.is_member)))
         }
         if(data.status === 'error'){
             /** if the auth user is the same as user on error message:
