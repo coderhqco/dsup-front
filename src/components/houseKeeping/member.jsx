@@ -2,12 +2,27 @@ import {useSelector } from 'react-redux';
 import {useState, useEffect} from 'react';
 import axios from "axios";
 import { baseURL } from '../../store/conf.js'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Modal, Button } from 'react-bootstrap';
 
 const Member = ({member, index, chatSocket,dissolve, fDel,podInfo, Iam_member, Iam_delegate}) => {
     const AuthUser  = useSelector((state) => state.AuthUser.user);
     const [voted_out, setVoted_out] = useState(false);
     const [put_farward, setPut_farward] = useState(false);
-    const[clicked, setClicked] = useState(false)   //check the member that clicked 
+    const [clicked, setClicked] = useState(false)   //check the member that clicked
+
+    const [showModal, setShowModal] = useState(false);
+
+    const handleInputChange = () => {
+      // Open the modal when the input value changes
+      setShowModal(true);
+    };
+  
+    const handleCloseModal = () => {
+      // Close the modal without performing the action
+      setShowModal(false);
+    };
+
     // checking if the member voted out for the member
     useEffect(()=>{ 
         /** Check for the AuthUser if he/she voted in for this candidate */
@@ -71,6 +86,7 @@ const Member = ({member, index, chatSocket,dissolve, fDel,podInfo, Iam_member, I
         }))
     }
 
+
     const putFarward = ()=>{
         /** send the vote to the server */
         chatSocket.send(JSON.stringify({
@@ -85,6 +101,7 @@ const Member = ({member, index, chatSocket,dissolve, fDel,podInfo, Iam_member, I
     }
 
     return (
+        <>
         <tr>
             <td>{index+1}</td>
             <td> {member?.user?.users?.legalName}
@@ -111,7 +128,9 @@ const Member = ({member, index, chatSocket,dissolve, fDel,podInfo, Iam_member, I
              {/* you can not not remove yourself. */}
              {member?.user?.username === AuthUser.username ? <td>
                 Dissolve this Circle ? 
-                <input type='checkbox' onChange={()=>removeCircle()} className='form-check-input mx-2'/>
+                <input type='checkbox' checked={clicked} 
+                onChange={()=>handleInputChange()} 
+                className='form-check-input mx-2'/>
              </td> :
 
                 podInfo?.is_active === true ? 
@@ -142,6 +161,19 @@ const Member = ({member, index, chatSocket,dissolve, fDel,podInfo, Iam_member, I
              }
     
         </tr>
+        <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal.Header className='border-0' closeButton>
+                <Modal.Title>Dissolve Circle</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                This action will dissolve this Circle permanently, do you want to proceed?
+            </Modal.Body>
+            <Modal.Footer className='border-0'>
+                <Button variant="secondary" onClick={handleCloseModal}> No </Button>
+                <Button variant="primary" onClick={()=>removeCircle()}> Yes</Button>
+            </Modal.Footer>
+        </Modal>
+        </>
     );
 
 }
