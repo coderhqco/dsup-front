@@ -5,6 +5,7 @@ import {pod,desolvePod,authenticate,addPodmMembers} from '../../store/userSlice.
 import Member from './member.jsx'
 import Candidate  from './candidate.jsx';
 import axios from "axios";
+import Status from './statusMessages.jsx';
 
 function HouseKeeping(){
     const AuthUser      = useSelector((state) => state.AuthUser.user);
@@ -19,14 +20,15 @@ function HouseKeeping(){
      * Iam_member is true of the auth user is a member
       */
     const [ fDel , setFDel] = useState('');
-    const [Iam_delegate, setIam_delegate] = useState(false)
-    const [Iam_member, setIam_member] = useState(false)
+    const [Iam_delegate, setIam_delegate] = useState(false);
+    const [Iam_member, setIam_member] = useState(false);
     const [dissolve, setDissolve] = useState(false);
-    const [candidate, setCandidate]   = useState('')
-    const [members, setMembers]  = useState('')
+    const [candidate, setCandidate]   = useState('');
+    const [members, setMembers]  = useState('');
+    const [Iam_candidate, setIam_candidate] = useState(false);
 
     let ws_schame = window.location.protocol === "https:" ? "wss" : "ws";
-    const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/circle/${podInfo?.code}/${AuthUser.username}/`
+    const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/circle/${podInfo?.code}/${AuthUser.username}`
     const chatSocket = new WebSocket(url);
 
     useEffect(()=>{
@@ -65,7 +67,6 @@ function HouseKeeping(){
             return
         }
         if(data.action === 'dissolve' && data.status === 'success'){
-            console.log("dissolved...")
             dispatch(desolvePod())
             // set the userType to 0 and reset AuthUser
             let u = {...AuthUser}
@@ -86,8 +87,9 @@ function HouseKeeping(){
              * set Iam_candidate or Iam_member to true based on AuthUser and is_member
              * and set Iam_delegate to true based on AuthUser and is_delegate
              */
-            setIam_member(data.member_list?.find((member)=> member.user.username === AuthUser.username)?.is_member)
             setIam_delegate(data.member_list?.find((member)=> member.user.username === AuthUser.username)?.is_delegate)
+            setIam_member(data.member_list?.find((member)=> member.user.username === AuthUser.username)?.is_member)
+            setIam_candidate(data.member_list?.find((member)=> member.user.username === AuthUser.username)?.is_member==false)
 
             /** set the fDel, candidate list and memebers list on each new message.
              * these new messages can come from joining a circle, vote in , vote out and ...
@@ -243,6 +245,16 @@ function HouseKeeping(){
 
             </div>
 
+            {/* status messages */}
+            <Status 
+            Iam_delegate={Iam_delegate}
+            Iam_member={Iam_member}
+            Iam_candidate={Iam_candidate}
+            podInfo={podInfo}
+            candidate ={candidate}
+            members = {members}
+            >
+            </Status>
         </div>
     )
 }
