@@ -1,10 +1,11 @@
 import {useSelector,useDispatch, } from 'react-redux';
 import {useNavigate,Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
-import {pod} from '../../store/userSlice.js';
+import {pod,desolvePod,authenticate,addPodmMembers} from '../../store/userSlice.js';
 import Member from './member.jsx'
 import Candidate  from './candidate.jsx';
 import axios from "axios";
+import Status from './statusMessages.jsx';
 
 function HouseKeeping(){
     const AuthUser      = useSelector((state) => state.AuthUser.user);
@@ -13,20 +14,28 @@ function HouseKeeping(){
     const [connectionErr, setConnectionErr] = useState(null);
     const navigate      = useNavigate();
     const dispatch      = useDispatch();
+
     /** We have fDEl object which contains the details of FDel.
      * Iam_delegate is true if the auth user is a delegate.
      * Iam_member is true of the auth user is a member
       */
     const [ fDel , setFDel] = useState('');
-    const [Iam_delegate, setIam_delegate] = useState(null)
-    const [Iam_member, setIam_member] = useState(null)
-
-    const [candidate, setCandidate]   = useState('')
-    const [members, setMembers]  = useState('')
+    const [Iam_delegate, setIam_delegate] = useState(false);
+    const [Iam_member, setIam_member] = useState(false);
+    const [dissolve, setDissolve] = useState(false);
+    const [candidate, setCandidate]   = useState('');
+    const [members, setMembers]  = useState('');
+    const [Iam_candidate, setIam_candidate] = useState(false);
 
     let ws_schame = window.location.protocol === "https:" ? "wss" : "ws";
-    const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/circle/${podInfo?.code}/${AuthUser.username}/`
+    const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/circle/${podInfo?.code}/${AuthUser.username}`
     const chatSocket = new WebSocket(url);
+
+    useEffect(()=>{
+        // on each member change, check if the Circle has one member.
+        if(members.length <= 1 && candidate.length === 0){ setDissolve(true); 
+        }else { setDissolve(false)}
+    },[candidate,members,])
 
     useEffect(()=>{
         // if(members?.length > 5){
@@ -57,6 +66,15 @@ function HouseKeeping(){
             dispatch(pod(data.circle))
             return
         }
+        if(data.action === 'dissolve' && data.status === 'success'){
+            dispatch(desolvePod())
+            // set the userType to 0 and reset AuthUser
+            let u = {...AuthUser}
+            u.userType = 0
+            dispatch(authenticate(u))
+            // navigate back to voter page
+            navigate('/voter-page');
+        }
 
         if(data.status === 'success'){
             // on each members and candidate changes, check if the auth user is inside the list! 
@@ -69,8 +87,9 @@ function HouseKeeping(){
              * set Iam_candidate or Iam_member to true based on AuthUser and is_member
              * and set Iam_delegate to true based on AuthUser and is_delegate
              */
-            setIam_member(data.member_list?.find((member)=> member.user.username === AuthUser.username)?.is_member)
             setIam_delegate(data.member_list?.find((member)=> member.user.username === AuthUser.username)?.is_delegate)
+            setIam_member(data.member_list?.find((member)=> member.user.username === AuthUser.username)?.is_member)
+            setIam_candidate(data.member_list?.find((member)=> member.user.username === AuthUser.username)?.is_member==false)
 
             /** set the fDel, candidate list and memebers list on each new message.
              * these new messages can come from joining a circle, vote in , vote out and ...
@@ -79,6 +98,9 @@ function HouseKeeping(){
             setMembers(data.member_list?.filter((member)=> member.is_member))
             setFDel(data.member_list?.find((member) => member.is_delegate))
             setCandidate(data.member_list?.filter((member)=> !member.is_member))
+
+            // this is circle members list is only for global state to use elsewhere.
+            dispatch(addPodmMembers(data.member_list?.filter((member)=> member.is_member)))
         }
         if(data.status === 'error'){
             /** if the auth user is the same as user on error message:
@@ -142,7 +164,7 @@ function HouseKeeping(){
                         { connectionErr ? <div className="alert alert-danger" role="alert">{connectionErr} </div>:null}
                     </div>
                     <h1 className="text-center">Housekeeping Page</h1>
-                    <h3 className='text-center'>Circle: {podInfo?.code} District: {podInfo?.district.code}</h3>
+                    <h3 className='text-center'>Circle No. {podInfo?.code} District: {podInfo?.district.code}</h3>
                     <h4 className='text-center'>Invitation Key: {podInfo?.invitation_code}</h4>
 
                     {fDel?.user?.username === AuthUser?.username ?
@@ -165,7 +187,7 @@ function HouseKeeping(){
                             {podInfo?.is_active ? <>
                                 <th className='fw-bold'>Put forward as First Delegate</th>
                             </>:null}
-                            {Iam_member || Iam_delegate ? <th className='fw-bold'>Remove Member</th> :null}
+                            { Iam_delegate ? <th className='fw-bold'>Remove Member</th> :<th></th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -177,6 +199,7 @@ function HouseKeeping(){
                             members?.map((member, index)=>(
                                 <Member 
                                 key={index} 
+                                dissolve={dissolve}
                                 index={index} 
                                 podInfo={podInfo}
                                 member={member}
@@ -222,6 +245,16 @@ function HouseKeeping(){
 
             </div>
 
+            {/* status messages */}
+            <Status 
+            Iam_delegate={Iam_delegate}
+            Iam_member={Iam_member}
+            Iam_candidate={Iam_candidate}
+            podInfo={podInfo}
+            candidate ={candidate}
+            members = {members}
+            >
+            </Status>
         </div>
     )
 }
