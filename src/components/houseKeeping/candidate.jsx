@@ -47,6 +47,7 @@ const Candidate = ({candidate, index, chatSocket,fDel, Iam_member,Iam_delegate})
         <tr>
         <td>{index+1}</td>
         <td>{candidate?.user?.users?.legalName}</td>
+
         {Iam_delegate || Iam_member ? 
             <td> <span className='mx-2'>Yes</span>
                 {!voted ?  <input type="checkbox"  checked={voted} 
@@ -65,7 +66,8 @@ const Candidate = ({candidate, index, chatSocket,fDel, Iam_member,Iam_delegate})
                 onChange={()=>removeCadidate()}
                 className='form-check-input mx-2' />
             </td>
-        : ""}
+        : null}
+        
     </tr>
     )
 }

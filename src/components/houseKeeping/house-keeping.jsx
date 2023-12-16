@@ -19,8 +19,8 @@ function HouseKeeping(){
      * Iam_member is true of the auth user is a member
       */
     const [ fDel , setFDel] = useState('');
-    const [Iam_delegate, setIam_delegate] = useState(null)
-    const [Iam_member, setIam_member] = useState(null)
+    const [Iam_delegate, setIam_delegate] = useState(false)
+    const [Iam_member, setIam_member] = useState(false)
     const [dissolve, setDissolve] = useState(false);
     const [candidate, setCandidate]   = useState('')
     const [members, setMembers]  = useState('')
@@ -31,8 +31,9 @@ function HouseKeeping(){
 
     useEffect(()=>{
         // on each member change, check if the Circle has one member.
-        if(members.length == 1 && members[0].is_delegate === true){setDissolve(true); }
-    },[members,])
+        if(members.length <= 1 && candidate.length === 0){ setDissolve(true); 
+        }else { setDissolve(false)}
+    },[candidate,members,])
 
     useEffect(()=>{
         // if(members?.length > 5){
@@ -184,7 +185,7 @@ function HouseKeeping(){
                             {podInfo?.is_active ? <>
                                 <th className='fw-bold'>Put forward as First Delegate</th>
                             </>:null}
-                            {Iam_member || Iam_delegate ? <th className='fw-bold'>Remove Member</th> :null}
+                            { Iam_delegate ? <th className='fw-bold'>Remove Member</th> :<th></th>}
                         </tr>
                     </thead>
                     <tbody>

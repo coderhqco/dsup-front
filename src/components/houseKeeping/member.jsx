@@ -5,7 +5,7 @@ import { baseURL } from '../../store/conf.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 
-const Member = ({member, index, chatSocket,dissolve, fDel,podInfo, Iam_member, Iam_delegate}) => {
+const Member = ({member, index, chatSocket,dissolve, fDel, podInfo, Iam_member, Iam_delegate}) => {
     const AuthUser  = useSelector((state) => state.AuthUser.user);
     const [voted_out, setVoted_out] = useState(false);
     const [put_farward, setPut_farward] = useState(false);
@@ -127,10 +127,15 @@ const Member = ({member, index, chatSocket,dissolve, fDel,podInfo, Iam_member, I
 
              {/* you can not not remove yourself. */}
              {member?.user?.username === AuthUser.username ? <td>
-                Dissolve This Circle ? 
-                <input type='checkbox' checked={clicked} 
-                onChange={()=>handleInputChange()} 
-                className='form-check-input mx-2'/>
+                {/* check if the circle is dissolvable.  */}
+               
+                {dissolve === true ? <>
+                    Dissolve This Circle {dissolve} ? 
+                    <input type='checkbox' checked={clicked} 
+                    onChange={()=>handleInputChange()} 
+                    className='form-check-input mx-2'/>
+                </> :null}
+
              </td> :
 
                 podInfo?.is_active === true ? 
