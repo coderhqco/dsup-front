@@ -1,25 +1,27 @@
-import React from  'react';
-import {Link} from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-function Footer(){
-
-    return (
-        <footer className='container'>
-            <div className="row my-3">
-                <div className="col">
-                    <p className='text-secondary'>The Democracy, Straight-Up! Project </p>
-                </div>
-                <div className="col text-end">
-                    <Link to='/' className='mx-3 text-secondary'>About</Link>
-                    <Link to='/' className='mx-3 text-secondary'>Contact</Link>
-                    <Link to='/' className='mx-3 text-secondary'>News</Link>
-                    {/* <a className='mx-3 text-secondary' href="#">About</a>
-                    <a className='mx-3 text-secondary' href="#">Contact</a>
-                    <a className='mx-3 text-secondary' href="#">News</a> */}
-                </div>
-            </div>
-        </footer>
-    );
+function Footer() {
+  return (
+    <footer className="container">
+      <div className="row my-3">
+        <div className="col-12 col-md-6 text-center text-md-start">
+          <p className="text-secondary">The Democracy, Straight-Up! Project </p>
+        </div>
+        <div className="col-12 col-md-6 text-center text-md-end">
+          <Link to="/" className="mx-3 text-secondary d-inline-block">
+            About
+          </Link>
+          <Link to="/" className="mx-3 text-secondary d-inline-block">
+            Contact
+          </Link>
+          <Link to="/" className="mx-3 text-secondary d-inline-block">
+            News
+          </Link>
+        </div>
+      </div>
+    </footer>
+  );
 }
 
 export default Footer;
