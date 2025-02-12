@@ -42,6 +42,7 @@ function Home() {
             </a>
           </div>
         </div>
+        http://localhost:3000/static/media/CYS-Logo.7c9edc2e9590bc7d1e9c.png
         <div className="col-sm-12 col-md-8 col-lg-8">
           <div className="text-center mt-5">
             <h2 className="my-4">
