@@ -140,9 +140,9 @@ function HouseKeeping() {
       /** if the auth user is the same as user on error message:
        * set the error state to show to the user.
        */
-      if (data.user.username === AuthUser.username) {
-        setErr(data.message);
-      }
+      setErr(data.message);
+      //   if (data.user.username === AuthUser.username) {
+      //   }
     }
   };
 
@@ -261,9 +261,10 @@ function HouseKeeping() {
                     circleInfo={circleInfo}
                     member={member}
                     chatSocket={chatSocket}
+                    err={err}
                     Iam_member={Iam_member}
                     Iam_delegate={Iam_delegate}
-                    fDel={fDel}></Member>
+                  />
                 ))
               : null}
           </tbody>
@@ -292,14 +293,14 @@ function HouseKeeping() {
              *
              */}
             {candidate?.length > 0 ? (
-              candidate?.map((candidate, index) => (
+              candidate?.map((cand, index) => (
                 <Candidate
                   chatSocket={chatSocket}
                   key={index}
                   index={index}
                   Iam_member={Iam_member}
                   Iam_delegate={Iam_delegate}
-                  candidate={candidate}
+                  candidate={cand}
                   fDel={fDel}></Candidate>
               ))
             ) : (
