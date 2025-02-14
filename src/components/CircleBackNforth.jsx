@@ -1,9 +1,5 @@
 import { useSelector } from "react-redux";
 import { useState, useEffect, useRef } from "react";
-import { ModalHeader } from "react-bootstrap";
-import { Modal } from "react-bootstrap";
-import axios from "axios";
-import { baseURL } from "../store/conf.js";
 
 const CircleBackNforth = () => {
   const circleInfo = useSelector((state) => state.AuthUser.circle);
@@ -12,8 +8,6 @@ const CircleBackNforth = () => {
   const [message, setMessage] = useState("");
   const [serverMessage, setServerMessage] = useState([]);
   const [loadMoreVisible, setLoadMoreVisible] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [errorModal, setErrorModal] = useState("");
   const [err, setErr] = useState("");
   let socketRef = useRef(null);
 

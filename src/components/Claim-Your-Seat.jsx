@@ -202,7 +202,7 @@ function ClaimYourSeat() {
         <p>
           {" "}
           If you've already claimed your seat, you can enter the floor of your
-          District Legislature (D-Leg).
+          Directly-connected Legislature (DcL).
         </p>
         <Link className="btn btn-lg btn-primary m-3" to="/enter-the-floor">
           Enter The Floor
