@@ -55,7 +55,6 @@ const Candidate = ({
         payload: {
           remover: AuthUser.username,
           candidate: candidate.id,
-          circle: candidate.circle.code,
         },
       })
     );
