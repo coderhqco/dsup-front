@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { baseURL } from "../store/conf.js";
 import axios from "axios";
 
-export default function ContactInfoItem({ index, member, isDelegate }) {
+export default function ContactInfoItem({ index, isDelegate, member }) {
   const [editContactRules, setEditContactRules] = useState(
     member?.contact_rules
   );
@@ -13,6 +13,16 @@ export default function ContactInfoItem({ index, member, isDelegate }) {
   const AuthUser = useSelector((state) => state.AuthUser.user);
   const [editing, setEditing] = useState(false);
   const [editingRules, setEditingRules] = useState(false);
+
+  const canEdite = () => {
+    if (isDelegate() === true) {
+      return true;
+    } else if (member?.member?.user.username === AuthUser.username) {
+      return true;
+    }
+
+    return false;
+  };
 
   const handleUpdate = () => {
     const data = {
@@ -122,7 +132,7 @@ export default function ContactInfoItem({ index, member, isDelegate }) {
             <div className="p-0">
               <p className="m-0">Email: {editEmail}</p>
               <p className="m-0">Phone: {editPhone}</p>
-              {isDelegate() === true && (
+              {canEdite() === true && (
                 <span
                   className="  text-primary text-decoration-underline"
                   style={{ cursor: "pointer" }}
@@ -145,7 +155,7 @@ export default function ContactInfoItem({ index, member, isDelegate }) {
                   disabled={true}
                   defaultValue={editContactRules}></textarea>
               </div>
-              {isDelegate() === true && (
+              {canEdite() === true && (
                 <span
                   className=" text-sm text-primary text-decoration-underline"
                   style={{ cursor: "pointer" }}
