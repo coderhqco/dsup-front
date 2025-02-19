@@ -16,8 +16,8 @@ function VoterPage() {
   const [message, setMessage] = useState({ type: "alert alert-", msg: "" });
   const [token, setToken] = useState("");
   const [action, setAction] = useState("");
-  // eslint-disable-next-line
-  const [pageLoaded, setPageLoaded] = useState(false);
+  // // eslint-disable-next-line
+  // const [pageLoaded, setPageLoaded] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const circleMembers = useSelector((state) => state.AuthUser.circleMembers);
@@ -203,11 +203,12 @@ function VoterPage() {
             {AuthUser?.username === delegate?.user?.username ? (
               <>
                 <div className="col-sm-12 col-lg-6 my-1">
-                  <a
+                  <Link
+                    to="/join-sec-del"
                     className="btn btn-primary "
                     style={{ whiteSpace: "nowrap" }}>
                     Join First Link
-                  </a>
+                  </Link>
                 </div>
                 <div className="col-sm-12 col-lg-6 my-1">
                   <a
@@ -231,6 +232,34 @@ function VoterPage() {
             </div>
           </div>
         );
+      case 2:
+        return (
+          <div className="row text-center">
+            <div className="col-sm-12 col-lg-6 my-1">
+              <Link to="/first-link-page" className="btn btn-primary ">
+                My First Link
+              </Link>
+            </div>
+            {/* add if the user is delegate and then show this two. */}
+            {AuthUser?.username === delegate?.user?.username ? (
+              <>
+                <div className="col-sm-12 col-lg-6 my-1"></div>
+                <div className="col-sm-12 col-lg-6 my-1"></div>
+              </>
+            ) : (
+              ""
+            )}
+            <div className="col-sm-12 col-lg-6 my-1">
+              <Link
+                className="btn btn-primary"
+                style={{ whiteSpace: "nowrap" }}
+                to={"/"}>
+                Back & Forth
+              </Link>
+              {/* <a className="btn btn-primary m-2" >Back-and-Forth</a> */}
+            </div>
+          </div>
+        );
 
       default:
         return (
@@ -240,6 +269,7 @@ function VoterPage() {
         );
     }
   };
+
   return (
     <div className="container">
       <div className="row">

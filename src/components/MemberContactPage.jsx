@@ -3,6 +3,7 @@ import ContactInfoItem from "./contact_info_item.jsx";
 import { useEffect, useState } from "react";
 import { baseURL } from "../store/conf.js";
 import axios from "axios";
+import { Suspense } from "react";
 
 function MemberContactPage() {
   const AuthUser = useSelector((state) => state.AuthUser.user);
@@ -63,12 +64,14 @@ function MemberContactPage() {
           </thead>
           <tbody>
             {contactList?.map((member, index) => (
-              <ContactInfoItem
-                key={index}
-                isDelegate={() => isDelegate()}
-                index={index}
-                member={member}
-              />
+              <Suspense fallback={<>loading</>}>
+                <ContactInfoItem
+                  key={index}
+                  isDelegate={() => isDelegate()}
+                  index={index}
+                  member={member}
+                />
+              </Suspense>
             ))}
           </tbody>
         </table>

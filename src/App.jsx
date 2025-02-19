@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import SignUpConfirm from "./components/signUpConform.jsx";
 import ClaimYourSeat from "./components/Claim-Your-Seat.jsx";
@@ -19,6 +20,12 @@ import MemberContactPage from "./components/MemberContactPage.jsx";
 import MeetingsAndMinutes from "./components/MeetingsAndMinutes.jsx";
 import RegistarationStatusVerfication from "./components/RegisterationStatusVerification.jsx";
 import HouseKeeping from "./components/houseKeeping/house-keeping.jsx";
+
+import JoinSecDel from "./components/sec_del/sec_del_join.jsx";
+
+import SecondDelegatePage from "./components/sec_del/sec_del_page.jsx";
+
+// const JoinSecDel = lazy(() => import("./components/sec_del/sec_del_join.jsx"));
 
 function App() {
   return (
@@ -101,6 +108,26 @@ function App() {
             <ProtectedRoute>
               <Header />
               <JoinCircle />
+              <Footer />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/join-sec-del"
+          element={
+            <ProtectedRoute>
+              <Header />
+              <JoinSecDel />
+              <Footer />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/first-link-page"
+          element={
+            <ProtectedRoute>
+              <Header />
+              <SecondDelegatePage />
               <Footer />
             </ProtectedRoute>
           }
