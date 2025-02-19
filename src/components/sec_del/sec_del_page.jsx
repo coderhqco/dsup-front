@@ -1,12 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import {
-  circle,
-  desolveCircle,
-  authenticate,
-  addCirclemMembers,
-} from "../../store/userSlice.js";
+
 import Member from "./member.jsx";
 import Candidate from "./candidate.jsx";
 import axios from "axios";
@@ -14,11 +9,9 @@ import Status from "./status_message.jsx";
 
 function SecondDelegatePage() {
   const AuthUser = useSelector((state) => state.AuthUser.user);
-  const circleInfo = useSelector((state) => state.AuthUser.circle);
+  const first_link = useSelector((state) => state.AuthUser.sec_del);
   const [err, setErr] = useState("");
   const [connectionErr, setConnectionErr] = useState(null);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   /** We have fDEl object which contains the details of FDel.
    * Iam_delegate is true if the auth user is a delegate.
@@ -33,7 +26,7 @@ function SecondDelegatePage() {
   const [Iam_candidate, setIam_candidate] = useState(false);
 
   let ws_schame = window.location.protocol === "https:" ? "wss" : "ws";
-  const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/sec-del/${circleInfo?.code}/${AuthUser.username}`;
+  const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/sec-del/${first_link?.code}/${AuthUser.username}`;
   const chatSocket = new WebSocket(url);
 
   // Function to update the error state and schedule the reset
@@ -44,17 +37,59 @@ function SecondDelegatePage() {
     }, 10000);
   }, [err]);
 
+  const action_lists = (msg) => {
+    // add the members and candidates on their states.
+    if (msg.action === "member_listing") {
+      if (msg.member_list) {
+        // set the members and candidates
+        // setSec_del(msg.member_list[0]?.first_link);
+        const membersList = msg.member_list.filter(
+          (member) => member.is_member
+        );
+        const candidatesList = msg.member_list.filter(
+          (member) => !member.is_member
+        );
+
+        setMembers(membersList);
+        setCandidate(candidatesList);
+        if (
+          membersList.some(
+            (member) => member?.user?.username === AuthUser?.username
+          )
+        ) {
+          setIam_delegate(true);
+          console.log("I am delegate: ", Iam_delegate);
+        } else {
+          setIam_member(true);
+          console.log("I am member: ", Iam_member);
+        }
+
+        if (
+          candidatesList.some(
+            (candidate) => candidate?.user.username === AuthUser?.username
+          )
+        ) {
+          setIam_candidate(true);
+          console.log("I am candidate: ", Iam_candidate);
+        } else {
+          console.log("I am not a candidate.");
+        }
+      }
+
+      //   other actions here
+    }
+  };
+
+  //   connect to websocket on load and get data
   useEffect(() => {
     /** This is the functions that receives all the messages from server */
     chatSocket.onmessage = function (e) {
       const data = JSON.parse(e.data);
-      console.log("new message: ", data);
       /**
        * all the messages that comes from this end point is the same.
-       * it contains circle members
-       * make a function that gets the data and saperate the candidates and members
-       * adds the candidates and members to their states.
+       * it contains members
        */
+      action_lists(data);
     };
 
     // what happens on closing the connection
@@ -83,10 +118,11 @@ function SecondDelegatePage() {
     chatSocket.send(
       JSON.stringify({
         action: "invitationKey",
-        payload: { circle: circleInfo.code },
+        payload: { circle: first_link.code },
       })
     );
   };
+
   return (
     <div className="container">
       <div className="row">
@@ -106,11 +142,11 @@ function SecondDelegatePage() {
           </div>
           <h1 className="text-center">Housekeeping Page</h1>
           <h3 className="text-center">
-            First Link No. {circleInfo?.code} District:{" "}
-            {circleInfo?.district.code}
+            First Link No: {first_link?.code} &nbsp;&nbsp; District:
+            {first_link?.district.code}
           </h3>
           <h4 className="text-center">
-            Invitation Key: {circleInfo?.invitation_code}
+            Invitation Key: {first_link?.invitation_key}
           </h4>
 
           {fDel?.user?.username === AuthUser?.username ? (
@@ -121,7 +157,7 @@ function SecondDelegatePage() {
             </button>
           ) : null}
 
-          {circleInfo?.is_active ? (
+          {first_link?.is_active ? (
             <p className="text-center">Circle Status: ACTIVE!</p>
           ) : null}
         </div>
@@ -133,7 +169,7 @@ function SecondDelegatePage() {
             <tr>
               <th className="fw-bold">#</th>
               <th className="fw-bold">Member Name</th>
-              {circleInfo?.is_active ? (
+              {first_link?.is_active ? (
                 <>
                   <th className="fw-bold">Put forward as First Delegate</th>
                 </>
@@ -156,7 +192,7 @@ function SecondDelegatePage() {
                     key={index}
                     dissolve={dissolve}
                     index={index}
-                    circleInfo={circleInfo}
+                    circleInfo={first_link}
                     member={member}
                     chatSocket={chatSocket}
                     err={err}
@@ -217,7 +253,7 @@ function SecondDelegatePage() {
         Iam_delegate={Iam_delegate}
         Iam_member={Iam_member}
         Iam_candidate={Iam_candidate}
-        circleInfo={circleInfo}
+        circleInfo={first_link}
         candidate={candidate}
         members={members}></Status>
     </div>

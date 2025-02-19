@@ -15,14 +15,18 @@ function getLocalStorageItem(key) {
 // init the initial State to local and check if the user already added to cart
 const userLocal = getLocalStorageItem("AuthUser");
 const circleLocal = getLocalStorageItem("circle");
+const sec_delLocal = getLocalStorageItem("sec_del");
 const circleMembersLocal = getLocalStorageItem("circleMembers");
 
 let userInit = null;
 let circleInit = null;
+let sec_delInit = null;
 let circleMembersInit = null;
 
 userLocal ? (userInit = userLocal) : (userInit = null);
 circleLocal ? (circleInit = circleLocal) : (circleInit = null);
+sec_delLocal ? (sec_delInit = sec_delLocal) : (sec_delInit = null);
+
 circleMembersLocal
   ? (circleMembersInit = circleMembersLocal)
   : (circleMembersInit = null);
@@ -30,6 +34,7 @@ circleMembersLocal
 const initialState = {
   user: userInit,
   circle: circleInit,
+  sec_del: sec_delInit,
   circleMembers: circleMembersInit,
 };
 
@@ -51,6 +56,10 @@ export const UserSlice = createSlice({
     circle: (state, action) => {
       state.circle = action.payload;
       toLocalStorage("circle", state.circle);
+    },
+    sec_del: (state, action) => {
+      state.sec_del = action.payload;
+      toLocalStorage("sec_del", state.sec_del);
     },
     addCirclemMembers: (state, action) => {
       state.circleMembers = action.payload;
@@ -78,6 +87,7 @@ export const {
   authenticate,
   logout,
   circle,
+  sec_del,
   addCirclemMembers,
   desolveCircle,
 } = UserSlice.actions;

@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { circle, authenticate } from "../../store/userSlice.js";
+import { circle, authenticate, sec_del } from "../../store/userSlice.js";
 import { baseURL } from "../../store/conf.js";
 
 function JoinSecDel() {
@@ -19,18 +19,17 @@ function JoinSecDel() {
   useEffect(() => {
     // we need invitation key and username. token is required for request
     // after the joint, we have to redirect to the circle page
-    if (clicked === "circle") {
-      console.log("creating a delegate...");
+    if (clicked === "create_sec_del") {
+      console.log("creating first link and adding the member...");
       if (token.length > 0) {
         // console.log("ceating a circle...")
+        // constructing to request to create the first link
         let header = { Authorization: `Bearer ${token}` };
         const url = `${window.location.protocol}//${baseURL}/api/second-delegate/`;
         const param = {
           user: AuthUser.username,
           district: AuthUser.users.district.code,
         };
-
-        console.log("params: ", param);
 
         axios
           .post(url, param, { headers: header })
@@ -42,16 +41,21 @@ function JoinSecDel() {
                 type: "alert alert-danger",
               });
             } else if (response.status === 200) {
-              dispatch(circle(response.data));
+              // if the request was a succcess, set the sec_del state so that we need it in the next page (sec_del housekeeping page)
+              dispatch(sec_del(response.data));
+
+              // set the userType to 2 without requesting new data from the server.
               let u = { ...AuthUser.users };
-              let userType = 1;
+              let userType = 2;
               let users = { ...u, userType };
               dispatch(authenticate({ ...AuthUser, users }));
               setMessage({
                 type: "alert alert-success",
                 msg: "sec del created.",
               });
-              //   navigate("/house-keeping-page");
+
+              //   after successfull operation of creating, settign datas and users, take the voter to first link page
+              navigate("/first-link-page");
             } else {
               console.log("something went wrong:", response);
             }
@@ -146,7 +150,7 @@ function JoinSecDel() {
     }
   }, [WS]);
 
-  function GetToken(from) {
+  function GetToken(action) {
     // from is tell weather the join btn is clicked on create circle
     const TokenUrl = `${window.location.protocol}//${baseURL}/api/token/refresh/`;
     const token_params = { refresh: AuthUser.token.refresh };
@@ -156,7 +160,7 @@ function JoinSecDel() {
         if (response.status === 200) {
           // set the new access token and which btn is clicked via clicked const.
           setToken(response.data.access);
-          setClicked(from);
+          setClicked(action);
           // console.log("token is set to a new token",from)
         } else {
           setMessage({
@@ -180,7 +184,7 @@ function JoinSecDel() {
     GetToken("join");
   };
   const handleCircle = () => {
-    GetToken("circle");
+    GetToken("create_sec_del");
     // we need username and district code. token is required for request
     // after the creation of circle, we have to redirect to circle page
   };
