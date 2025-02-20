@@ -29,6 +29,15 @@ function SecondDelegatePage() {
   const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/sec-del/${first_link?.code}/${AuthUser.username}`;
   const chatSocket = new WebSocket(url);
 
+  useEffect(() => {
+    // on each member change, check if the Circle has one member.
+    if (members.length <= 1 && candidate.length === 0) {
+      setDissolve(true);
+    } else {
+      setDissolve(false);
+    }
+  }, [candidate, members]);
+
   // Function to update the error state and schedule the reset
   useEffect(() => {
     // Schedule the reset after 5000 milliseconds (5 seconds)
@@ -168,14 +177,18 @@ function SecondDelegatePage() {
           <thead>
             <tr>
               <th className="fw-bold">#</th>
-              <th className="fw-bold">Member Name</th>
+              <th className="fw-bold">Mamber Name</th>
               {first_link?.is_active ? (
                 <>
                   <th className="fw-bold">Put forward as First Delegate</th>
                 </>
               ) : null}
               {Iam_delegate ? (
-                <th className="fw-bold">Remove Member</th>
+                <th className="fw-bold">
+                  {dissolve === true
+                    ? "Dissolve First Link? "
+                    : "Remove Member"}
+                </th>
               ) : (
                 <th></th>
               )}

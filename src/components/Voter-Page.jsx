@@ -235,21 +235,35 @@ function VoterPage() {
       case 2:
         return (
           <div className="row text-center">
-            <div className="col-sm-12 col-lg-6 my-1">
+            <div className="col-sm-12 my-1">
               <Link to="/first-link-page" className="btn btn-primary ">
-                My First Link
+                My First Delegate Link
               </Link>
             </div>
             {/* add if the user is delegate and then show this two. */}
             {AuthUser?.username === delegate?.user?.username ? (
               <>
-                <div className="col-sm-12 col-lg-6 my-1"></div>
-                <div className="col-sm-12 col-lg-6 my-1"></div>
+                <div className="col-sm-12 my-1">
+                  <Link
+                    to="#"
+                    className="btn btn-primary "
+                    style={{ whiteSpace: "nowrap" }}>
+                    Join Second Delegate Link
+                  </Link>
+                </div>
+                <div className="col-sm-12 my-1">
+                  <Link
+                    to="#"
+                    className="btn btn-primary "
+                    style={{ whiteSpace: "nowrap" }}>
+                    Create Second Delegate Link
+                  </Link>
+                </div>
               </>
             ) : (
               ""
             )}
-            <div className="col-sm-12 col-lg-6 my-1">
+            <div className="col-sm-12  my-1">
               <Link
                 className="btn btn-primary"
                 style={{ whiteSpace: "nowrap" }}
