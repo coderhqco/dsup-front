@@ -207,14 +207,14 @@ function VoterPage() {
                     to="/join-sec-del"
                     className="btn btn-primary "
                     style={{ whiteSpace: "nowrap" }}>
-                    Join First Link
+                    Join F-Link
                   </Link>
                 </div>
                 <div className="col-sm-12 col-lg-6 my-1">
                   <a
                     className="btn btn-primary "
                     style={{ whiteSpace: "nowrap" }}>
-                    Create First Link
+                    Create F-Link
                   </a>
                 </div>
               </>
@@ -237,7 +237,7 @@ function VoterPage() {
           <div className="row text-center">
             <div className="col-sm-12 my-1">
               <Link to="/first-link-page" className="btn btn-primary ">
-                My First Delegate Link
+                My F-Link
               </Link>
             </div>
             {/* add if the user is delegate and then show this two. */}
