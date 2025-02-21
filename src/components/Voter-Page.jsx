@@ -3,33 +3,28 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { circle, authenticate } from "../store/userSlice.js";
-import { baseURL } from "../store/conf.js";
+import { baseURL } from "../store/conf";
+import { circle, authenticate } from "../store/userSlice";
 import jwtDecode from "jwt-decode";
-import { Container, Row, Col, Table } from "react-bootstrap";
-import Bill_Item from "./bills/bill_item.jsx";
-
-// import { retrieveBillsSuccess } from '../store/billSlice';
+import { Container, Row, Col } from "react-bootstrap";
+import { houseKeepingType } from "./voter_page_components/housekeeping";
+import BillsWrapper from "./voter_page_components/billsWrapper";
 
 function VoterPage() {
   const AuthUser = useSelector((state) => state.AuthUser.user);
   const [message, setMessage] = useState({ type: "alert alert-", msg: "" });
   const [token, setToken] = useState("");
   const [action, setAction] = useState("");
-  // // eslint-disable-next-line
-  // const [pageLoaded, setPageLoaded] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const circleMembers = useSelector((state) => state.AuthUser.circleMembers);
-  const [delegate, setDelegate] = useState(
-    circleMembers?.filter((e) => e.is_delegate === true)[0]
-  );
-  // const bills = useSelector((state) => state.bills.bills);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [bills, setBills] = useState({});
-
+  const [delegate, setDelegate] = useState({});
   let date = new Date(AuthUser.date_joined);
+
+  // set the delegate on render
+  useEffect(() => {
+    setDelegate(circleMembers?.filter((e) => e.is_delegate === true)[0]);
+  }, [circleMembers]);
 
   // get the new access token on each page load or redirect
   useEffect(() => {
@@ -62,25 +57,8 @@ function VoterPage() {
         });
         // setErr("Something went wrong. Check your inputs and try again.");
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // load bills
-  useEffect(() => {
-    let header = { Authorization: `Bearer ${AuthUser.token.access}` };
-    axios
-      .get(
-        `${window.location.protocol}//${baseURL}/bill/bills/?page=${currentPage}`,
-        { headers: header }
-      )
-      .then((response) => {
-        setBills(response.data);
-      })
-      .catch((error) => {
-        setMessage({ type: "alert alert-danger", msg: "error getting bills." });
-        // setErr("Something went wrong. Check your inputs and try again.");
-        console.log(error);
-      });
-  }, [currentPage]);
 
   useEffect(() => {
     switch (action) {
@@ -158,6 +136,7 @@ function VoterPage() {
       default:
         console.log("");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [action]);
 
   useEffect(() => {
@@ -169,120 +148,8 @@ function VoterPage() {
     if (isTokenExpired()) {
       navigate("/enter-the-floor");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const houseKeepingType = () => {
-    switch (AuthUser?.users?.userType) {
-      case 0:
-        return (
-          <div className="row text-center">
-            <div className="col-sm-12 ">
-              <Link to={"/join-circle"} className="btn btn-success m-2">
-                Join a Circle
-              </Link>
-            </div>
-            <div className="col-sm-12 ">
-              <a
-                onClick={() => setAction("createCircle")}
-                className="btn btn-success m-2">
-                Create a Circle
-              </a>
-            </div>
-          </div>
-        );
-      case 1:
-        return (
-          <div className="row text-center">
-            <div className="col-sm-12 col-lg-6 my-1">
-              <Link to="/house-keeping-page" className="btn btn-primary ">
-                {" "}
-                My Circle
-              </Link>
-            </div>
-            {/* add if the user is delegate and then show this two. */}
-            {AuthUser?.username === delegate?.user?.username ? (
-              <>
-                <div className="col-sm-12 col-lg-6 my-1">
-                  <Link
-                    to="/join-sec-del"
-                    className="btn btn-primary "
-                    style={{ whiteSpace: "nowrap" }}>
-                    Join F-Link
-                  </Link>
-                </div>
-                <div className="col-sm-12 col-lg-6 my-1">
-                  <a
-                    className="btn btn-primary "
-                    style={{ whiteSpace: "nowrap" }}>
-                    Create F-Link
-                  </a>
-                </div>
-              </>
-            ) : (
-              ""
-            )}
-            <div className="col-sm-12 col-lg-6 my-1">
-              <Link
-                className="btn btn-primary"
-                style={{ whiteSpace: "nowrap" }}
-                to={"/circle-back-n-forth"}>
-                Back & Forth
-              </Link>
-              {/* <a className="btn btn-primary m-2" >Back-and-Forth</a> */}
-            </div>
-          </div>
-        );
-      case 2:
-        return (
-          <div className="row text-center">
-            <div className="col-sm-12 my-1">
-              <Link to="/first-link-page" className="btn btn-primary ">
-                My F-Link
-              </Link>
-            </div>
-            {/* add if the user is delegate and then show this two. */}
-            {AuthUser?.username === delegate?.user?.username ? (
-              <>
-                <div className="col-sm-12 my-1">
-                  <Link
-                    to="#"
-                    className="btn btn-primary "
-                    style={{ whiteSpace: "nowrap" }}>
-                    Join Second Delegate Link
-                  </Link>
-                </div>
-                <div className="col-sm-12 my-1">
-                  <Link
-                    to="#"
-                    className="btn btn-primary "
-                    style={{ whiteSpace: "nowrap" }}>
-                    Create Second Delegate Link
-                  </Link>
-                </div>
-              </>
-            ) : (
-              ""
-            )}
-            <div className="col-sm-12  my-1">
-              <Link
-                className="btn btn-primary"
-                style={{ whiteSpace: "nowrap" }}
-                to={"/"}>
-                Back & Forth
-              </Link>
-              {/* <a className="btn btn-primary m-2" >Back-and-Forth</a> */}
-            </div>
-          </div>
-        );
-
-      default:
-        return (
-          <div className="row text-center">
-            <h5>Something is wrong with your registration.</h5>
-          </div>
-        );
-    }
-  };
 
   return (
     <div className="container">
@@ -304,12 +171,12 @@ function VoterPage() {
                 <span className="text-danger">{date.toDateString()}</span> to
                 registered to vote in your district or your account will be
                 deleted! Yikes!
-                <a href="#"> Learn More</a>.
+                <a href="/"> Learn More</a>.
               </p>
               <p>
                 But, if you have gotten registered since the last time you
                 entered the floor,
-                <a href="#"> click here</a>.
+                <a href="/"> click here</a>.
               </p>
             </div>
           ) : (
@@ -361,21 +228,21 @@ function VoterPage() {
         <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
           <ul className="list-unstyled">
             {/* {(AuthUser?.users?.userType != 0) ? <li className="mb-2"><Link to={'/voter-page'}>List of Delegates</Link></li>:""} */}
-            {AuthUser?.users?.userType != 0 ? (
+            {AuthUser?.users?.userType !== 0 ? (
               <li className="mb-2">
                 <Link to={"/circle-back-n-forth"}> Back-and-Forth </Link>
               </li>
             ) : (
               ""
             )}
-            {AuthUser?.users?.userType != 0 ? (
+            {AuthUser?.users?.userType !== 0 ? (
               <li className="mb-2">
                 <Link to={"/member-contact"}> Member Contact Page </Link>
               </li>
             ) : (
               ""
             )}
-            {AuthUser?.users?.userType != 0 ? (
+            {AuthUser?.users?.userType !== 0 ? (
               <li className="mb-2">
                 <Link to={"/house-keeping-page"}>
                   Circle Housekeeping Page{" "}
@@ -387,11 +254,11 @@ function VoterPage() {
           </ul>
         </div>
         <div className="col-sm-12 col-md-4 d-flex justify-content-center">
-          {houseKeepingType()}
+          {houseKeepingType(AuthUser, delegate, setAction)}
         </div>
         <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
           <ul className="list-unstyled">
-            {AuthUser?.users?.userType != 0 ? (
+            {AuthUser?.users?.userType !== 0 ? (
               <>
                 {/* <li className="mb-2"><Link to={'/meeting-schedule'}> First Link Meeting Schedule </Link></li> */}
                 <li className="mb-2">
@@ -408,79 +275,8 @@ function VoterPage() {
           </ul>
         </div>
       </div>
-      <h1 className="header-semibold" style={{ marginBottom: "1%" }}>
-        List of Bills
-      </h1>
-      {/* <p> <Link> Bills sorted by Latest Action </Link></p> */}
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr className="bills-list-voter-page-header-row">
-            <th>Bill Number</th>
-            <th style={{ minWidth: "300px" }}>Short Title</th>
-            <th>Scheduled For Vote</th>
-            <th>Advisement</th>
-            <th>Your Vote</th>
-            <th>District Tally</th>
-            <th>National Tally</th>
-            <th>More...</th>
-          </tr>
-        </thead>
-        <tbody>
-          {bills?.results?.map((bill, index) => (
-            <Bill_Item bill={bill} key={index} index={index}></Bill_Item>
-          ))}
-        </tbody>
-        <tfoot className="border-0">
-          <tr className="p-2 border-0">
-            <td colSpan={4} className="border-0"></td>
-            <td colSpan={4} className="border-0" style={{ textAlign: "right" }}>
-              {bills?.previous ? (
-                <span
-                  className="btn btn-outline-success mx-1 p-0 px-3"
-                  onClick={() => setCurrentPage(currentPage - 1)}>
-                  Previous
-                </span>
-              ) : (
-                ""
-              )}
 
-              {bills?.previous ? (
-                <span
-                  className="btn btn-outline-success mx-1 p-0 px-3"
-                  onClick={() => setCurrentPage(currentPage - 1)}>
-                  {currentPage - 1}
-                </span>
-              ) : (
-                ""
-              )}
-
-              <span className="btn btn-success mx-1 p-0 px-3">
-                {currentPage}
-              </span>
-
-              {bills?.next ? (
-                <span
-                  className="btn btn-outline-success mx-1 p-0 px-3"
-                  onClick={() => setCurrentPage(currentPage + 1)}>
-                  {currentPage + 1}
-                </span>
-              ) : (
-                ""
-              )}
-
-              {bills?.next ? (
-                <span
-                  className="btn btn-outline-success mx-1 p-0 px-3"
-                  onClick={() => setCurrentPage(currentPage + 1)}>
-                  Next
-                </span>
-              ) : (
-                ""
-              )}
-            </td>
-          </tr>
-        </tfoot>
-      </Table>
+      <BillsWrapper setMessage={() => setMessage()} />
     </div>
   );
 }

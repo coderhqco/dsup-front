@@ -1,10 +1,9 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 
 import Member from "./member.jsx";
 import Candidate from "./candidate.jsx";
-import axios from "axios";
+
 import Status from "./status_message.jsx";
 
 function SecondDelegatePage() {
@@ -36,6 +35,7 @@ function SecondDelegatePage() {
     } else {
       setDissolve(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [candidate, members]);
 
   // Function to update the error state and schedule the reset
@@ -44,6 +44,7 @@ function SecondDelegatePage() {
     setTimeout(() => {
       setErr("");
     }, 10000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [err]);
 
   const action_lists = (msg) => {
@@ -120,6 +121,7 @@ function SecondDelegatePage() {
       // return () => { clearTimeout(resetTimeout); };
       console.log("closing the connection");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // update or change the circle invitation key

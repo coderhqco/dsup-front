@@ -107,18 +107,18 @@ function JoinSecDel() {
             });
           });
       }
-      {
-        setMessage({
-          type: "alert alert-danger",
-          msg: "invalid invitation key",
-        });
-      }
+
+      //   setMessage({
+      //     type: "alert alert-danger",
+      //     msg: "invalid invitation key",
+      //   });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   useEffect(() => {
     if (CIRCLE.length > 1) {
-      let ws_schame = window.location.protocol == "https:" ? "wss" : "ws";
+      let ws_schame = window.location.protocol === "https:" ? "wss" : "ws";
       const url = `${ws_schame}://${process.env.REACT_APP_BASE_URL}/sec-del/${CIRCLE}/${AuthUser.username}/`;
       const chatSocket = new WebSocket(url);
       // get back the messages...
@@ -132,6 +132,7 @@ function JoinSecDel() {
         setWS(chatSocket);
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [CIRCLE]);
 
   useEffect(() => {
@@ -148,6 +149,7 @@ function JoinSecDel() {
       WS.close();
       navigate("/house-keeping-page");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [WS]);
 
   function GetToken(action) {

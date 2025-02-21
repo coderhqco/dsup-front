@@ -1,4 +1,4 @@
-import { lazy } from "react";
+// import { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import SignUpConfirm from "./components/signUpConform.jsx";
 import ClaimYourSeat from "./components/Claim-Your-Seat.jsx";

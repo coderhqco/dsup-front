@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { baseURL } from "../../store/conf";
+// import axios from "axios";
+// import { baseURL } from "../../store/conf";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, Button } from "react-bootstrap";
 

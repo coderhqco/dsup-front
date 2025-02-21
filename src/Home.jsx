@@ -2,7 +2,7 @@
 import React from "react";
 
 import logo from "./CYS-Logo.png";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import jwtDecode from "jwt-decode";
@@ -11,7 +11,6 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 function Home() {
   const AuthUser = useSelector((state) => state.AuthUser.user);
-  console.log(AuthUser);
   const isRefreshTokenExpired = () => {
     try {
       const decodedToken = jwtDecode(AuthUser.token.refresh);
@@ -32,7 +31,7 @@ function Home() {
       <div className="row mt-5">
         <div className="col-sm-12 col-md-4 col-lg-4 mt-4">
           <div className="container text-center ">
-            <a className="row text-decoration-none text-dark">
+            <a href="/" className="row text-decoration-none text-dark">
               <img
                 src={logo}
                 alt="Democracy Straight Up"
