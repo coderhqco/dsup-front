@@ -39,8 +39,20 @@ function Header() {
             {AuthUser ? (
               <li className="nav-item">
                 <Link
+                  style={{
+                    borderRadius: "8px",
+                    transition: "background-color 0.3s, color 0.3s",
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.backgroundColor = "#0d6efd"; // Blue background on hover
+                    e.target.style.color = "#ffffff"; // White text on hover
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.backgroundColor = ""; // Revert background on mouse out
+                    e.target.style.color = ""; // Revert text color on mouse out
+                  }}
                   to="/voter-page"
-                  className="nav-link fs-5 active"
+                  className="nav-link fs-5 px-3 py-1"
                   aria-current="page">
                   Voter Page
                 </Link>
@@ -50,12 +62,26 @@ function Header() {
             )}
             <li className="nav-item">
               {AuthUser ? (
-                <Link to="/search" className="nav-link fs-5 active">
+                <Link
+                  to="/search"
+                  className="nav-link fs-5 mx-1 px-3 py-1"
+                  style={{
+                    borderRadius: "8px",
+                    transition: "background-color 0.3s, color 0.3s",
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.backgroundColor = "#0d6efd"; // Blue background on hover
+                    e.target.style.color = "#ffffff"; // White text on hover
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.backgroundColor = ""; // Revert background on mouse out
+                    e.target.style.color = ""; // Revert text color on mouse out
+                  }}>
                   Search and Sort Bills
                 </Link>
               ) : null}
             </li>
-            <li className="nav-item">
+            <li className="nav-item px-3">
               {!AuthUser ? (
                 <Link to="/enter-the-floor" className="nav-link fs-5">
                   Enter The Floor

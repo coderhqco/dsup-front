@@ -1,12 +1,12 @@
 /* styles for index and all app inside */
 
 body {
-  font-family: 'Inter-Regular';
+  font-family: "Inter-Regular";
 }
 
 @font-face {
-  font-family: 'Inter-Regular';
-  src: url('./fonts/Inter-Regular.ttf');
+  font-family: "Inter-Regular";
+  src: url("./fonts/Inter-Regular.ttf");
 }
 
 /* @font-face {
@@ -15,18 +15,18 @@ body {
   } */
 
 @font-face {
-  font-family: 'Inter-Bold';
-  src: url('./fonts/Inter-Bold.ttf');
+  font-family: "Inter-Bold";
+  src: url("./fonts/Inter-Bold.ttf");
 }
 
 @font-face {
-  font-family: 'Inter-SemiBold';
-  src: url('./fonts/Inter-SemiBold.ttf');
+  font-family: "Inter-SemiBold";
+  src: url("./fonts/Inter-SemiBold.ttf");
 }
 
 @font-face {
-  font-family: 'Inter-Black';
-  src: url('./fonts/Inter-Black.ttf');
+  font-family: "Inter-Black";
+  src: url("./fonts/Inter-Black.ttf");
 }
 
 .image_check {
@@ -42,7 +42,7 @@ body {
 }
 
 .header-semibold {
-  font-family: 'Inter-SemiBold';
+  font-family: "Inter-SemiBold";
   font-size: 30px;
   color: black;
   margin: 0;
@@ -50,7 +50,7 @@ body {
 }
 
 .back-and-forth-nickname-font {
-  font-family: 'Inter-Bold';
+  font-family: "Inter-Bold";
   font-size: 20px;
   color: black;
   margin: 0;
@@ -58,7 +58,7 @@ body {
 }
 
 .f-del-tag {
-  font-family: 'Inter-Bold';
+  font-family: "Inter-Bold";
   font-size: 15px;
   color: red;
   margin: 0;
@@ -71,11 +71,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter-SemiBold';
+  font-family: "Inter-SemiBold";
 }
 
 .bills-list-voter-page-header-row {
-  font-family: 'Inter-Bold';
+  font-family: "Inter-Bold";
   font-size: 18px;
   color: black;
 }
@@ -95,7 +95,7 @@ body {
 }
 
 .bill-page-note-headers {
-  font-family: 'Inter-Bold';
+  font-family: "Inter-Bold";
   font-size: 30px;
   color: black;
   text-decoration: underline;
