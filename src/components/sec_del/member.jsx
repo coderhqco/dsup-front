@@ -89,8 +89,6 @@ export default function Member({
     setClicked(!clicked);
   };
 
-  console.log(member);
-
   return (
     <>
       <tr>

@@ -155,9 +155,8 @@ function VoterPage() {
     <div className="container">
       <div className="row">
         <div className="col">
-          {message.msg ? (
+          {message?.msg ? (
             <div className={message?.type} role="alert">
-              {" "}
               {message?.msg}
             </div>
           ) : (

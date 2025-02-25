@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 import Member from "./member.jsx";
 import Candidate from "./candidate.jsx";
 
@@ -11,12 +11,11 @@ function SecondDelegatePage() {
   const first_link = useSelector((state) => state.AuthUser.sec_del);
   const [err, setErr] = useState("");
   const [connectionErr, setConnectionErr] = useState(null);
-
+  const navigate = useNavigate();
   /** We have fDEl object which contains the details of FDel.
    * Iam_delegate is true if the auth user is a delegate.
    * Iam_member is true of the auth user is a member
    */
-  const [fDel, setFDel] = useState("");
   const [Iam_delegate, setIam_delegate] = useState(false);
   const [Iam_member, setIam_member] = useState(false);
   const [dissolve, setDissolve] = useState(false);
@@ -35,6 +34,26 @@ function SecondDelegatePage() {
     } else {
       setDissolve(false);
     }
+
+    // check if the authuser is not
+
+    // set the iam_delegate and iam_member based on the members list
+    if (members.length > 0) {
+      const member = members.find(
+        (member) => member.user.username === AuthUser.username
+      );
+      if (member) {
+        if (member.is_delegate) {
+          setIam_delegate(true);
+          console.log("I am a delegate");
+        }
+        if (member.is_member) {
+          console.log("I am a member");
+          setIam_member(true);
+        }
+      }
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [candidate, members]);
 
@@ -50,6 +69,7 @@ function SecondDelegatePage() {
   const action_lists = (msg) => {
     // add the members and candidates on their states.
     if (msg.action === "member_listing") {
+      console.log("member listing update: ", msg);
       if (msg.member_list) {
         // set the members and candidates
         // setSec_del(msg.member_list[0]?.first_link);
@@ -59,34 +79,20 @@ function SecondDelegatePage() {
         const candidatesList = msg.member_list.filter(
           (member) => !member.is_member
         );
-
         setMembers(membersList);
         setCandidate(candidatesList);
-        if (
-          membersList.some(
-            (member) => member?.user?.username === AuthUser?.username
-          )
-        ) {
-          setIam_delegate(true);
-          console.log("I am delegate: ", Iam_delegate);
-        } else {
-          setIam_member(true);
-          console.log("I am member: ", Iam_member);
-        }
-
-        if (
-          candidatesList.some(
-            (candidate) => candidate?.user.username === AuthUser?.username
-          )
-        ) {
-          setIam_candidate(true);
-          console.log("I am candidate: ", Iam_candidate);
-        } else {
-          console.log("I am not a candidate.");
-        }
       }
 
-      //   other actions here
+      // check the msg.member_list to AuthUser.username, if not found, redirect to voter page
+      const member = msg.member_list.find(
+        (member) => member.user.username === AuthUser.username
+      );
+      if (member === undefined) {
+        navigate("/voter-page");
+      }
+    }
+    if (msg.action === "dissolve") {
+      console.log("dissolve action: ", msg);
     }
   };
 
@@ -99,6 +105,7 @@ function SecondDelegatePage() {
        * all the messages that comes from this end point is the same.
        * it contains members
        */
+      console.log("data from server: ", data);
       action_lists(data);
     };
 
@@ -116,22 +123,18 @@ function SecondDelegatePage() {
        */
       setMembers("");
       setCandidate("");
-      clearTimeout();
-      setFDel("");
-      // return () => { clearTimeout(resetTimeout); };
-      console.log("closing the connection");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // update or change the circle invitation key
   const invitationKey = () => {
-    chatSocket.send(
-      JSON.stringify({
-        action: "invitationKey",
-        payload: { circle: first_link.code },
-      })
-    );
+    // chatSocket.send(
+    //   JSON.stringify({
+    //     action: "invitationKey",
+    //     payload: { circle: first_link.code },
+    //   })
+    // );
   };
 
   return (
@@ -160,7 +163,7 @@ function SecondDelegatePage() {
             Invitation Key: {first_link?.invitation_key}
           </h4>
 
-          {fDel?.user?.username === AuthUser?.username ? (
+          {Iam_delegate ? (
             <button
               className="d-block mx-auto my-2 btn btn-success text-center"
               onClick={() => invitationKey()}>
@@ -211,8 +214,6 @@ function SecondDelegatePage() {
                     member={member}
                     chatSocket={chatSocket}
                     err={err}
-                    Iam_member={Iam_member}
-                    Iam_delegate={Iam_delegate}
                   />
                 ))
               : null}
@@ -230,10 +231,14 @@ function SecondDelegatePage() {
                 <th className="fw-bold">
                   Do you want this candidate to be a member?
                 </th>
-              ) : null}
+              ) : (
+                <th></th>
+              )}
               {Iam_delegate ? (
                 <th className="fw-bold">Remove Candidate</th>
-              ) : null}
+              ) : (
+                <th></th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -247,10 +252,9 @@ function SecondDelegatePage() {
                   chatSocket={chatSocket}
                   key={index}
                   index={index}
-                  Iam_member={Iam_member}
+                  AuthUser={AuthUser}
                   Iam_delegate={Iam_delegate}
-                  candidate={cand}
-                  fDel={fDel}></Candidate>
+                  candidate={cand}></Candidate>
               ))
             ) : (
               <tr>
@@ -265,9 +269,8 @@ function SecondDelegatePage() {
 
       {/* status messages */}
       <Status
-        Iam_delegate={Iam_delegate}
-        Iam_member={Iam_member}
         Iam_candidate={Iam_candidate}
+        Iam_delegate={Iam_delegate}
         circleInfo={first_link}
         candidate={candidate}
         members={members}></Status>
