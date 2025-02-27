@@ -41,10 +41,7 @@ export default function Member({
     chatSocket.send(
       JSON.stringify({
         action: "remove_candidate",
-        payload: {
-          remover: AuthUser.username,
-          candidate: member?.id,
-        },
+        candidate: member.id,
       })
     );
   };
@@ -162,6 +159,7 @@ export default function Member({
           // if the circle is not active and the auth user is the delegate.
           // then he can remove the members.
           <td>
+            {console.log("Iam delegate: ", Iam_delegate)}
             {Iam_delegate ? (
               <>
                 <span> Yes </span>

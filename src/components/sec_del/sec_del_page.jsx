@@ -212,6 +212,7 @@ function SecondDelegatePage() {
                     index={index}
                     circleInfo={first_link}
                     member={member}
+                    Iam_delegate={Iam_delegate}
                     chatSocket={chatSocket}
                     err={err}
                   />
