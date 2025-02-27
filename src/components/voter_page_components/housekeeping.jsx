@@ -50,12 +50,12 @@ export const houseKeepingType = (AuthUser, delegate, setAction) => {
             ""
           )}
           <div className="col-sm-12 col-lg-6 my-1">
-            <Link
+            {/* <Link
               className="btn btn-primary"
               style={{ whiteSpace: "nowrap" }}
               to={"/circle-back-n-forth"}>
               Back & Forth
-            </Link>
+            </Link> */}
             {/* <a className="btn btn-primary m-2" >Back-and-Forth</a> */}
           </div>
         </div>
@@ -91,15 +91,6 @@ export const houseKeepingType = (AuthUser, delegate, setAction) => {
           ) : (
             ""
           )}
-          <div className="col-sm-12  my-1">
-            <Link
-              className="btn btn-primary"
-              style={{ whiteSpace: "nowrap" }}
-              to={"/"}>
-              Back & Forth
-            </Link>
-            {/* <a className="btn btn-primary m-2" >Back-and-Forth</a> */}
-          </div>
         </div>
       );
 

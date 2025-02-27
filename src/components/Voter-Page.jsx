@@ -206,11 +206,11 @@ function VoterPage() {
         </div>
       </div>
       <Container style={{ marginTop: "2%" }}>
-        <div className="row text-center">
+        <div className="row text-center ">
           <h1>Voter Page</h1>
         </div>
-        <Row>
-          <Col>
+        <Row className="">
+          <Col className="">
             <Row>
               <Col xs="auto">
                 <p className="text-left">Voter Name:</p>
@@ -221,14 +221,9 @@ function VoterPage() {
             </Row>
           </Col>
           <Col>
-            <Row>
-              <Col xs="auto">
-                <p className="text-left">Verification Score:</p>
-              </Col>
-              <Col>
-                <p>{AuthUser?.users?.verificationScore}/7</p>
-              </Col>
-            </Row>
+            <p className="text-center">
+              Verification Score: {AuthUser?.users?.verificationScore}/7
+            </p>
           </Col>
           <Col>
             <Row>

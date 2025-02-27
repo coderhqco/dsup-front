@@ -209,7 +209,7 @@ function HouseKeeping() {
           </div>
           <h1 className="text-center">Housekeeping Page</h1>
           <h3 className="text-center">
-            Circle No. {circleInfo?.code} District: {circleInfo?.district.code}
+            Circle {circleInfo?.district.code}-{circleInfo?.code}
           </h3>
           <h4 className="text-center">
             Invitation Key: {circleInfo?.invitation_code}
