@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { baseURL } from "../store/conf";
-import { circle, authenticate } from "../store/userSlice";
+import { circle, authenticate, sec_del } from "../store/userSlice";
 import jwtDecode from "jwt-decode";
 import { Container, Row, Col } from "react-bootstrap";
 import { houseKeepingType } from "./voter_page_components/housekeeping";
@@ -151,6 +151,28 @@ function VoterPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // get the detials of f_link if the f_link (sec_del) state is not found
+  useEffect(() => {
+    if (sec_del.code === undefined && AuthUser?.users?.userType === 2) {
+      // get the f_link details.
+      let header = { Authorization: `Bearer ${AuthUser.token.access}` };
+      const url = `${window.location.protocol}//${baseURL}/api/second-delegate/get_f_link_by_user/`;
+      const param = {
+        user: AuthUser.username,
+      };
+
+      axios
+        .post(url, param, { headers: header })
+        .then((response) => {
+          console.log("get the f link: ", response.data);
+          dispatch(sec_del(response.data));
+        })
+        .catch((error) => {
+          console.log("error getting f_link details...:", error);
+        });
+    }
+  }, []);
+
   return (
     <div className="container">
       <div className="row">
@@ -166,7 +188,7 @@ function VoterPage() {
           {AuthUser?.users?.is_reg ? (
             <div className="alert alert-warning mt-3">
               <p>
-                You have to got until{" "}
+                You have to got until
                 <span className="text-danger">{date.toDateString()}</span> to
                 registered to vote in your district or your account will be
                 deleted! Yikes!
