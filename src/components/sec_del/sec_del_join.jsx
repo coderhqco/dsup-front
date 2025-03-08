@@ -27,11 +27,9 @@ function JoinSecDel() {
          * it contains members
          */
         if (data.status === "success") {
-          console.log(
-            "closing the connection and redirecting to the first link page"
-          );
+          console.log("closing the connection and redirecting to the first link page");
           chatSocket.close();
-          navigate("/first-link-page");
+          // navigate("/first-link-page");
         }
         console.log("data from server: ", data);
       };
@@ -81,6 +79,7 @@ function JoinSecDel() {
 
             dispatch(sec_del(response.data[0].sec_del));
             setFLink(response.data[0].sec_del);
+
             let u = { ...AuthUser.users };
             let userType = 2;
             let users = { ...u, userType };
@@ -92,7 +91,6 @@ function JoinSecDel() {
           }
         })
         .catch((error) => {
-          console.log("err: ", error);
           setMessage({
             msg: error.response.data.message,
             type: "alert alert-danger",
@@ -158,21 +156,16 @@ function JoinSecDel() {
         <div className="col-sm-12 col-md-6 mt-3">
           <h1 className="text-center">Join a F-Link {AuthUser.userType}</h1>
           <div className="">
-            <h4 className="text-left">
-              You must have an Invitation Key to join a F-Link.
-            </h4>
+            <h4 className="text-left">You must have an Invitation Key to join a F-Link.</h4>
             <p className="text-left">
-              The First Delegate of a Sec-Del should send you an Invitation Key.
-              This cannot be done via the website.
+              The First Delegate of a Sec-Del should send you an Invitation Key. This cannot be done
+              via the website.
             </p>
             <p className="text-left">
-              Or you can create your own F-Link and start inviting others to
-              join it.
+              Or you can create your own F-Link and start inviting others to join it.
             </p>
             <div className="col text-center">
-              <span
-                onClick={handleCreate}
-                className="btn btn-primary btn-sm mb-3">
+              <span onClick={handleCreate} className="btn btn-primary btn-sm mb-3">
                 Create A F-Link
               </span>
             </div>

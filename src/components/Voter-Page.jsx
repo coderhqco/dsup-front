@@ -184,7 +184,7 @@ function VoterPage() {
           ) : (
             ""
           )}
-
+          {/* 
           {AuthUser?.users?.is_reg ? (
             <div className="alert alert-warning mt-3">
               <p>
@@ -202,7 +202,7 @@ function VoterPage() {
             </div>
           ) : (
             ""
-          )}
+          )} */}
         </div>
       </div>
       <Container style={{ marginTop: "2%" }}>
@@ -260,9 +260,7 @@ function VoterPage() {
             )}
             {AuthUser?.users?.userType !== 0 ? (
               <li className="mb-2">
-                <Link to={"/house-keeping-page"}>
-                  Circle Housekeeping Page{" "}
-                </Link>
+                <Link to={"/house-keeping-page"}>Circle Housekeeping Page </Link>
               </li>
             ) : (
               ""
