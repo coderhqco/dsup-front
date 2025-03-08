@@ -1,8 +1,9 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Member from "./member.jsx";
 import Candidate from "./candidate.jsx";
+import { sec_del } from "../../store/userSlice.js";
 
 import Status from "./status_message.jsx";
 
@@ -12,6 +13,7 @@ function SecondDelegatePage() {
   const [err, setErr] = useState("");
   const [connectionErr, setConnectionErr] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   /** We have fDEl object which contains the details of FDel.
    * Iam_delegate is true if the auth user is a delegate.
    * Iam_member is true of the auth user is a member
@@ -39,16 +41,12 @@ function SecondDelegatePage() {
 
     // set the iam_delegate and iam_member based on the members list
     if (members.length > 0) {
-      const member = members.find(
-        (member) => member.user.username === AuthUser.username
-      );
+      const member = members.find((member) => member.user.username === AuthUser.username);
       if (member) {
         if (member.is_delegate) {
           setIam_delegate(true);
-          console.log("I am a delegate");
         }
         if (member.is_member) {
-          console.log("I am a member");
           setIam_member(true);
         }
       }
@@ -73,20 +71,16 @@ function SecondDelegatePage() {
       if (msg.member_list) {
         // set the members and candidates
         // setSec_del(msg.member_list[0]?.first_link);
-        const membersList = msg.member_list.filter(
-          (member) => member.is_member
-        );
-        const candidatesList = msg.member_list.filter(
-          (member) => !member.is_member
-        );
+        dispatch(sec_del(msg.member_list[0]?.sec_del));
+        console.log("set f-link: ", msg.member_list[0]?.sec_del);
+        const membersList = msg.member_list.filter((member) => member.is_member);
+        const candidatesList = msg.member_list.filter((member) => !member.is_member);
         setMembers(membersList);
         setCandidate(candidatesList);
       }
 
       // check the msg.member_list to AuthUser.username, if not found, redirect to voter page
-      const member = msg.member_list.find(
-        (member) => member.user.username === AuthUser.username
-      );
+      const member = msg.member_list.find((member) => member.user.username === AuthUser.username);
       if (member === undefined) {
         navigate("/voter-page");
       }
@@ -159,9 +153,7 @@ function SecondDelegatePage() {
             First Link No: {first_link?.code} &nbsp;&nbsp; District:
             {first_link?.district.code}
           </h3>
-          <h4 className="text-center">
-            Invitation Key: {first_link?.invitation_key}
-          </h4>
+          <h4 className="text-center">Invitation Key: {first_link?.invitation_key}</h4>
 
           {Iam_delegate ? (
             <button
@@ -171,9 +163,7 @@ function SecondDelegatePage() {
             </button>
           ) : null}
 
-          {first_link?.is_active ? (
-            <p className="text-center">Circle Status: ACTIVE!</p>
-          ) : null}
+          {first_link?.is_active ? <p className="text-center">Circle Status: ACTIVE!</p> : null}
         </div>
         <div className="col-sm-12 col-md-3"></div>
       </div>
@@ -190,9 +180,7 @@ function SecondDelegatePage() {
               ) : null}
               {Iam_delegate ? (
                 <th className="fw-bold">
-                  {dissolve === true
-                    ? "Dissolve First Link? "
-                    : "Remove Member"}
+                  {dissolve === true ? "Dissolve First Link? " : "Remove Member"}
                 </th>
               ) : (
                 <th></th>
@@ -229,17 +217,11 @@ function SecondDelegatePage() {
               <th className="fw-bold">#</th>
               <th className="fw-bold">Candidate Name</th>
               {Iam_delegate || Iam_member ? (
-                <th className="fw-bold">
-                  Do you want this candidate to be a member?
-                </th>
+                <th className="fw-bold">Do you want this candidate to be a member?</th>
               ) : (
                 <th></th>
               )}
-              {Iam_delegate ? (
-                <th className="fw-bold">Remove Candidate</th>
-              ) : (
-                <th></th>
-              )}
+              {Iam_delegate ? <th className="fw-bold">Remove Candidate</th> : <th></th>}
             </tr>
           </thead>
           <tbody>

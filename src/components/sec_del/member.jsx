@@ -18,13 +18,30 @@ export default function Member({
   const [voted_out, setVoted_out] = useState(false);
   const [put_forward, setPut_forward] = useState(false);
   const [clicked, setClicked] = useState(false); //check the member that clicked
-
   const [showModal, setShowModal] = useState(false);
+  const [vote_out_count, setVote_out_count] = useState(member.vote_outs);
 
   const handleInputChange = () => {
     // Open the modal when the input value changes
     setShowModal(true);
   };
+
+  // check for the voted_out
+  useEffect(() => {
+    const vote_instance = member.vote_outs.find((vote) =>
+      vote.startsWith(`Voter: ${AuthUser.username}`)
+    );
+
+    if (vote_instance) {
+      const voter_username = vote_instance.match(/Voter: (\w+)/)[1];
+      if (voter_username === AuthUser.username) {
+        setVoted_out(true);
+      }
+    }
+
+    // set the vote_out_count for the member
+    setVote_out_count(member.vote_outs.length);
+  }, [member]);
 
   //   if there is any error, hide the model show
   useEffect(() => {
@@ -57,6 +74,8 @@ export default function Member({
         },
       })
     );
+    //set voted out to true
+    setVoted_out(true);
   };
 
   const removeCircle = () => {
@@ -74,6 +93,7 @@ export default function Member({
 
   const putForward = () => {
     /** send the vote to the server */
+    console.log("pus sdfas");
     chatSocket.send(
       JSON.stringify({
         action: "putForward",
@@ -83,7 +103,6 @@ export default function Member({
         },
       })
     );
-    setClicked(!clicked);
   };
 
   return (
@@ -141,7 +160,6 @@ export default function Member({
         ) : circleInfo?.is_active === true ? (
           // if the user vote out this member
           <td>
-            {" "}
             Yes
             {!voted_out ? (
               <input
@@ -151,15 +169,12 @@ export default function Member({
                 className="form-check-input mx-2"
               />
             ) : null}
-            <span className="alert alert-primary p-0 px-2 mx-2">
-              {member?.count_vote_out} votes
-            </span>
+            <span className="alert alert-primary p-0 px-2 mx-2">{vote_out_count} votes</span>
           </td>
         ) : (
           // if the circle is not active and the auth user is the delegate.
           // then he can remove the members.
           <td>
-            {console.log("Iam delegate: ", Iam_delegate)}
             {Iam_delegate ? (
               <>
                 <span> Yes </span>
@@ -179,8 +194,7 @@ export default function Member({
           <Modal.Title>Dissolve Circle</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          This action will dissolve this Circle permanently, do you want to
-          proceed?
+          This action will dissolve this Circle permanently, do you want to proceed?
         </Modal.Body>
         <Modal.Footer className="border-0">
           <Button variant="secondary" onClick={handleCloseModal}>
