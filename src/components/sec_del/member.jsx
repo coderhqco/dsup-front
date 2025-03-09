@@ -16,10 +16,11 @@ export default function Member({
 }) {
   const AuthUser = useSelector((state) => state.AuthUser.user);
   const [voted_out, setVoted_out] = useState(false);
+  const [vote_out_count, setVote_out_count] = useState(member.vote_outs);
   const [put_forward, setPut_forward] = useState(false);
+  const [put_farward_count, setPut_farward_count] = useState(member?.put_farward?.length);
   const [clicked, setClicked] = useState(false); //check the member that clicked
   const [showModal, setShowModal] = useState(false);
-  const [vote_out_count, setVote_out_count] = useState(member.vote_outs);
 
   const handleInputChange = () => {
     // Open the modal when the input value changes
@@ -39,8 +40,20 @@ export default function Member({
       }
     }
 
+    const putF_instance = member.put_farward.find((dl) =>
+      dl.startsWith(`Voter: ${AuthUser.username}`)
+    );
+
+    if (putF_instance) {
+      const dele = putF_instance.match(/Voter: (\w+)/)[1];
+      if (dele === AuthUser.username) {
+        setPut_forward(true);
+      }
+    }
+
     // set the vote_out_count for the member
     setVote_out_count(member.vote_outs.length);
+    setPut_farward_count(member.put_farward?.length);
   }, [member]);
 
   //   if there is any error, hide the model show
@@ -93,7 +106,6 @@ export default function Member({
 
   const putForward = () => {
     /** send the vote to the server */
-    console.log("pus sdfas");
     chatSocket.send(
       JSON.stringify({
         action: "putForward",
@@ -122,14 +134,16 @@ export default function Member({
             {/* ckeck if the member is auth user so that he/she can not vote for his own delegation  */}
             <th className="fw-bold">
               Yes
-              <input
-                type="checkbox"
-                checked={put_forward}
-                onChange={() => putForward()}
-                className="form-check-input mx-2"
-              />
+              {!put_forward ? (
+                <input
+                  type="checkbox"
+                  checked={put_forward}
+                  onChange={() => putForward()}
+                  className="form-check-input mx-2"
+                />
+              ) : null}
               <span className="alert alert-primary p-0 px-2 mx-2">
-                {member?.count_put_forward} votes
+                {put_farward_count > 0 ? put_farward_count : ""} votes
               </span>
             </th>
           </>
