@@ -6,9 +6,10 @@ import axios from "axios";
 import { baseURL } from "../store/conf";
 import { circle, authenticate, sec_del } from "../store/userSlice";
 import jwtDecode from "jwt-decode";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { houseKeepingType } from "./voter_page_components/housekeeping";
 import BillsWrapper from "./voter_page_components/billsWrapper";
+import UserCard from "./voter_page_components/user_card";
 
 function VoterPage() {
   const AuthUser = useSelector((state) => state.AuthUser.user);
@@ -184,58 +185,15 @@ function VoterPage() {
           ) : (
             ""
           )}
-          {/* 
-          {AuthUser?.users?.is_reg ? (
-            <div className="alert alert-warning mt-3">
-              <p>
-                You have to got until
-                <span className="text-danger">{date.toDateString()}</span> to
-                registered to vote in your district or your account will be
-                deleted! Yikes!
-                <a href="/"> Learn More</a>.
-              </p>
-              <p>
-                But, if you have gotten registered since the last time you
-                entered the floor,
-                <a href="/"> click here</a>.
-              </p>
-            </div>
-          ) : (
-            ""
-          )} */}
         </div>
       </div>
-      <Container style={{ marginTop: "2%" }}>
-        <div className="row text-center ">
-          <h1>Voter Page</h1>
-        </div>
-        <Row className="">
-          <Col className="">
-            <Row>
-              <Col xs="auto">
-                <p className="text-left">Voter Name:</p>
-              </Col>
-              <Col>
-                <p>{AuthUser?.users?.legalName}</p>
-              </Col>
-            </Row>
-          </Col>
-          <Col>
-            <p className="text-center">
-              Verification Score: {AuthUser?.users?.verificationScore}/7
-            </p>
-          </Col>
-          <Col>
-            <Row>
-              <Col xs="auto">
-                <p className="text-left">District:</p>
-              </Col>
-              <Col>
-                <p>{AuthUser.users?.district?.code}</p>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+
+      <div className="row text-center ">
+        <h1>Voter Page</h1>
+      </div>
+
+      <Container>
+        <UserCard />
       </Container>
 
       {/* the three columns on  kyle note: fix to center the below when on mobile*/}
