@@ -45,7 +45,10 @@ function SecondDelegatePage() {
       if (member) {
         if (member.is_delegate) {
           setIam_delegate(true);
+        } else {
+          setIam_delegate(false);
         }
+
         if (member.is_member) {
           setIam_member(true);
         }
@@ -72,7 +75,7 @@ function SecondDelegatePage() {
         // set the members and candidates
         // setSec_del(msg.member_list[0]?.first_link);
         dispatch(sec_del(msg.member_list[0]?.sec_del));
-        console.log("set f-link: ", msg.member_list[0]?.sec_del);
+
         const membersList = msg.member_list.filter((member) => member.is_member);
         const candidatesList = msg.member_list.filter((member) => !member.is_member);
         setMembers(membersList);
@@ -84,6 +87,9 @@ function SecondDelegatePage() {
       if (member === undefined) {
         navigate("/voter-page");
       }
+    }
+    if (msg.action === "invite_key") {
+      dispatch(sec_del(msg.f_link));
     }
     if (msg.action === "dissolve") {
       console.log("dissolve action: ", msg);
@@ -123,12 +129,12 @@ function SecondDelegatePage() {
 
   // update or change the circle invitation key
   const invitationKey = () => {
-    // chatSocket.send(
-    //   JSON.stringify({
-    //     action: "invitationKey",
-    //     payload: { circle: first_link.code },
-    //   })
-    // );
+    chatSocket.send(
+      JSON.stringify({
+        action: "invitationKey",
+        payload: { f_link: first_link.code },
+      })
+    );
   };
 
   return (
