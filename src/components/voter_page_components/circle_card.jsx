@@ -150,7 +150,7 @@ export default function CircleCard() {
                       <Link to="/" className="py-1 text-nowrap text-dark">
                         Create F-Link
                       </Link>
-                      <Link to="/join-circle" className="py-1 text-nowrap  text-dark">
+                      <Link to="/join-sec-del" className="py-1 text-nowrap  text-dark">
                         Join F-Link
                       </Link>
                     </div>
