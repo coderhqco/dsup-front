@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -7,7 +6,7 @@ import { baseURL } from "../store/conf";
 import { circle, authenticate, sec_del } from "../store/userSlice";
 import jwtDecode from "jwt-decode";
 import { Container } from "react-bootstrap";
-import { houseKeepingType } from "./voter_page_components/housekeeping";
+
 import BillsWrapper from "./voter_page_components/billsWrapper";
 import UserCard from "./voter_page_components/user_card";
 import Wrapper from "./voter_page_components/wrapper";
@@ -94,47 +93,6 @@ function VoterPage() {
       case "joinPd":
         console.log("joining a circle here");
         break;
-      case "createCircle":
-        // console.log("creating a circle");
-        // if (token.length > 0) {
-        //   let header = { Authorization: `Bearer ${token}` };
-        //   const url = `${window.location.protocol}//${baseURL}/api/create-circle/`;
-        //   const param = {
-        //     user: AuthUser.username,
-        //     district: AuthUser.users.district.code,
-        //   };
-        //   axios
-        //     .post(url, param, { headers: header })
-        //     .then((response) => {
-        //       if (response.status === 400) {
-        //         setMessage({
-        //           msg: response.data.message,
-        //           type: "alert alert-danger",
-        //         });
-        //       } else if (response.status === 200) {
-        //         dispatch(circle(response.data));
-        //         let u = { ...AuthUser };
-        //         u.userType = 1;
-        //         dispatch(authenticate(u));
-        //         setMessage({
-        //           type: "alert alert-success",
-        //           msg: "circle created.",
-        //         });
-        //         // nagivate to voter page...
-        //         navigate("/house-keeping-page");
-        //       } else {
-        //         console.log("something went wrong:", response);
-        //       }
-        //     })
-        //     .catch((error) => {
-        //       console.log("err: ", error);
-        //       setMessage({
-        //         msg: error.response?.data?.message,
-        //         type: "alert alert-danger",
-        //       });
-        //     });
-        // }
-        break;
       default:
         console.log("");
     }
@@ -199,58 +157,6 @@ function VoterPage() {
       <Container>
         <Wrapper />
       </Container>
-
-      {/* the three columns on  kyle note: fix to center the below when on mobile*/}
-
-      <div className="row d-flex justify-content-center align-items-center mt-2">
-        <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
-          {/* <ul className="list-unstyled">
-
-            {AuthUser?.users?.userType !== 0 ? (
-              <li className="mb-2">
-                <Link to={"/circle-back-n-forth"}> Back-and-Forth </Link>
-              </li>
-            ) : (
-              ""
-            )}
-            {AuthUser?.users?.userType !== 0 ? (
-              <li className="mb-2">
-                <Link to={"/member-contact"}> Member Contact Page </Link>
-              </li>
-            ) : (
-              ""
-            )}
-            {AuthUser?.users?.userType !== 0 ? (
-              <li className="mb-2">
-                <Link to={"/house-keeping-page"}>Circle Housekeeping Page </Link>
-              </li>
-            ) : (
-              ""
-            )}
-          </ul> */}
-        </div>
-        <div className="col-sm-12 col-md-4 d-flex justify-content-center">
-          {/* {houseKeepingType(AuthUser, delegate, setAction)} */}
-        </div>
-        <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
-          {/* <ul className="list-unstyled">
-            {AuthUser?.users?.userType !== 0 ? (
-              <>
-              
-                <li className="mb-2">
-                  <Link to={"/meetings-and-minutes"}> Meetings & Minutes </Link>
-                </li>
-           
-                <li className="mb-2">
-                  <Link to={"/voter-page"}> Voter Settings </Link>
-                </li>
-              </>
-            ) : (
-              ""
-            )}
-          </ul> */}
-        </div>
-      </div>
 
       <BillsWrapper setMessage={() => setMessage()} />
     </div>
