@@ -10,6 +10,7 @@ import { Container } from "react-bootstrap";
 import { houseKeepingType } from "./voter_page_components/housekeeping";
 import BillsWrapper from "./voter_page_components/billsWrapper";
 import UserCard from "./voter_page_components/user_card";
+import Wrapper from "./voter_page_components/wrapper";
 
 function VoterPage() {
   const AuthUser = useSelector((state) => state.AuthUser.user);
@@ -94,45 +95,45 @@ function VoterPage() {
         console.log("joining a circle here");
         break;
       case "createCircle":
-        console.log("creating a circle");
-        if (token.length > 0) {
-          let header = { Authorization: `Bearer ${token}` };
-          const url = `${window.location.protocol}//${baseURL}/api/create-circle/`;
-          const param = {
-            user: AuthUser.username,
-            district: AuthUser.users.district.code,
-          };
-          axios
-            .post(url, param, { headers: header })
-            .then((response) => {
-              if (response.status === 400) {
-                setMessage({
-                  msg: response.data.message,
-                  type: "alert alert-danger",
-                });
-              } else if (response.status === 200) {
-                dispatch(circle(response.data));
-                let u = { ...AuthUser };
-                u.userType = 1;
-                dispatch(authenticate(u));
-                setMessage({
-                  type: "alert alert-success",
-                  msg: "circle created.",
-                });
-                // nagivate to voter page...
-                navigate("/house-keeping-page");
-              } else {
-                console.log("something went wrong:", response);
-              }
-            })
-            .catch((error) => {
-              console.log("err: ", error);
-              setMessage({
-                msg: error.response?.data?.message,
-                type: "alert alert-danger",
-              });
-            });
-        }
+        // console.log("creating a circle");
+        // if (token.length > 0) {
+        //   let header = { Authorization: `Bearer ${token}` };
+        //   const url = `${window.location.protocol}//${baseURL}/api/create-circle/`;
+        //   const param = {
+        //     user: AuthUser.username,
+        //     district: AuthUser.users.district.code,
+        //   };
+        //   axios
+        //     .post(url, param, { headers: header })
+        //     .then((response) => {
+        //       if (response.status === 400) {
+        //         setMessage({
+        //           msg: response.data.message,
+        //           type: "alert alert-danger",
+        //         });
+        //       } else if (response.status === 200) {
+        //         dispatch(circle(response.data));
+        //         let u = { ...AuthUser };
+        //         u.userType = 1;
+        //         dispatch(authenticate(u));
+        //         setMessage({
+        //           type: "alert alert-success",
+        //           msg: "circle created.",
+        //         });
+        //         // nagivate to voter page...
+        //         navigate("/house-keeping-page");
+        //       } else {
+        //         console.log("something went wrong:", response);
+        //       }
+        //     })
+        //     .catch((error) => {
+        //       console.log("err: ", error);
+        //       setMessage({
+        //         msg: error.response?.data?.message,
+        //         type: "alert alert-danger",
+        //       });
+        //     });
+        // }
         break;
       default:
         console.log("");
@@ -194,6 +195,9 @@ function VoterPage() {
 
       <Container>
         <UserCard />
+      </Container>
+      <Container>
+        <Wrapper />
       </Container>
 
       {/* the three columns on  kyle note: fix to center the below when on mobile*/}
