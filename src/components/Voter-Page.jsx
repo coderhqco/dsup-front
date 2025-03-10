@@ -204,8 +204,8 @@ function VoterPage() {
 
       <div className="row d-flex justify-content-center align-items-center mt-2">
         <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
-          <ul className="list-unstyled">
-            {/* {(AuthUser?.users?.userType != 0) ? <li className="mb-2"><Link to={'/voter-page'}>List of Delegates</Link></li>:""} */}
+          {/* <ul className="list-unstyled">
+
             {AuthUser?.users?.userType !== 0 ? (
               <li className="mb-2">
                 <Link to={"/circle-back-n-forth"}> Back-and-Forth </Link>
@@ -227,20 +227,20 @@ function VoterPage() {
             ) : (
               ""
             )}
-          </ul>
+          </ul> */}
         </div>
         <div className="col-sm-12 col-md-4 d-flex justify-content-center">
-          {houseKeepingType(AuthUser, delegate, setAction)}
+          {/* {houseKeepingType(AuthUser, delegate, setAction)} */}
         </div>
         <div className="col-sm-12 col-md-4 d-flex justify-content-center text-lg-start text-center text-md-start">
-          <ul className="list-unstyled">
+          {/* <ul className="list-unstyled">
             {AuthUser?.users?.userType !== 0 ? (
               <>
-                {/* <li className="mb-2"><Link to={'/meeting-schedule'}> First Link Meeting Schedule </Link></li> */}
+              
                 <li className="mb-2">
                   <Link to={"/meetings-and-minutes"}> Meetings & Minutes </Link>
                 </li>
-                {/* <li className="mb-2"><Link to={'/voter-page'}> Bill Metrics </Link></li> */}
+           
                 <li className="mb-2">
                   <Link to={"/voter-page"}> Voter Settings </Link>
                 </li>
@@ -248,7 +248,7 @@ function VoterPage() {
             ) : (
               ""
             )}
-          </ul>
+          </ul> */}
         </div>
       </div>
 

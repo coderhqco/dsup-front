@@ -11,55 +11,53 @@ export const houseKeepingType = (AuthUser, delegate, setAction) => {
             </Link>
           </div>
           <div className="col-sm-12 ">
-            <button
-              onClick={() => setAction("createCircle")}
-              className="btn btn-success m-2">
+            <button onClick={() => setAction("createCircle")} className="btn btn-success m-2">
               Create a Circle
             </button>
           </div>
         </div>
       );
-    case 1:
-      return (
-        <div className="row text-center">
-          <div className="col-sm-12 col-lg-6 my-1">
-            <Link to="/house-keeping-page" className="btn btn-primary ">
-              My Circle
-            </Link>
-          </div>
-          {/* add if the user is delegate and then show this two. */}
-          {AuthUser?.username === delegate?.user?.username ? (
-            <>
-              <div className="col-sm-12 col-lg-6 my-1">
-                <Link
-                  to="/join-sec-del"
-                  className="btn btn-primary "
-                  style={{ whiteSpace: "nowrap" }}>
-                  Join F-Link
-                </Link>
-              </div>
-              <div className="col-sm-12 col-lg-6 my-1">
-                <button
-                  className="btn btn-primary "
-                  style={{ whiteSpace: "nowrap" }}>
-                  Create F-Link
-                </button>
-              </div>
-            </>
-          ) : (
-            ""
-          )}
-          <div className="col-sm-12 col-lg-6 my-1">
-            {/* <Link
-              className="btn btn-primary"
-              style={{ whiteSpace: "nowrap" }}
-              to={"/circle-back-n-forth"}>
-              Back & Forth
-            </Link> */}
-            {/* <a className="btn btn-primary m-2" >Back-and-Forth</a> */}
-          </div>
-        </div>
-      );
+    // case 1:
+    //   return (
+    //     <div className="row text-center">
+    //       <div className="col-sm-12 col-lg-6 my-1">
+    //         <Link to="/house-keeping-page" className="btn btn-primary ">
+    //           My Circle
+    //         </Link>
+    //       </div>
+    //       {/* add if the user is delegate and then show this two. */}
+    //       {AuthUser?.username === delegate?.user?.username ? (
+    //         <>
+    //           <div className="col-sm-12 col-lg-6 my-1">
+    //             <Link
+    //               to="/join-sec-del"
+    //               className="btn btn-primary "
+    //               style={{ whiteSpace: "nowrap" }}>
+    //               Join F-Link
+    //             </Link>
+    //           </div>
+    //           <div className="col-sm-12 col-lg-6 my-1">
+    //             <button
+    //               className="btn btn-primary "
+    //               style={{ whiteSpace: "nowrap" }}>
+    //               Create F-Link
+    //             </button>
+    //           </div>
+    //         </>
+    //       ) : (
+    //         ""
+    //       )}
+    //       <div className="col-sm-12 col-lg-6 my-1">
+    //         {/* <Link
+    //           className="btn btn-primary"
+    //           style={{ whiteSpace: "nowrap" }}
+    //           to={"/circle-back-n-forth"}>
+    //           Back & Forth
+    //         </Link> */}
+    //         {/* <a className="btn btn-primary m-2" >Back-and-Forth</a> */}
+    //       </div>
+    //     </div>
+    //   );
     case 2:
       return (
         <div className="row text-center">
@@ -72,18 +70,12 @@ export const houseKeepingType = (AuthUser, delegate, setAction) => {
           {AuthUser?.username === delegate?.user?.username ? (
             <>
               <div className="col-sm-12 my-1">
-                <Link
-                  to="#"
-                  className="btn btn-primary "
-                  style={{ whiteSpace: "nowrap" }}>
+                <Link to="#" className="btn btn-primary " style={{ whiteSpace: "nowrap" }}>
                   Join Second Delegate Link
                 </Link>
               </div>
               <div className="col-sm-12 my-1">
-                <Link
-                  to="#"
-                  className="btn btn-primary "
-                  style={{ whiteSpace: "nowrap" }}>
+                <Link to="#" className="btn btn-primary " style={{ whiteSpace: "nowrap" }}>
                   Create Second Delegate Link
                 </Link>
               </div>

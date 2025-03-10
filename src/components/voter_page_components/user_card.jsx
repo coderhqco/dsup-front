@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 export default function UserCard() {
   const AuthUser = useSelector((state) => state.AuthUser.user);
   return (
-    <div className="container mt-4">
+    <div className="container">
       <div className="row align-items-start">
         <div className="col-md-10 offset-md-1 ">
           <div className="card rounded-3 bg-light">
